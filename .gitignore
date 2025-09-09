@@ -1,0 +1,25 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Entity Framework Core Migrations design-time cache
+**/Migrations/**/Snapshot.cs
+
+# Secrets (keep sensitive config out of GitHub)
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Local.json
