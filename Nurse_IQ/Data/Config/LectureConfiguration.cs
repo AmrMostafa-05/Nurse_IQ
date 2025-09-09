@@ -37,10 +37,6 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(l => l.User)
                        .WithMany(u => u.Lectures)
                        .HasForeignKey(l => l.UserId);
-
-            builder.HasOne(u => u.AddedBy)
-                       .WithMany(c => c.Lectures)
-                       .HasForeignKey(c => c.AdminId);
         }
     }
 }

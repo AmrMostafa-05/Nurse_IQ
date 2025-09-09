@@ -54,15 +54,9 @@ namespace Nurse_IQ.Data.Config
                    .IsRequired(false);
 
 
-
-
             builder.HasOne(u => u.User)
                 .WithMany(c => c.Courses)
                 .HasForeignKey(c => c.UserId);
-
-            builder.HasOne(u => u.AddedBy)
-                .WithMany(c => c.Courses)
-                .HasForeignKey(c => c.AdminId);
 
         }
     }

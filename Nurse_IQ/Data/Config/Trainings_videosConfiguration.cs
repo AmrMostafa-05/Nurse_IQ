@@ -46,9 +46,9 @@ namespace Nurse_IQ.Data.Config
             builder.Property(tv => tv.numberOfViews)
                    .HasDefaultValue(0);
 
-            builder.HasOne(u => u.AddedBy)
-           .WithMany(c => c.training_videos)
-           .HasForeignKey(c => c.AdminId);
+            builder.HasOne(u => u.CreatedBy)
+           .WithMany(c => c.TrainingVideos)
+           .HasForeignKey(c => c.CreatedByAdminId);
         }
 
     }

@@ -16,8 +16,8 @@
             public string videoUrl { get; set; }
             public int numberOfViews { get; set; }// we have to compute it
 
-            public int AdminId { get; set; }
-            public Admin AddedBy { get; set; }
+            public int CreatedByAdminId { get; set; }
+            public applicationUser CreatedBy { get; set; }
 
 
 

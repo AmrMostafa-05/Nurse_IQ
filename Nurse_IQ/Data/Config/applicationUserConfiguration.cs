@@ -5,9 +5,9 @@ using Nurse_IQ.Models;
 
 namespace Nurse_IQ.Data.Config
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class applicationUserConfiguration : IEntityTypeConfiguration<applicationUser>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<applicationUser> builder)
         {
             builder.HasKey(e => e.ID);
 
@@ -27,17 +27,7 @@ namespace Nurse_IQ.Data.Config
                       .HasConversion<string>()
                       .IsRequired();
 
-            builder.Property(x => x.email)
-               .HasColumnType("VARCHAR")
-               .HasMaxLength(100).IsRequired();
-
-            builder.Property(x => x.password)
-               .HasColumnType("VARCHAR")
-               .HasMaxLength(150).IsRequired();
-
-            builder.Property(x => x.phone)
-               .HasColumnType("VARCHAR")
-               .HasMaxLength(50).IsRequired();
+            //the config for email and password and phone also configuration exists in userIdentity table we can override on it but not best pracitce
 
             builder.Property(x => x.role)
                    .HasConversion<string>()

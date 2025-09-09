@@ -10,8 +10,8 @@ namespace Nurse_IQ.Models
         public string email { get; set; }
         public InquiryType InquiryType { get; set; }
         public string message { get; set; }
-        public int AdminId { get; set; }
-        public Admin admin { get; set; }
+        public int CreatedByAdminId { get; set; }
+        public applicationUser CreatedBy { get; set; }
 
     }
 }

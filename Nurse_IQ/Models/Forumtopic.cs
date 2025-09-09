@@ -15,10 +15,7 @@
         public int num_of_views { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public applicationUser User { get; set; }
 
-        // also link with the admin
-        public int AdminId { get; set; }
-        public Admin AddedBy { get; set; }
     }
 }

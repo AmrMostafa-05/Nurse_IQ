@@ -14,12 +14,7 @@
         public int Num_of_views { get; set; }
 
         public int UserId { get; set; }//as an author(doctor) 
-        public User User { get; set; }
-
-        public int AdminId { get; set; }//the admins add here 
-        public Admin AddedBy { get; set; }
-
-
+        public applicationUser User { get; set; }
 
 
     }

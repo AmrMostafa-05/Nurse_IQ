@@ -28,7 +28,7 @@
         }
 
         public int CreatedByAdminId { get; set; }
-        public Admin CreatedBy { get; set; }
+        public applicationUser CreatedBy { get; set; }
 
 
 

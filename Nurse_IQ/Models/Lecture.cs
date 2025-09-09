@@ -13,12 +13,11 @@
 
         public Course Course { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        public applicationUser User { get; set; }
 
         public Quiz? Quiz { get; set; }
         public List<LectureMaterial> Materials { get; set; }
-        public int AdminId { get; set; }
-        public Admin AddedBy { get; set; }
+
 
     }
 }

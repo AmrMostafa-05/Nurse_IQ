@@ -21,9 +21,9 @@ namespace Nurse_IQ.Data.Config
                     .HasColumnType("VARCHAR")
                     .HasMaxLength(100).IsRequired();
 
-            builder.HasOne(u => u.AddedBy)
-                    .WithMany(c => c.diplomas)
-                    .HasForeignKey(c => c.AdminId);
+            builder.HasOne(u => u.CreatedBy)
+                    .WithMany(c => c.Diplomas)
+                    .HasForeignKey(c => c.CreatedByAdminId);
         }
     }
 }

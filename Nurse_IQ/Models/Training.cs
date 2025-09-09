@@ -19,8 +19,8 @@
 
         public List<UserRegisteredTraining> UserRegisteredTrainings { get; set; }
 
-        public int AdminId { get; set; }
-        public Admin AddedBy { get; set; }
+        public int CreatedByAdminId { get; set; }
+        public applicationUser CreatedBy { get; set; }
     }
 
 }

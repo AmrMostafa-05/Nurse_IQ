@@ -8,7 +8,7 @@ namespace Nurse_IQ.Data.Config
     public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
     {
         public void Configure(EntityTypeBuilder<Quiz> builder)
-        { 
+        {
             builder.HasKey(q => q.Id);
 
             builder.Property(x => x.Title)
@@ -31,10 +31,6 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(u => u.User)
                 .WithMany(c => c.quizes)
                 .HasForeignKey(c => c.UserId);
-
-            builder.HasOne(u => u.AddedBy)
-                       .WithMany(c => c.Quizes)
-                       .HasForeignKey(c => c.AdminId);
         }
     }
 }

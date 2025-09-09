@@ -32,9 +32,9 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("nvarchar(max)").IsRequired();
 
 
-            builder.HasOne(a => a.admin)
-                   .WithMany(u => u.contactForms)
-                   .HasForeignKey(a => a.AdminId);
+            builder.HasOne(a => a.CreatedBy)
+                   .WithMany(u => u.ContactForms)
+                   .HasForeignKey(a => a.CreatedByAdminId);
         }
     }
 }

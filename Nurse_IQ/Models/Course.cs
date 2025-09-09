@@ -21,10 +21,9 @@ namespace Nurse_IQ.Models
         public List<string>? courseRequizetes { get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public applicationUser User { get; set; }
         public List<Lecture> Lectures { get; set; }
         public List<Quiz> Quizzes { get; set; }
-        public int AdminId { get; set; }
-        public Admin AddedBy { get; set; }
+
     }
 }

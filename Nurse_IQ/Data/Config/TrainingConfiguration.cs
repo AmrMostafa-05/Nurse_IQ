@@ -48,9 +48,9 @@ namespace Nurse_IQ.Data.Config
                    .IsRequired();
 
 
-            builder.HasOne(t => t.AddedBy)
+            builder.HasOne(t => t.CreatedBy)
                 .WithMany(qz => qz.Trainings)
-                .HasForeignKey(q => q.AdminId);
-        }
+                .HasForeignKey(q => q.CreatedByAdminId);
+}
     }
 }

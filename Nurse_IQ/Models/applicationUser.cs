@@ -1,18 +1,17 @@
-﻿using Nurse_IQ.Enums.User;
+﻿using Microsoft.AspNetCore.Identity;
+using Nurse_IQ.Enums.User;
 using System.Reflection;
 
 namespace Nurse_IQ.Models
 {
-    public class User
+    public class applicationUser:IdentityUser
     {
+        //email and password and phone exists in the base class identityUser
         public int ID { get; set; }
         public string Fname { get; set; }
         public string Lname { get; set; }
         public string FullName => $"{Fname} {Lname}";
         public gender gender { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
-        public string phone { get; set; }
         public role role { get; set; }
         public YearLevel ?Year_Level { get; set; } //can be null in case of 
         public string Educational_institution { get; set; }// when we get the data we make enum for it and put its values 
@@ -27,18 +26,20 @@ namespace Nurse_IQ.Models
         public List<UserRegisteredTraining> UserRegisteredTrainings { get; set; }
         public List<Quiz> quizes { get; set; }
         public List<Article> articles { get; set; }
-        public List<Forumtopic> topics { get; set; }
         public List<MedicalTerm> medicalTerms { get; set; }
         public List<Medicine> medicines { get; set; }
         public List<Forumtopic> forumtopics { get; set; }
+        //===============================
+        public List<Announcement> Announcements { get; set; }
+        public List<Training> Trainings { get; set; }
+        public List<training_video> TrainingVideos { get; set; }
+        public List<Offer> Offers { get; set; }
+        public List<ContactForm> ContactForms { get; set; }
+        public List<Diploma> Diplomas { get; set; }
     }
 }
 
-/*🔹 Shared Relations Between User and Admin
-
-Looking at both lists:
-
-Appear in both User & Admin:
+/* Shared Relations Between User and Admin
 
 List<Course>
 
@@ -53,13 +54,7 @@ List<MedicalTerm>
 List<Medicine>
 
 List<Forumtopic>
-
-👉 These are shared because:
-
-A normal user (Student/Doctor) interacts with them (e.g., studies a course, takes quizzes, writes articles).
-
-An admin manages them (creates/approves/deletes entries).
-
+====================================
 Exist only in Admin (management only):
 
 List<Announcement>
@@ -74,17 +69,10 @@ List<ContactForm>
 
 List<Diploma>
 
-👉 These make sense as admin-only responsibilities, since students/doctors wouldn’t “own” them.
-
-🔹 Summary
-
-Shared relations (both User + Admin): Courses, Lectures, Quizes, Articles, MedicalTerms, Medicines, Forumtopics.
-
-Admin-only relations: Announcements, Trainings, Training_videos, Offers, ContactForms, Diplomas.*/
 /* admin can add these tables 
-public List<Course> Courses { get; set; } // normal user has relation with it depends on the role  // and the role of admin to add or create  
-public List<Lecture> Lectures { get; set; }// normal user has relation with it depends on the role  // and the role of admin to add or create  
-public List<Quiz> Quizes { get; set; }// normal user has relation with it depends on the role  // and the role of admin to add or create  
+public List<Course> Courses { get; set; }  
+public List<Lecture> Lectures { get; set; }
+public List<Quiz> Quizes { get; set; } 
 public List<Announcement> Announcements { get; set; } 
 public List<Training> Trainings { get; set; }
 public List<training_video> training_videos { get; set; }
