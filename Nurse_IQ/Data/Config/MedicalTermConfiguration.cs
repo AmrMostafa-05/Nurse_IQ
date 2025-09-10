@@ -38,6 +38,9 @@ namespace Nurse_IQ.Data.Config
                 .WithMany(c => c.medicalTerms)
                 .HasForeignKey(c => c.UserId);
 
+
+            builder.HasData(SeedData.MedicalTerms);
+
         }
     }
 }

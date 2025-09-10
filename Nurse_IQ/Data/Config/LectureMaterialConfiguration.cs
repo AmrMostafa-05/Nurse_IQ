@@ -21,6 +21,10 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(m => m.lecture)
                    .WithMany(l => l.Materials)
                    .HasForeignKey(m => m.LectureId);
+
+
+
+            builder.HasData(SeedData.LectureMaterials);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Nurse_IQ.Models
 {
-    public class applicationUser:IdentityUser
+    public class applicationUser:IdentityUser<int>
     {
         //email and password and phone exists in the base class identityUser
         public int ID { get; set; }
@@ -17,7 +17,7 @@ namespace Nurse_IQ.Models
         public string Educational_institution { get; set; }// when we get the data we make enum for it and put its values 
         public Type_of_Edu_inst Type_of_Educational_institution { get; set; }//colege or intstue
         public DateTime BirthDate { get; set; }
-        List<String> interests_Fields { get; set; }
+        public List<String> interests_Fields { get; set; }
 
 
         public List<Course> Courses { get; set; }  // Student study course //Doctor teaches courses => we use eager loading so we 

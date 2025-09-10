@@ -1,6 +1,7 @@
-using System.Diagnostics;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Nurse_IQ.Models;
+using System.Diagnostics;
 
 namespace Nurse_IQ.Controllers
 {
@@ -12,7 +13,23 @@ namespace Nurse_IQ.Controllers
         {
             _logger = logger;
         }
-        
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SetLanguage(string culture, string returnUrl = null)
+        {
+            if (string.IsNullOrEmpty(culture)) culture = "en";
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return LocalRedirect(returnUrl);
+
+            return RedirectToAction("Index");
+        }
         public IActionResult Index()
         {
             return View();

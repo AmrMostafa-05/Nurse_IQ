@@ -1,6 +1,7 @@
 ﻿namespace Nurse_IQ.Models
 {
-    public class training_video
+    public class 
+        training_video
     {
             public int Id { get; set; }
             public string Title { get; set; }

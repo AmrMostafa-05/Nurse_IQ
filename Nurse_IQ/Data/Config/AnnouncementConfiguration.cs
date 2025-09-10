@@ -35,6 +35,9 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(a => a.CreatedBy)
                    .WithMany(u => u.Announcements)
                    .HasForeignKey(a => a.CreatedByAdminId);
+
+            builder.HasData(SeedData.Announcements);
+
         }
     }
 }

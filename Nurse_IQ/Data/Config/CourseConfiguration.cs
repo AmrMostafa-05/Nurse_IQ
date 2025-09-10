@@ -58,6 +58,8 @@ namespace Nurse_IQ.Data.Config
                 .WithMany(c => c.Courses)
                 .HasForeignKey(c => c.UserId);
 
+
+            builder.HasData(SeedData.Courses);
         }
     }
 }

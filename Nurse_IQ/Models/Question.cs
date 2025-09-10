@@ -2,7 +2,8 @@
 
 namespace Nurse_IQ.Models
 {
-    public class Question
+    public class 
+        Question
     {
         public int Id { get; set; }
         public hardnessType hardnessType { get; set; } 

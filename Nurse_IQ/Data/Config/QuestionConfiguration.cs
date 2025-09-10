@@ -33,6 +33,10 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(q => q.Quiz)
                    .WithMany(qz => qz.Questions)
                    .HasForeignKey(q => q.QuizId);
+
+
+            builder.HasData(SeedData.Questions);
+
         }
     }
 }

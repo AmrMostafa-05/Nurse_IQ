@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Nurse_IQ.Enums.User;
 using Nurse_IQ.Models;
 
 namespace Nurse_IQ.Data.Config
@@ -46,8 +48,14 @@ namespace Nurse_IQ.Data.Config
                 .IsRequired();
 
             builder.Property(u => u.BirthDate)
-                   .IsRequired(); 
+                   .IsRequired();
 
+
+
+
+            var hasher = new PasswordHasher<applicationUser>();
+
+            builder.HasData(SeedData.Users);
 
 
 

@@ -24,6 +24,10 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(u => u.CreatedBy)
                     .WithMany(c => c.Diplomas)
                     .HasForeignKey(c => c.CreatedByAdminId);
+
+
+            builder.HasData(SeedData.Diplomas);
+
         }
     }
 }

@@ -20,6 +20,10 @@ namespace Nurse_IQ.Data.Config
             builder.HasOne(ut => ut.Training)
                    .WithMany(t => t.UserRegisteredTrainings)
                    .HasForeignKey(ut => ut.TrainingId);
+
+
+            builder.HasData(SeedData.UserRegisteredTrainings);
+
         }
     }
 }
