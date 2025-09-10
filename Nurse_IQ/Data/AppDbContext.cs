@@ -6,7 +6,6 @@ namespace Nurse_IQ.Data
     public class AppDbContext:DbContext
     {
         public DbSet<applicationUser> Users { get; set; }
-        public DbSet<Admin> admins { get; set; }
         public DbSet<Announcement> announcements { get; set; }
         public DbSet<Article> articles{ get; set; }
         public DbSet<ContactForm> contactForms { get; set; }
