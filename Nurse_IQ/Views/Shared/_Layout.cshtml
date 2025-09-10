@@ -1,30 +1,30 @@
-﻿@* Views/Shared/_Layout.cshtml *@
+﻿
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Nurse_IQ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - NursingIQ</title>
 
     <!-- Bootstrap & Icons -->
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Nurse_IQ.styles.css" asp-append-version="true" />
+    <!-- Local Styles -->
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/chatbot.css" rel="stylesheet" asp-append-version="true">
 </head>
+
 <body>
-    <!-- Navbar -->
+    <!--  Header -->
     <div id="navbar-container">
-        <!-- Shared Navbar Component -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
                     <i class="bi bi-heart-pulse-fill text-primary me-2"></i>
                     <span class="fw-bold">NursingIQ</span>
                 </a>
@@ -37,7 +37,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html" data-lang-key="home">الرئيسية</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" data-lang-key="home">الرئيسية</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -45,19 +45,9 @@
                                 التعلم
                             </a>
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="courses.html" data-lang-key="studyContent">
-                                        المحتوى
-                                        الدراسي
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="training.html"
-                                       data-lang-key="practicalContent">المحتوى العملي</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="articles.html" data-lang-key="articles">المقالات</a>
-                                </li>
+                                <li><a class="dropdown-item" href="courses.html" data-lang-key="studyContent">المحتوى الدراسي</a></li>
+                                <li><a class="dropdown-item" href="training.html" data-lang-key="practicalContent">المحتوى العملي</a></li>
+                                <li><a class="dropdown-item" href="articles.html" data-lang-key="articles">المقالات</a></li>
                                 <li><a class="dropdown-item" href="diplomas.html">الدبلومات المهنية</a></li>
                             </ul>
                         </li>
@@ -112,6 +102,7 @@
                         </li>
                     </ul>
 
+
                     <div class="d-flex align-items-center">
                         <!-- Language Switcher -->
                         <div class="dropdown me-3">
@@ -134,10 +125,11 @@
                                 </li>
                             </ul>
                         </div>
+
                         <!-- Auth Buttons -->
                         <div class="auth-buttons">
-                            <a href="login.html" class="btn btn-login" data-lang-key="login">تسجيل الدخول</a>
-                            <a href="register.html" class="btn btn-register" data-lang-key="register">حساب جديد</a>
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-login" data-lang-key="login">تسجيل الدخول</a>
+                            <a asp-controller="Account" asp-action="Register" class="btn btn-register" data-lang-key="register">حساب جديد</a>
                         </div>
 
                         <!-- User Menu -->
@@ -149,38 +141,11 @@
                                     <span id="user-name">المستخدم</span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="dashboard-student.html">
-                                            <i class="bi bi-speedometer2 me-2"></i><span data-lang-key="dashboard">
-                                                لوحة
-                                                التحكم
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="profile.html">
-                                            <i class="bi bi-person me-2"></i><span data-lang-key="profile">
-                                                الملف
-                                                الشخصي
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="my-courses.html">
-                                            <i class="bi bi-book me-2"></i><span data-lang-key="myCourses">كورساتي</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="logout()">
-                                            <i class="bi bi-box-arrow-right me-2"></i><span data-lang-key="logout">
-                                                تسجيل
-                                                الخروج
-                                            </span>
-                                        </a>
-                                    </li>
+                                    <li><a class="dropdown-item" href="dashboard-student.html"><i class="bi bi-speedometer2 me-2"></i>لوحة التحكم</a></li>
+                                    <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person me-2"></i>الملف الشخصي</a></li>
+                                    <li><a class="dropdown-item" href="my-courses.html"><i class="bi bi-book me-2"></i>كورساتي</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>تسجيل الخروج</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -189,88 +154,96 @@
             </div>
         </nav>
 
-
-    <!-- Main Content -->
-    <div class="container" style="margin-top: 100px;">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <!-- Footer -->
-        <div id="footer-container">
-            <footer class="bg-dark text-light py-5">
-                <div class="container">
-                    <div class="row g-4">
-                        <div class="col-lg-4">
-                            <h5 class="mb-3">NursingIQ</h5>
-                            <p class="text-white">منصة شاملة لمساعدة طلاب التمريض في تطوير مهاراتهم ومعرفتهم</p>
-                            <div class="social-links">
-                                <a href="#" class="text-light"><i class="bi bi-facebook"></i></a>
-                                <a href="#" class="text-light"><i class="bi bi-twitter"></i></a>
-                                <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
-                                <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <h6 class="mb-3">روابط سريعة</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="courses.html" class="text-white text-decoration-none">المواد الدراسية</a></li>
-                                <li><a href="articles.html" class="text-white text-decoration-none">المقالات</a></li>
-                                <li><a href="offers.html" class="text-white text-decoration-none">العروض</a></li>
-                                <li><a href="support.html" class="text-white text-decoration-none">الدعم</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-2">
-                            <h6 class="mb-3">الموارد</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="training.html" class="text-white text-decoration-none">التدريب العملي</a></li>
-                                <li><a href="dictionary.html" class="text-white text-decoration-none">القاموس الطبي</a></li>
-                                <li><a href="medicines.html" class="text-white text-decoration-none">الأدوية</a></li>
-                                <li><a href="forum.html" class="text-white text-decoration-none">المنتدى</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <h6 class="mb-3">تواصل معنا</h6>
-                            <p class="text-white">للاستفسارات والدعم الفني</p>
-                            <div class="d-flex flex-column gap-2">
-                                <a href="mailto:info@nursingiq.com" class="text-white text-decoration-none">
-                                    <i class="bi bi-envelope me-2"></i>info@nursingiq.com
-                                </a>
-                                <a href="tel:+201234567890" class="text-white text-decoration-none">
-                                    <i class="bi bi-telephone me-2"></i>+20 123 456 7890
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="my-4">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <p class="mb-0 text-white">&copy; 2024 NursingIQ. جميع الحقوق محفوظة</p>
-                        </div>
-                        <div class="col-md-6 text-md-end">
-                            <a href="about.html" class="text-white text-decoration-none me-3">حول الموقع</a>
-                            <a href="support.html" class="text-white text-decoration-none me-3">اتصل بنا</a>
-                            <a href="#" class="text-white text-decoration-none">سياسة الخصوصية</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+        <!-- Chatbot Button -->
+        <div class="chatbot-btn" onclick="openChatbot()" aria-label="Open chatbot">
+            <i class="bi bi-chat-dots"></i>
         </div>
 
         <!-- Toast Container -->
-        <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+        <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3"></div>
 
-        <!-- Chatbot Button -->
-        <button class="chatbot-btn" onclick="openChatbot()">
-            <i class="bi bi-chat-dots"></i>
-        </button>
+        <!-- Scroll Progress Bar -->
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
+    <!--  Main Content -->
+    <main role="main" class="container" style="margin-top: 100px;">
+        @RenderBody()
+    </main>
+
+    <!--  Footer -->
+    <div id="footer-container">
+        <footer class="bg-dark text-light py-5">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <h5 class="mb-3">NursingIQ</h5>
+                        <p class="text-white">منصة شاملة لمساعدة طلاب التمريض في تطوير مهاراتهم ومعرفتهم</p>
+                        <div class="social-links">
+                            <a href="#" class="text-light"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-light"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="text-light"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="text-light"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <h6 class="mb-3">روابط سريعة</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="courses.html" class="text-white text-decoration-none">المواد الدراسية</a></li>
+                            <li><a href="articles.html" class="text-white text-decoration-none">المقالات</a></li>
+                            <li><a href="offers.html" class="text-white text-decoration-none">العروض</a></li>
+                            <li><a href="support.html" class="text-white text-decoration-none">الدعم</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2">
+                        <h6 class="mb-3">الموارد</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="training.html" class="text-white text-decoration-none">التدريب العملي</a></li>
+                            <li><a href="dictionary.html" class="text-white text-decoration-none">القاموس الطبي</a></li>
+                            <li><a href="medicines.html" class="text-white text-decoration-none">الأدوية</a></li>
+                            <li><a href="forum.html" class="text-white text-decoration-none">المنتدى</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <h6 class="mb-3">تواصل معنا</h6>
+                        <p class="text-white">للاستفسارات والدعم الفني</p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="mailto:info@nursingiq.com" class="text-white text-decoration-none">
+                                <i class="bi bi-envelope me-2"></i>info@nursingiq.com
+                            </a>
+                            <a href="tel:+201234567890" class="text-white text-decoration-none">
+                                <i class="bi bi-telephone me-2"></i>+20 123 456 7890
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0 text-white">&copy; 2024 NursingIQ. جميع الحقوق محفوظة</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="about.html" class="text-white text-decoration-none me-3">حول الموقع</a>
+                        <a href="support.html" class="text-white text-decoration-none me-3">اتصل بنا</a>
+                        <a href="#" class="text-white text-decoration-none">سياسة الخصوصية</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+    <!-- Chatbot Button -->
+    <button class="chatbot-btn" onclick="openChatbot()">
+        <i class="bi bi-chat-dots"></i>
+    </button>
+
     <!-- Scripts -->
-    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
-    <script src="~/js/language.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/app.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
