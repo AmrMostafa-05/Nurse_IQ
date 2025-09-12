@@ -6,7 +6,7 @@ namespace Nurse_IQ.Models
 {
     public class applicationUser:IdentityUser<int>
     {
-        //email and password and phone exists in the base class identityUser
+        //email and password and phone exists in the base class identityUser##
         public int ID { get; set; }
         public string Fname { get; set; }
         public string Lname { get; set; }
