@@ -47,13 +47,18 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("date")
                    .IsRequired();
 
+            builder.Property(c => c.requirement)
+                 .HasConversion(ValueConverters.StringListConverter)
+                 .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+
+
 
             builder.HasOne(t => t.CreatedBy)
                 .WithMany(qz => qz.Trainings)
                 .HasForeignKey(q => q.CreatedByAdminId);
             
             
-            builder.HasData(SeedData.Trainings);
+            //builder.HasData(SeedData.Trainings);
 
         }
     }

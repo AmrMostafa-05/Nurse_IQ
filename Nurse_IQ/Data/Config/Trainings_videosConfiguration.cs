@@ -52,7 +52,7 @@ namespace Nurse_IQ.Data.Config
 
 
 
-            builder.HasData(SeedData.TrainingVideos);
+           // builder.HasData(SeedData.TrainingVideos);
 
         }
 

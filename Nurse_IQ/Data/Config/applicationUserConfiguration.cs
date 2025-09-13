@@ -11,8 +11,6 @@ namespace Nurse_IQ.Data.Config
     {
         public void Configure(EntityTypeBuilder<applicationUser> builder)
         {
-            builder.HasKey(e => e.ID);
-
             builder.Property(x => x.Fname)
                .HasColumnType("VARCHAR")
                .HasMaxLength(100).IsRequired();
@@ -22,7 +20,7 @@ namespace Nurse_IQ.Data.Config
                .HasMaxLength(100).IsRequired();
 
             builder.Property(u => u.FullName)
-                 .HasComputedColumnSql("[FirstName] + ' ' + [LastName]");
+                 .HasComputedColumnSql("[Fname] + ' ' + [Lname]");
 
 
             builder.Property(x => x.gender)
@@ -50,12 +48,14 @@ namespace Nurse_IQ.Data.Config
             builder.Property(u => u.BirthDate)
                    .IsRequired();
 
-
+            builder.Property(c => c.interests_Fields)
+                .HasConversion(ValueConverters.StringListConverter)
+                   .Metadata.SetValueComparer(ValueConverters.StringListComparer) ;
 
 
             var hasher = new PasswordHasher<applicationUser>();
 
-            builder.HasData(SeedData.Users);
+            //builder.HasData(SeedData.Users);
 
 
 

@@ -32,16 +32,16 @@ namespace Nurse_IQ.Data.Config
 
             builder.HasOne(l => l.Course)
                        .WithMany(c => c.Lectures)
-                       .HasForeignKey(l => l.CourseId);
+                       .HasForeignKey(l => l.CourseId)
+                       .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(l => l.User)
                        .WithMany(u => u.Lectures)
-                       .HasForeignKey(l => l.UserId);
+                       .HasForeignKey(l => l.UserId)
+                       .OnDelete(DeleteBehavior.Restrict);
 
 
-
-
-            builder.HasData(SeedData.Lectures);
+            //builder.HasData(SeedData.Lectures);
 
         }
     }

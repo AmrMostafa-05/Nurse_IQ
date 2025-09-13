@@ -21,12 +21,22 @@ namespace Nurse_IQ.Data.Config
                     .HasColumnType("VARCHAR")
                     .HasMaxLength(100).IsRequired();
 
+            builder.Property(c => c.register_steps)
+                    .HasConversion(ValueConverters.StringListConverter)
+                    .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+
+            builder.Property(c => c.requirement)
+                    .HasConversion(ValueConverters.StringListConverter)
+                    .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+
+
             builder.HasOne(u => u.CreatedBy)
                     .WithMany(c => c.Diplomas)
                     .HasForeignKey(c => c.CreatedByAdminId);
 
 
-            builder.HasData(SeedData.Diplomas);
+
+            //builder.HasData(SeedData.Diplomas);
 
         }
     }

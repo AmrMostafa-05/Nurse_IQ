@@ -18,11 +18,13 @@ namespace Nurse_IQ.Data.Config
 
             builder.HasOne(q => q.Course)
                    .WithMany(c => c.Quizzes)
-                   .HasForeignKey(q => q.CourseId);
+                   .HasForeignKey(q => q.CourseId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(q => q.Lecture)
                    .WithOne(l => l.Quiz)
                    .HasForeignKey<Quiz>(e => e.LectureId)
+                   .OnDelete(DeleteBehavior.Restrict)
                    .IsRequired();
 
             builder.HasIndex(x => x.LectureId);//to inforce the 1 to 1 relation
@@ -30,10 +32,11 @@ namespace Nurse_IQ.Data.Config
 
             builder.HasOne(u => u.User)
                 .WithMany(c => c.quizes)
-                .HasForeignKey(c => c.UserId);
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
 
-           builder.HasData(SeedData.quizzes);
+           //builder.HasData(SeedData.Quizzes);
 
         }
     }

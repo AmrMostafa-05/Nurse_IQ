@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Nurse_IQ.Models;
 
 namespace Nurse_IQ.Data
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : IdentityDbContext<applicationUser, IdentityRole<int>, int>
     {
-        public DbSet<applicationUser> Users { get; set; }
+        public DbSet<applicationUser> applicationUsers { get; set; }
         public DbSet<Announcement> announcements { get; set; }
         public DbSet<Article> articles{ get; set; }
         public DbSet<ContactForm> contactForms { get; set; }
@@ -23,6 +25,18 @@ namespace Nurse_IQ.Data
         public DbSet<Training> trainings { get; set; }
         public DbSet<training_video> training_Videos{ get; set; }
         public DbSet<UserRegisteredTraining> UserRegisteredTrainings { get; set; }
+
+
+        public AppDbContext() : base()
+        {
+        }
+
+        public AppDbContext(DbContextOptions options) : base(options)
+        {
+
+        }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);

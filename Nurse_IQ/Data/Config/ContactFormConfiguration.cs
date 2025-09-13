@@ -36,7 +36,7 @@ namespace Nurse_IQ.Data.Config
                    .WithMany(u => u.ContactForms)
                    .HasForeignKey(a => a.CreatedByAdminId);
 
-            builder.HasData(SeedData.ContactForms);
+            //builder.HasData(SeedData.ContactForms);
 
         }
     }

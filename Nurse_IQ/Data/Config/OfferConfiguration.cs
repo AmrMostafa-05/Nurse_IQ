@@ -34,14 +34,20 @@ namespace Nurse_IQ.Data.Config
                    .IsRequired();
             // Computed Columns in SQL
             builder.Property(o => o.DiscountPrice)
-                   .HasComputedColumnSql("[OriginalPrice] * [DiscountPercentage] / 100", stored: true);
+                   .HasColumnType("decimal(18, 2)")
+                   .HasComputedColumnSql("[OriginalPrice] * [discountPercentage] / 100", stored: true);
 
             builder.Property(o => o.LastPrice)
-                   .HasComputedColumnSql("[OriginalPrice] - ([OriginalPrice] * [DiscountPercentage] / 100)", stored: true);
+                .HasColumnType("decimal(18, 2)")
+                .HasComputedColumnSql("[OriginalPrice] - ([OriginalPrice] * [discountPercentage] / 100)", stored: true);
 
             builder.Property(x => x.imageUrl)
                     .HasColumnType("VARCHAR")
                     .HasMaxLength(250).IsRequired();
+
+            builder.Property(c => c.features)
+                    .HasConversion(ValueConverters.StringListConverter)
+                    .Metadata.SetValueComparer(ValueConverters.StringListComparer);
 
 
 
@@ -51,7 +57,7 @@ namespace Nurse_IQ.Data.Config
 
 
 
-            builder.HasData(SeedData.Offers);
+           // builder.HasData(SeedData.Offers);
 
         }
     }

@@ -27,7 +27,7 @@ namespace Nurse_IQ.Data.Config
              .HasForeignKey(f => f.DiplomaId);
 
 
-            builder.HasData(SeedData.DiplomaFeatures);
+            //builder.HasData(SeedData.DiplomaFeatures);
 
         }
     }

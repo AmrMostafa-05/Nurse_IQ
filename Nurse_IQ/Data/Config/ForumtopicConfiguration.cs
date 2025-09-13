@@ -21,12 +21,17 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("VARCHAR")
                    .HasMaxLength(200).IsRequired();
 
+            builder.Property(c => c.comments)
+                    .HasConversion(ValueConverters.StringListConverter)
+                    .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+            //
+
 
             builder.HasOne(u => u.User)
                 .WithMany(c => c.forumtopics)
                 .HasForeignKey(c => c.UserId);
 
-            builder.HasData(SeedData.Forumtopics);
+           // builder.HasData(SeedData.Forumtopics);
 
 
         }

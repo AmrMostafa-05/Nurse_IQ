@@ -47,11 +47,16 @@ namespace Nurse_IQ.Data.Config
             builder.Property(l => l.bigDescription)
                    .HasColumnType("nvarchar(max)").IsRequired();
 
-            builder.Property(x => x.courseTopics)
-                   .IsRequired();
+            builder.Property(c => c.courseTopics)
+         .HasConversion(ValueConverters.StringListConverter)
+       .Metadata.SetValueComparer(ValueConverters.StringListComparer);
 
-            builder.Property(x => x.courseRequizetes)
-                   .IsRequired(false);
+            builder.Property(c => c.courseRequizetes)
+                   .HasConversion(ValueConverters.StringListConverter)
+                   .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+
+
+
 
 
             builder.HasOne(u => u.User)
@@ -59,7 +64,7 @@ namespace Nurse_IQ.Data.Config
                 .HasForeignKey(c => c.UserId);
 
 
-            builder.HasData(SeedData.Courses);
+            //builder.HasData(SeedData.Courses);
         }
     }
 }

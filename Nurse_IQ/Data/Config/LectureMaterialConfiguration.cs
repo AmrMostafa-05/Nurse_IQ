@@ -24,7 +24,7 @@ namespace Nurse_IQ.Data.Config
 
 
 
-            builder.HasData(SeedData.LectureMaterials);
+            //builder.HasData(SeedData.LectureMaterials);
         }
     }
 }

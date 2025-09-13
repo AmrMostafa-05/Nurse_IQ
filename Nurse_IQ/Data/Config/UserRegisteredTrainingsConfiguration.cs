@@ -15,14 +15,16 @@ namespace Nurse_IQ.Data.Config
 
             builder.HasOne(ut => ut.User)
                 .WithMany(u => u.UserRegisteredTrainings)
-                .HasForeignKey(ut => ut.UserId);
+                .HasForeignKey(ut => ut.UserId).
+                OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(ut => ut.Training)
                    .WithMany(t => t.UserRegisteredTrainings)
-                   .HasForeignKey(ut => ut.TrainingId);
+                   .HasForeignKey(ut => ut.TrainingId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.HasData(SeedData.UserRegisteredTrainings);
+            //builder.HasData(SeedData.UserRegisteredTrainings);
 
         }
     }

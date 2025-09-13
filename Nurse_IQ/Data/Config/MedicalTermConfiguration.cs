@@ -31,15 +31,18 @@ namespace Nurse_IQ.Data.Config
             builder.Property(mt => mt.example)
                    .HasColumnType("nvarchar(max)");
 
-            builder.Property(mt =>mt.synonyms)
-                   .IsRequired(false);
+            builder.Property(c => c.synonyms)
+                   .HasConversion(ValueConverters.StringListConverter)
+                   .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+
+
 
             builder.HasOne(u => u.User)
                 .WithMany(c => c.medicalTerms)
                 .HasForeignKey(c => c.UserId);
 
 
-            builder.HasData(SeedData.MedicalTerms);
+            //builder.HasData(SeedData.MedicalTerms);
 
         }
     }

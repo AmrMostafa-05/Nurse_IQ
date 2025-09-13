@@ -1,0 +1,471 @@
+﻿@model List<Course>
+
+@{
+    // Prepare data for JS (serialize Model to JSON for filtering client-side)
+    var coursesJson = System.Text.Json.JsonSerializer.Serialize(Model,
+        new System.Text.Json.JsonSerializerOptions
+        {
+            WriteIndented = false,
+            PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+        });
+}
+
+<!-- Keep your HTML header/navbar as is -->
+<!-- Smart Filter System -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Filters -->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-funnel me-2"></i>تصفية المواد</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filter 1: الفرقة الدراسية -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">الفرقة الدراسية</label>
+                            <select class="form-select" id="yearFilter">
+                                <option value="">اختر الفرقة</option>
+                                @foreach (var level in Enum.GetValues(typeof(CourseYearLevel)))
+                                {
+                                    <option value="@level">@level</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Filter 2: الترم -->
+                        <div class="mb-4" id="termFilterContainer" style="display: none;">
+                            <label class="form-label fw-bold">الترم</label>
+                            <select class="form-select" id="termFilter">
+                                <option value="">اختر الترم</option>
+                                @foreach (var sem in Enum.GetValues(typeof(CourseSemester)))
+                                {
+                                    <option value="@sem">@sem</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Filter 3: نوع المادة -->
+                        <div class="mb-4" id="subjectTypeContainer" style="display: none;">
+                            <label class="form-label fw-bold">نوع المادة</label>
+                            <select class="form-select" id="subjectTypeFilter">
+                                <option value="">اختر النوع</option>
+                                @foreach (var type in Enum.GetValues(typeof(CourseType)))
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary w-100" onclick="applyFilters()">
+                            <i class="bi bi-search me-2"></i>تطبيق التصفية
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="col-lg-9">
+                <div id="resultsSection">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0">المواد الدراسية</h4>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewAsGrid()">
+                                <i class="bi bi-grid-3x3-gap"></i>
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewAsList()">
+                                <i class="bi bi-list"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grid View -->
+                    <div id="gridView" class="row g-4"></div>
+
+                    <!-- List View -->
+                    <div id="listView" class="d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal (unchanged) -->
+<div class="modal fade" id="subjectModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="subjectModalTitle">تفاصيل المادة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="subjectModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                <button type="button" class="btn btn-primary">ابدأ التعلم</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS Section -->
+<script>
+    // Courses data from backend
+    const coursesData = @Html.Raw(coursesJson);
+
+    // Filters
+    document.getElementById('yearFilter').addEventListener('change', function () {
+        const yearValue = this.value;
+        const termContainer = document.getElementById('termFilterContainer');
+        const subjectTypeContainer = document.getElementById('subjectTypeContainer');
+
+        if (yearValue) {
+            termContainer.style.display = 'block';
+            subjectTypeContainer.style.display = 'none';
+            document.getElementById('termFilter').value = '';
+            document.getElementById('subjectTypeFilter').value = '';
+        } else {
+            termContainer.style.display = 'none';
+            subjectTypeContainer.style.display = 'none';
+        }
+    });
+
+    document.getElementById('termFilter').addEventListener('change', function () {
+        const termValue = this.value;
+        const subjectTypeContainer = document.getElementById('subjectTypeContainer');
+        subjectTypeContainer.style.display = termValue ? 'block' : 'none';
+    });
+
+    // Apply Filters
+    function applyFilters() {
+        const year = document.getElementById('yearFilter').value;
+        const term = document.getElementById('termFilter').value;
+        const type = document.getElementById('subjectTypeFilter').value;
+
+        let filteredCourses = coursesData;
+
+        if (year) filteredCourses = filteredCourses.filter(c => c.yearLevel === year);
+        if (term) filteredCourses = filteredCourses.filter(c => c.semister === term);
+        if (type) filteredCourses = filteredCourses.filter(c => c.courseType === type);
+
+        displayCourses(filteredCourses);
+    }
+
+    // Display Courses
+    function displayCourses(courses) {
+        const gridView = document.getElementById('gridView');
+        const listView = document.getElementById('listView');
+
+        if (courses.length === 0) {
+            gridView.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-search display-1 text-muted"></i>
+                    <h4 class="mt-3 text-muted">لا توجد مواد متاحة</h4>
+                    <p class="text-muted">جرب تغيير خيارات التصفية</p>
+                </div>`;
+            listView.innerHTML = "";
+            return;
+        }
+
+        // Grid
+        gridView.innerHTML = courses.map(course => `
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="${course.imageUrl}" class="card-img-top" alt="${course.name}" style="height:200px;object-fit:cover;">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary">${course.courseType}</span>
+                            <span class="badge bg-secondary">${course.yearLevel}</span>
+                        </div>
+                        <h5 class="card-title">${course.name}</h5>
+                        <p class="card-text text-muted">${course.smallDescription}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted"><i class="bi bi-play-circle me-1"></i>${course.lectures?.length || 0} محاضرة</small>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>${course.duration}</small>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#subjectModal"
+                                onclick="showSubjectDetails(${course.id})">
+                            <i class="bi bi-eye me-2"></i>عرض التفاصيل
+                        </button>
+                    </div>
+                </div>
+            </div>`).join('');
+    }
+
+    // Modal
+    function showSubjectDetails(courseId) {
+        const course = coursesData.find(c => c.id === courseId);
+        if (!course) return;
+
+        document.getElementById('subjectModalTitle').textContent = course.name;
+        document.getElementById('subjectModalBody').innerHTML = `
+            <div class="row">
+                <div class="col-md-4"><img src="${course.imageUrl}" class="img-fluid rounded" alt="${course.name}"></div>
+                <div class="col-md-8">
+                    <p class="mb-3">${course.bigDescription}</p>
+                    <p><strong>عدد المحاضرات:</strong> ${course.lectures?.length || 0}</p>
+                    <p><strong>المدة:</strong> ${course.duration}</p>
+                </div>
+            </div>`;
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+        displayCourses(coursesData);
+    });
+
+    function viewAsGrid() {
+        document.getElementById('gridView').classList.remove('d-none');
+        document.getElementById('listView').classList.add('d-none');
+    }
+    function viewAsList() {
+        document.getElementById('gridView').classList.add('d-none');
+        document.getElementById('listView').classList.remove('d-none');
+    }
+</script>
+
+@*  @model List<Course>
+
+<!-- Page Banner -->
+<section class="page-banner">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">المحتوي الدراسي</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.html">الرئيسية</a></li>
+                        <li class="breadcrumb-item active">المحتوي الدراسي</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-lg-4 text-center">
+                <img src="img/i4.jpg" alt="Study Materials" class="img-fluid rounded" style="max-height: 200px;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Smart Filter System -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-funnel me-2"></i>تصفية المواد</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filter 1: الفرقة الدراسية -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">الفرقة الدراسية</label>
+                            <select class="form-select" id="yearFilter">
+                                <option value="">اختر الفرقة</option>
+                                <option value="first">فرقة أولى</option>
+                                <option value="second">فرقة ثانية</option>
+                                <option value="third">فرقة ثالثة</option>
+                                <option value="fourth">فرقة رابعة</option>
+                                <option value="internship">امتياز</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter 2: الترم -->
+                        <div class="mb-4" id="termFilterContainer" style="display: none;">
+                            <label class="form-label fw-bold">الترم</label>
+                            <select class="form-select" id="termFilter">
+                                <option value="">اختر الترم</option>
+                                <option value="first">ترم أول</option>
+                                <option value="second">ترم ثاني</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter 3: نوع المادة -->
+                        <div class="mb-4" id="subjectTypeContainer" style="display: none;">
+                            <label class="form-label fw-bold">نوع المادة</label>
+                            <select class="form-select" id="subjectTypeFilter">
+                                <option value="">اختر النوع</option>
+                                <option value="theoretical">نظرية</option>
+                                <option value="practical">عملية</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary w-100" onclick="applyFilters()">
+                            <i class="bi bi-search me-2"></i>تطبيق التصفية
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <!-- Results Section -->
+                <div id="resultsSection">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0">المواد الدراسية</h4>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewAsGrid()">
+                                <i class="bi bi-grid-3x3-gap"></i>
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="viewAsList()">
+                                <i class="bi bi-list"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Grid View -->
+                    <div id="gridView" class="row g-4">
+                        <!-- Course Cards will be populated here -->
+                    </div>
+
+                    <!-- List View -->
+                    <div id="listView" class="d-none">
+                        <!-- Course List will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Subject Details Modal -->
+<div class="modal fade" id="subjectModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="subjectModalTitle">تفاصيل المادة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="subjectModalBody">
+                <!-- Subject details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                <button type="button" class="btn btn-primary" onclick="startLearning()">ابدأ التعلم</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lecture Modal -->
+<div class="modal fade" id="lectureModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lectureModalTitle">المحاضرة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="lectureModalBody">
+                <!-- Lecture content will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                <button type="button" class="btn btn-success" onclick="takeQuiz()">أخذ الاختبار</button>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+
+
+
+
+
+@*@model List<Nurse_IQ.Models.Course>
+Filter form
+razor
+نسخ الكود
+<form asp-controller="Course" asp-action="FilteredCourses" method="get" class="mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">الفرقة الدراسية</label>
+            <select class="form-select" name="yearLevel">
+                <option value="">اختر الفرقة</option>
+                <option value="First">فرقة أولى</option>
+                <option value="Second">فرقة ثانية</option>
+                <option value="Third">فرقة ثالثة</option>
+                <option value="Fourth">فرقة رابعة</option>
+                <option value="Internship">امتياز</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">الترم</label>
+            <select class="form-select" name="semester">
+                <option value="">اختر الترم</option>
+                <option value="First">ترم أول</option>
+                <option value="Second">ترم ثاني</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">نوع المادة</label>
+            <select class="form-select" name="type">
+                <option value="">اختر النوع</option>
+                <option value="Theoretical">نظرية</option>
+                <option value="Practical">عملية</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-search me-2"></i>تطبيق التصفية
+        </button>
+    </div>
+</form>
+Displaying Courses
+Underneath the form, loop through Model:
+
+razor
+نسخ الكود
+<div class="row g-4">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var course in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100">
+                    <img src="@course.imageUrl" class="card-img-top" alt="@course.Name" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <span class="badge bg-primary">@course.courseType</span>
+                        <span class="badge bg-secondary">@course.YearLevel</span>
+                        <h5 class="card-title">@course.Name</h5>
+                        <p class="card-text">@course.smallDescription</p>
+                        <small class="text-muted">
+                            <i class="bi bi-play-circle me-1"></i> @course.Lectures?.Count() محاضرة
+                        </small>
+                        <br />
+                        <small class="text-muted">
+                            <i class="bi bi-clock me-1"></i> @course.Duration
+                        </small>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary w-100">
+                            <i class="bi bi-eye me-2"></i>عرض التفاصيل
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center py-5">
+            <i class="bi bi-search display-1 text-muted"></i>
+            <h4 class="mt-3 text-muted">لا توجد مواد متاحة</h4>
+            <p class="text-muted">جرب تغيير خيارات التصفية</p>
+        </div>
+    }
+</div>
+🔹 Summary of Flow
+User visits /Course/Index → loads all courses.
+
+User selects filters + clicks Submit → sends GET to /Course/FilteredCourses?....
+
+Controller calls service → repository → DB.
+
+Filtered list is returned → shown inside the same Index view.
+
+*@

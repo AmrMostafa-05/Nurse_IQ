@@ -27,15 +27,19 @@ namespace Nurse_IQ.Data.Config
               .HasColumnType("VARCHAR")
               .HasMaxLength(250);
 
-            builder.Property(q=>q.options)
-                   .IsRequired(false);//cuz it can be مقالي
+            builder.Property(c => c.options)
+                .HasConversion(ValueConverters.StringListConverter)
+                .Metadata.SetValueComparer(ValueConverters.StringListComparer);
+                //.IsRequired(false);//cuz it can be مقالي
+
+         
 
             builder.HasOne(q => q.Quiz)
                    .WithMany(qz => qz.Questions)
                    .HasForeignKey(q => q.QuizId);
 
 
-            builder.HasData(SeedData.Questions);
+           // builder.HasData(SeedData.Questions);
 
         }
     }
