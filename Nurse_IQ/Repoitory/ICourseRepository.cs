@@ -8,6 +8,9 @@ namespace Nurse_IQ.Repoitory
         public List<Course> FilterByYearLevelSemesterType(CourseYearLevel yearLevel,
             CourseSemester semester,
             CourseType type);
-       
+
+        public Task<Course?> GetCourseWithLectures(int courseId);
+
+
     }
 }

@@ -1,5 +1,205 @@
 ﻿@model List<Course>
+@{
+    ViewData["Title"] = "المحتوي الدراسي";
+}
 
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Filters -->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-funnel me-2"></i>تصفية المواد</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filter 1: الفرقة الدراسية -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">الفرقة الدراسية</label>
+                            <select class="form-select" id="yearFilter">
+                                <option value="">اختر الفرقة</option>
+                                @foreach (var level in Enum.GetValues(typeof(CourseYearLevel)))
+                                {
+                                    <option value="@level">@level</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Filter 2: الترم -->
+                        <div class="mb-4" id="termFilterContainer" style="display: none;">
+                            <label class="form-label fw-bold">الترم</label>
+                            <select class="form-select" id="termFilter">
+                                <option value="">اختر الترم</option>
+                                @foreach (var sem in Enum.GetValues(typeof(CourseSemester)))
+                                {
+                                    <option value="@sem">@sem</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Filter 3: نوع المادة -->
+                        <div class="mb-4" id="subjectTypeContainer" style="display: none;">
+                            <label class="form-label fw-bold">نوع المادة</label>
+                            <select class="form-select" id="subjectTypeFilter">
+                                <option value="">اختر النوع</option>
+                                @foreach (var type in Enum.GetValues(typeof(CourseType)))
+                                {
+                                    <option value="@type">@type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary w-100" id="applyFiltersBtn">
+                            <i class="bi bi-search me-2"></i>تطبيق التصفية
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="col-lg-9">
+                <div id="resultsSection">
+                    @await Html.PartialAsync("_CoursesListPartial", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+    // Dropdowns behavior
+    document.getElementById('yearFilter').addEventListener('change', function () {
+        document.getElementById('termFilterContainer').style.display = this.value ? 'block' : 'none';
+        document.getElementById('subjectTypeContainer').style.display = 'none';
+        document.getElementById('termFilter').value = '';
+        document.getElementById('subjectTypeFilter').value = '';
+    });
+
+    document.getElementById('termFilter').addEventListener('change', function () {
+        document.getElementById('subjectTypeContainer').style.display = this.value ? 'block' : 'none';
+        document.getElementById('subjectTypeFilter').value = '';
+    });
+
+    // AJAX call
+    document.getElementById('applyFiltersBtn').addEventListener('click', function () {
+        const year = document.getElementById('yearFilter').value;
+        const term = document.getElementById('termFilter').value;
+        const type = document.getElementById('subjectTypeFilter').value;
+
+        $.ajax({
+            url: '@Url.Action("FilteredCourses", "Course")',
+            type: 'GET',
+            data: { yearLevel: year, semester: term, type: type },
+            success: function (result) {
+                $('#resultsSection').html(result);
+            },
+            error: function () {
+                alert("حدث خطأ أثناء تحميل البيانات");
+            }
+        });
+    });
+</script>
+}
+@* @{
+    ViewData["Title"] = "المحتوي الدراسي";
+}
+
+<div class="container mt-5 pt-5">
+    <h1 class="mb-4">المحتوي الدراسي</h1>
+
+    <!-- Filters Section -->
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-funnel me-2"></i>تصفية المواد</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Filter 1: الفرقة الدراسية -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الفرقة الدراسية</label>
+                        <select class="form-select" id="yearFilter">
+                            <option value="">اختر الفرقة</option>
+                            <option value="@CourseYearLevel.First_Year">فرقة أولى</option>
+                            <option value="@CourseYearLevel.Second_Year">فرقة ثانية</option>
+                            <option value="@CourseYearLevel.Third_Year">فرقة ثالثة</option>
+                            <option value="@CourseYearLevel.Fourth_Year">فرقة رابعة</option>
+                            <option value="@CourseYearLevel.Excellence_Year">امتياز</option>
+                            <option value="@CourseYearLevel.Graduated">خريج</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter 2: الترم -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الترم</label>
+                        <select class="form-select" id="termFilter">
+                            <option value="">اختر الترم</option>
+                            <option value="@CourseSemester.FirstSemester">ترم أول</option>
+                            <option value="@CourseSemester.SecondSemester">ترم ثاني</option>
+                        </select>
+                    </div>
+
+                    <!-- Filter 3: نوع المادة -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">نوع المادة</label>
+                        <select class="form-select" id="subjectTypeFilter">
+                            <option value="">اختر النوع</option>
+                            <option value="@CourseType.theoretical_Course">نظرية</option>
+                            <option value="@CourseType.practical_Course">عملية</option>
+                        </select>
+                    </div>
+
+                    <!-- 🔘 This button calls the FilteredCourses action -->
+                    <button class="btn btn-primary w-100" onclick="applyFilters()">
+                        <i class="bi bi-search me-2"></i>تطبيق التصفية
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <!-- Results Section -->
+            <div id="resultsSection">
+                @await Html.PartialAsync("_CoursesListPartial", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS Section -->
+@section Scripts {
+<script>
+    // 🔘 Button action: Apply Filters (calls Courses/FilteredCourses)
+    function applyFilters() {
+        const year = $('#yearFilter').val();
+        const term = $('#termFilter').val();
+        const type = $('#subjectTypeFilter').val();
+
+        if (!year || !term || !type) {
+            alert('يرجى اختيار جميع خيارات التصفية');
+            return;
+        }
+
+        $.ajax({
+            url: '@Url.Action("FilteredCourses", "Course")',
+            type: 'POST',
+            data: { year: year, semister: term, type: type },
+            success: function (result) {
+                $('#resultsSection').html(result);
+            }
+        });
+    }
+
+    // 🔘 Button action: View Course Details (redirects to Lecture/Index)
+    function viewCourseDetails(courseId) {
+        window.location.href = '@Url.Action("CourseDetail", "Course")' + '?courseId=' + courseId;
+    }
+</script>
+}
+
+@* *@
+@* 
 @{
     // Prepare data for JS (serialize Model to JSON for filtering client-side)
     var coursesJson = System.Text.Json.JsonSerializer.Serialize(Model,
@@ -225,7 +425,7 @@
         document.getElementById('gridView').classList.add('d-none');
         document.getElementById('listView').classList.remove('d-none');
     }
-</script>
+</script> *@
 
 @*  @model List<Course>
 

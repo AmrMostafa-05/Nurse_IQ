@@ -5,6 +5,11 @@ namespace Nurse_IQ.Service
 {
     public interface ICourseService : IService<Course>
     {
-        public List<Course> FilterByYearLevelSemesterType(CourseYearLevel yearLevel, CourseSemester semester, CourseType type);
+       
+        public List<Course> FilterByYearLevelSemesterType
+            (CourseYearLevel yearLevel, CourseSemester semester, CourseType type);
+
+        public Task<Course?> GetCourseWithLectures(int courseId);
+
     }
 }

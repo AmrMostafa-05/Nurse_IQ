@@ -24,5 +24,9 @@ namespace Nurse_IQ.Service
             return _courseRepo.FilterByYearLevelSemesterType(yearLevel, semester, type);
         }
 
+        public async Task<Course?> GetCourseWithLectures(int courseId)
+        {
+             return await _courseRepo.GetCourseWithLectures(courseId);
+        }
     }
 }

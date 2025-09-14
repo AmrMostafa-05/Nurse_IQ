@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using Nurse_IQ.Data;
 using Nurse_IQ.Enums.Course;
 using Nurse_IQ.Models;
@@ -21,6 +22,16 @@ namespace Nurse_IQ.Repoitory
                           .Where(c => c.YearLevel == yearLevel && c.semister == semester && c.courseType == type)
                           .ToList();
         }
+        public async Task<Course?> GetCourseWithLectures(int courseId)
+        {
+            return await Context.Courses
+                .Include(c => c.Lectures)
+                .ThenInclude(l => l.Materials)
+                .Include(c => c.Quizzes)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == courseId);
+        }
 
+     
     }
 }
