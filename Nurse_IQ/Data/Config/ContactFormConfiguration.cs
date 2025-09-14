@@ -4,10 +4,8 @@ using Nurse_IQ.Models;
 
 namespace Nurse_IQ.Data.Config
 {
-    public class ContactFormConfiguration:IEntityTypeConfiguration<ContactForm>
+    public class ContactFormConfiguration : IEntityTypeConfiguration<ContactForm>
     {
-        
-
         public void Configure(EntityTypeBuilder<ContactForm> builder)
         {
             builder.HasKey(x => x.ID);
@@ -36,7 +34,7 @@ namespace Nurse_IQ.Data.Config
                    .WithMany(u => u.ContactForms)
                    .HasForeignKey(a => a.CreatedByAdminId);
 
-            //builder.HasData(SeedData.ContactForms);
+            builder.HasData(SeedData.ContactForms);
 
         }
     }

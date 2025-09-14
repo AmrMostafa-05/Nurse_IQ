@@ -17,7 +17,4 @@
         public int UserId { get; set; }
         public applicationUser User { get; set; }
     }
-    
-
-
-}   
+}

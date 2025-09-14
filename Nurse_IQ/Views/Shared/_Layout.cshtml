@@ -17,6 +17,8 @@
     <!-- Local Styles -->
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true">
     <link href="~/css/chatbot.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/Training.css" rel="stylesheet" asp-append-version="true">
+
 </head>
 
 <body>
@@ -46,7 +48,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="courses.html" data-lang-key="studyContent">المحتوى الدراسي</a></li>
-                                <li><a class="dropdown-item" href="training.html" data-lang-key="practicalContent">المحتوى العملي</a></li>
+                                <li><a class="dropdown-item" asp-controller="Training" asp-action="Index" data-lang-key="practicalContent">المحتوى العملي</a></li>
                                 <li><a class="dropdown-item" href="articles.html" data-lang-key="articles">المقالات</a></li>
                                 <li><a class="dropdown-item" href="diplomas.html">الدبلومات المهنية</a></li>
                             </ul>
@@ -167,7 +169,7 @@
     </div>
 
     <!--  Main Content -->
-    <main role="main" class="container" style="margin-top: 100px;">
+    <main>
         @RenderBody()
     </main>
 

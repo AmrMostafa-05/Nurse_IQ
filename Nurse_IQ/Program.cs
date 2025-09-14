@@ -11,7 +11,7 @@ namespace Nurse_IQ
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +49,20 @@ namespace Nurse_IQ
 
             var app = builder.Build();
 
+            // Initialize database with seed data
+            using (var scope = app.Services.CreateScope())
+            {
+                try
+                {
+                    await DbInitializer.InitializeAsync(scope.ServiceProvider);
+                }
+                catch (Exception ex)
+                {
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while initializing the database.");
+                }
+            }
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -65,6 +79,7 @@ namespace Nurse_IQ
             });
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapStaticAssets();
@@ -73,7 +88,7 @@ namespace Nurse_IQ
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

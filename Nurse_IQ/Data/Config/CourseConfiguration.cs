@@ -51,7 +51,7 @@ namespace Nurse_IQ.Data.Config
          .HasConversion(ValueConverters.StringListConverter)
        .Metadata.SetValueComparer(ValueConverters.StringListComparer);
 
-            builder.Property(c => c.courseRequizetes)
+            builder.Property(c => c.coursePrerequisites)
                    .HasConversion(ValueConverters.StringListConverter)
                    .Metadata.SetValueComparer(ValueConverters.StringListComparer);
 
@@ -64,7 +64,7 @@ namespace Nurse_IQ.Data.Config
                 .HasForeignKey(c => c.UserId);
 
 
-            //builder.HasData(SeedData.Courses);
+            builder.HasData(SeedData.Courses);
         }
     }
 }

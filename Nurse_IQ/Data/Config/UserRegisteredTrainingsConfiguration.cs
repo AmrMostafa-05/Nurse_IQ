@@ -24,7 +24,7 @@ namespace Nurse_IQ.Data.Config
                    .OnDelete(DeleteBehavior.Cascade);
 
 
-            //builder.HasData(SeedData.UserRegisteredTrainings);
+            builder.HasData(SeedData.UserRegisteredTrainings);
 
         }
     }

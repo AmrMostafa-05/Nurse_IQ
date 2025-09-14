@@ -31,7 +31,7 @@ namespace Nurse_IQ.Data.Config
                 .WithMany(c => c.forumtopics)
                 .HasForeignKey(c => c.UserId);
 
-           // builder.HasData(SeedData.Forumtopics);
+           builder.HasData(SeedData.Forumtopics);
 
 
         }

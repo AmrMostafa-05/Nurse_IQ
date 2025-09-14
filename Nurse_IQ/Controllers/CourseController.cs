@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nurse_IQ.Service;
+using Nurse_IQ.Enums.Course;
 
 namespace Nurse_IQ.Controllers
 {
@@ -13,7 +14,7 @@ namespace Nurse_IQ.Controllers
         }
         public IActionResult Index()//get all and when he press the filters goes to 
         {
-            var courses =courseService.GetAll();
+            var courses = courseService.GetAll();
             return View(courses);
         }
         [HttpGet]

@@ -57,7 +57,7 @@ namespace Nurse_IQ.Data.Config
 
 
 
-           // builder.HasData(SeedData.Offers);
+           builder.HasData(SeedData.Offers);
 
         }
     }

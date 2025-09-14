@@ -18,7 +18,7 @@ namespace Nurse_IQ.Models
         public string smallDescription { get; set; }
         public string bigDescription { get; set; }
         public List<string> courseTopics { get; set; }
-        public List<string>? courseRequizetes { get; set; }
+        public List<string>? coursePrerequisites { get; set; }
 
         public int UserId { get; set; }
         public applicationUser User { get; set; }

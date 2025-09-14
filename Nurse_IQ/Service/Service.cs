@@ -14,7 +14,7 @@ namespace Nurse_IQ.Service
             _unitOfWork = unitOfWork;
         }
 
-        public List <T> GetAll() => _repository.GetAll();
+        public List<T> GetAll() => _repository.GetAll();
 
         public T GetById(int id) => _repository.GetById(id);
 

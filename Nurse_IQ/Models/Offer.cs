@@ -9,7 +9,7 @@
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string category { get; set; }
-        public string Description{ get; set; }
+        public string Description { get; set; }
         public decimal OriginalPrice { get; set; }
         public decimal DiscountPrice { get; set; }//savings
         public decimal LastPrice { get; set; }// note //the admin would put only 2 values OriginalPrice and discountPercentage
@@ -20,23 +20,12 @@
         public DateTime expiredAt { get; set; }
         public List<string> features { get; set; }
 
-        public bool isValid ()
+        public bool IsValid()
         {
-            if(DateTime.Now > expiredAt) 
-                return false;
-            return true;
+            return DateTime.Now <= expiredAt;
         }
 
         public int CreatedByAdminId { get; set; }
         public applicationUser CreatedBy { get; set; }
-
-
-
-
-
-
-
-
-
     }
 }

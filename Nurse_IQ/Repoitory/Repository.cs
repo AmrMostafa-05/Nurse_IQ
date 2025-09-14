@@ -38,17 +38,30 @@ namespace Nurse_IQ.Repoitory
             return _dbSet.ToList();
         }
 
-        public T GetById(int id)
-            {
-                return _dbSet.Find(id);
-            }
+        public async Task<List<T>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
 
-            public void Save()
-            {
-                _context.SaveChanges();
-            }
+        public T GetById(int id)
+        {
+            return _dbSet.Find(id);
+        }
+
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _dbSet.CountAsync();
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
 
     }
-    
-
 }
