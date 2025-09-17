@@ -1,0 +1,104 @@
+﻿@model Nurse_IQ.Models.Forumtopic
+
+@{
+    ViewData["Title"] = "ابدأ مناقشة جديدة";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Header -->
+<section class="page-header bg-gradient-primary text-white py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-5 fw-bold mb-3"><i class="bi bi-plus-circle me-2"></i>ابدأ مناقشة جديدة</h1>
+                <p class="lead">شارك أفكارك، استفساراتك، وخبراتك مع مجتمع التمريض</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Create Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-5">
+                        <form asp-action="Create" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <div class="mb-4">
+                                <label asp-for="Title" class="form-label fw-bold">عنوان الموضوع</label>
+                                <input asp-for="Title" class="form-control form-control-lg"
+                                       placeholder="اكتب عنوانًا واضحًا وموجزًا..." />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                                <small class="text-muted">اختر عنوانًا يصف محتوى مناقشتك بدقة</small>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="category" class="form-label fw-bold">القسم</label>
+                                <select asp-for="category" class="form-select">
+                                    <option value="">اختر القسم المناسب</option>
+                                    <option value="general">النقاشات العامة</option>
+                                    <option value="study">المحتوى الدراسي</option>
+                                    <option value="practical">المحتوى العملي</option>
+                                    <option value="support">الدعم النفسي</option>
+                                </select>
+                                <span asp-validation-for="category" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label asp-for="Description" class="form-label fw-bold">محتويات المناقشة</label>
+                                <textarea asp-for="Description" class="form-control" rows="8"
+                                          placeholder="اكتب محتوى مناقشتك هنا... يمكنك تضمين أسئلة، استفسارات، أو مشاركة خبراتك"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-lightbulb"></i> نصائح: كن واضحًا، استخدم لغة مهنية، واطرح أسئلة محددة
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a asp-action="Index" class="btn btn-outline-secondary me-md-2">
+                                    <i class="bi bi-arrow-right me-1"></i>إلغاء
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-1"></i>نشر الموضوع
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-body">
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-info-circle me-2"></i>نصائح للنشر:</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check text-success me-2"></i>تحقق من القسم المناسب لموضوعك</li>
+                            <li class="mb-2"><i class="bi bi-check text-success me-2"></i>استخدم عناوين واضحة وموجزة</li>
+                            <li class="mb-2"><i class="bi bi-check text-success me-2"></i>قدم معلومات كافية للإجابة على استفسارك</li>
+                            <li class="mb-2"><i class="bi bi-check text-success me-2"></i>احترم آراء الآخرين وتجنب المحتوى المسيء</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Auto-resize textarea
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    </script>
+}

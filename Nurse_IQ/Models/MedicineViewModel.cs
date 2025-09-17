@@ -1,7 +1,6 @@
-﻿
-namespace Nurse_IQ.Models
+﻿namespace Nurse_IQ.Models
 {
-    public class Medicine
+    public class MedicineViewModel
     {
         public int Id { get; set; }
         public string arabicName { get; set; }
@@ -13,6 +12,6 @@ namespace Nurse_IQ.Models
         public string indications { get; set; }
         public string sideEffects { get; set; }
         public string dosage { get; set; }
-        public int UserId { get; set; }
+        public string UserName { get; set; }
     }
 }

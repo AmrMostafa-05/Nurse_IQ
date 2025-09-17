@@ -1,0 +1,165 @@
+﻿@model Article
+
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    // Get related articles from the same category
+    var relatedArticles = ViewBag.RelatedArticles as IEnumerable<Article> ?? 
+                         new List<Article>();
+}
+
+<!-- Page Banner -->
+<section class="page-banner">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">@Model.Title</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
+                        <li class="breadcrumb-item"><a asp-controller="Articles" asp-action="Index">المقالات</a></li>
+                        <li class="breadcrumb-item active">@Model.Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Article Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <article class="article-content">
+                    <!-- Article Header -->
+                    <div class="article-header mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-primary me-2">@Model.category</span>
+                                <small class="text-muted me-3">
+                                    <i class="bi bi-calendar me-1"></i>@Model.publishDate
+                                </small>
+                                <small class="text-muted">
+                                    <i class="bi bi-eye me-1"></i>@Model.Num_of_views مشاهدات
+                                </small>
+                            </div>
+                            <small class="text-muted">
+                                <i class="bi bi-clock me-1"></i>@Model.readTime
+                            </small>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="@Model.authorImage" alt="@Model.User?.FullName" class="rounded-circle me-3" width="50" height="50">
+                            <div>
+                                <h6 class="mb-0">@Model.User?.FullName</h6>
+                                <small class="text-muted">كاتب المقال</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article Image -->
+                    <div class="article-image mb-4">
+                        <img src="@Model.imageUrl" alt="@Model.Title" class="img-fluid rounded w-100" style="max-height: 400px; object-fit: cover;">
+                    </div>
+
+                    <!-- Article Description -->
+                    <div class="article-description mb-4">
+                        <p class="lead">@Model.Description</p>
+                    </div>
+
+                    <!-- Article Actions -->
+                    <div class="article-actions d-flex justify-content-between align-items-center border-top pt-3 mt-4">
+                        <div>
+                            @if (User.IsInRole("Doctor"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm me-2">
+                                    <i class="bi bi-pencil"></i> تعديل
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i> حذف
+                                </a>
+                            }
+                        </div>
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-arrow-right"></i> العودة للمقالات
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Related Articles -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <h6 class="mb-3">مقالات ذات صلة</h6>
+                        @if (relatedArticles.Any())
+                        {
+                            foreach (var relatedArticle in relatedArticles.Take(3))
+                            {
+                                <div class="related-article mb-3 p-2 border rounded">
+                                    <div class="d-flex align-items-center">
+                                        <img src="@relatedArticle.imageUrl" alt="@relatedArticle.Title" 
+                                             class="rounded me-2" width="60" height="60" style="object-fit: cover;">
+                                        <div>
+                                            <h6 class="mb-1">@relatedArticle.Title</h6>
+                                            <small class="text-muted">@relatedArticle.readTime</small>
+                                        </div>
+                                    </div>
+                                    <a asp-action="Details" asp-route-id="@relatedArticle.Id" 
+                                       class="btn btn-outline-primary btn-sm w-100 mt-2">
+                                        اقرأ المزيد
+                                    </a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-muted">لا توجد مقالات ذات صلة</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <h6 class="mb-3">التصنيفات</h6>
+                        <div class="categories-list">
+                            @{
+                                var categories = ViewBag.Categories as List<string> ?? new List<string>();
+                            }
+                            @foreach (var category in categories)
+                            {
+                                <a asp-action="Index" asp-route-category="@category" 
+                                   class="category-item d-flex align-items-center justify-content-between p-2 border rounded mb-2 text-decoration-none">
+                                    <span>@category</span>
+                                    <span class="badge bg-primary">
+                                        @(ViewData[$"{category}_Count"]?.ToString() ?? "0")
+                                    </span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="mb-3">النشرة الإخبارية</h6>
+                        <p class="text-muted small mb-3">احصل على أحدث المقالات والمواضيع الطبية</p>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="بريدك الإلكتروني" id="newsletterEmail">
+                            <button class="btn btn-primary" type="button" onclick="subscribeNewsletter()">
+                                <i class="bi bi-envelope"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted">نرسل مرة واحدة أسبوعياً</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+}

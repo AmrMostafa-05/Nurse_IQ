@@ -1,0 +1,335 @@
+﻿@using Nurse_IQ.Enums.Question
+@model Nurse_IQ.Models.Quiz
+@{
+    ViewData["Title"] = $"اختبار: {Model.Title}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Quiz Header -->
+<section class="quiz-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Courses" asp-action="Index">المواد الدراسية</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId">@Model.Course?.Title</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Lectures" asp-action="Details" asp-route-id="@Model.LectureId">@Model.Lecture?.Title</a></li>
+                <li class="breadcrumb-item active">الاختبار</li>
+            </ol>
+        </nav>
+        <div class="text-center">
+            <h1 class="display-5 fw-bold mb-3">اختبار المحاضرة</h1>
+            <p class="lead mb-0">@Model.Title</p>
+        </div>
+    </div>
+</section>
+
+<!-- Quiz Progress Sidebar -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="quiz-progress">
+                <h6 class="mb-3"><i class="bi bi-clock me-2"></i>الوقت المتبقي</h6>
+                <div class="timer" id="timer">
+                    <i class="bi bi-stopwatch me-2"></i>
+                    <span id="timeLeft">30:00</span>
+                </div>
+                <h6 class="mb-3"><i class="bi bi-graph-up me-2"></i>التقدم</h6>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <small class="text-muted" id="progressText">0 من @Model.Questions.Count سؤال</small>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number" id="easyCount">0</span>
+                        <span class="stat-label">سهل</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="mediumCount">0</span>
+                        <span class="stat-label">متوسط</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="hardCount">0</span>
+                        <span class="stat-label">صعب</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100 mb-2" onclick="submitQuiz(@Model.Id)" id="submitBtn">
+                    <i class="bi bi-check-circle me-2"></i>إرسال الإجابات
+                </button>
+                <button class="btn btn-outline-secondary w-100" onclick="clearAnswers(@Model.Id)">
+                    <i class="bi bi-arrow-clockwise me-2"></i>مسح الإجابات
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Content -->
+        <div class="col-lg-9">
+            <div class="quiz-container" id="quizContainer">
+                @foreach (var question in Model.Questions.Select((q, i) => new { Question = q, Index = i }))
+                {
+                    <div class="question-card @question.Question.hardnessType.ToString().ToLower()" data-question-id="@question.Question.Id">
+                        <span class="difficulty-badge @question.Question.hardnessType.ToString().ToLower()">
+                            @(question.Question.hardnessType == hardnessType.easy ? "سهل" :
+                                                    question.Question.hardnessType == hardnessType.medium ? "متوسط" : "صعب")
+                    </span>
+                    <div class="question-text">
+                        @(question.Index + 1). @question.Question.Text
+                    </div>
+                    <div class="options-container">
+                        @foreach (var option in question.Question.options.Select((opt, i) => new { Option = opt, Index = i }))
+                            {
+                                <div class="option-item" onclick="selectOption(@question.Question.Id, @option.Index)">
+                                    <input type="radio"
+                                           class="option-radio"
+                                           name="q@(question.Question.Id)"
+                                           value="@option.Index"
+                                           @(question.Question.Student_Answer == option.Index.ToString() ? "checked" : "")>
+                                    <label class="option-label">@option.Option</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Quiz Actions -->
+            <div class="quiz-actions" id="quizActions">
+                <h5 class="mb-3">أكمل الاختبار</h5>
+                <p class="text-muted mb-4">تأكد من الإجابة على جميع الأسئلة قبل الإرسال</p>
+                <button class="btn btn-primary btn-quiz-action" onclick="submitQuiz(@Model.Id)">
+                    <i class="bi bi-check-circle me-2"></i>إرسال الاختبار
+                </button>
+                <button class="btn btn-outline-secondary btn-quiz-action" onclick="clearAnswers(@Model.Id)">
+                    <i class="bi bi-arrow-clockwise me-2"></i>مسح الإجابات
+                </button>
+            </div>
+
+            <!-- Results Container -->
+            <div class="results-container" id="resultsContainer" style="display: none;">
+                <!-- Results will be populated via JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let userAnswers = {};
+        let timeLeft = 30 * 60; // 30 minutes in seconds
+        let timerInterval;
+        let quizSubmitted = false;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadQuizData();
+            startTimer();
+            updateStats();
+        });
+
+        function loadQuizData() {
+            // Initialize userAnswers from server-side data
+            @foreach (var question in Model.Questions)
+            {
+                    if (!string.IsNullOrEmpty(question.Student_Answer))
+                    {
+                            <text>userAnswers[@question.Id] = @question.Student_Answer;</text>
+                    }
+            }
+            updateProgress();
+        }
+
+        function getDifficultyText(difficulty) {
+            switch (difficulty) {
+                case 'Easy': return 'سهل';
+                case 'Medium': return 'متوسط';
+                case 'Hard': return 'صعب';
+                default: return '';
+            }
+        }
+
+        function selectOption(questionId, optionIndex) {
+            if (quizSubmitted) return;
+
+            userAnswers[questionId] = optionIndex.toString();
+            const questionCard = document.querySelector(`[data-question-id="${questionId}"]`);
+            const options = questionCard.querySelectorAll('.option-item');
+
+            options.forEach((option, index) => {
+                option.classList.remove('selected');
+                if (index === optionIndex) {
+                    option.classList.add('selected');
+                }
+            });
+
+            updateProgress();
+            updateStats();
+        }
+
+        function updateProgress() {
+            const totalQuestions = @Model.Questions.Count;
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const progressPercent = (answeredQuestions / totalQuestions) * 100;
+
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+            document.getElementById('progressText').textContent = `${answeredQuestions} من ${totalQuestions} سؤال`;
+        }
+
+        function updateStats() {
+            const easyAnswered = Object.keys(userAnswers).filter(id =>
+                document.querySelector(`[data-question-id="${id}"]`).classList.contains('easy')).length;
+            const mediumAnswered = Object.keys(userAnswers).filter(id =>
+                document.querySelector(`[data-question-id="${id}"]`).classList.contains('medium')).length;
+            const hardAnswered = Object.keys(userAnswers).filter(id =>
+                document.querySelector(`[data-question-id="${id}"]`).classList.contains('hard')).length;
+
+            document.getElementById('easyCount').textContent = easyAnswered;
+            document.getElementById('mediumCount').textContent = mediumAnswered;
+            document.getElementById('hardCount').textContent = hardAnswered;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz(@Model.Id);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timeLeft').textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        async function submitQuiz(quizId) {
+            if (quizSubmitted) return;
+
+            clearInterval(timerInterval);
+            quizSubmitted = true;
+
+            const response = await fetch('/Questions/SubmitQuiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ quizId, answers: userAnswers })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                showResults(result);
+                document.getElementById('submitBtn').disabled = true;
+                document.getElementById('quizActions').style.display = 'none';
+            } else {
+                showToast(result.message, 'danger');
+                quizSubmitted = false;
+                startTimer();
+            }
+        }
+
+        function showResults(results) {
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = `
+                <div class="score-circle" style="background: conic-gradient(var(--success-color) ${results.percentage * 3.6}deg, #e9ecef 0deg);">
+                    <div class="score-text">${results.percentage}%</div>
+                </div>
+                <h3 class="text-success mb-3">تم إرسال الاختبار بنجاح!</h3>
+                <p class="lead mb-4">النتيجة: ${results.correct}/${results.total}</p>
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-success">
+                            <div class="card-body text-center">
+                                <h5 class="text-success">${results.easyCorrect}/${results.easyTotal}</h5>
+                                <small class="text-muted">الأسئلة السهلة</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-warning">
+                            <div class="card-body text-center">
+                                <h5 class="text-warning">${results.mediumCorrect}/${results.mediumTotal}</h5>
+                                <small class="text-muted">الأسئلة المتوسطة</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-danger">
+                            <div class="card-body text-center">
+                                <h5 class="text-danger">${results.hardCorrect}/${results.hardTotal}</h5>
+                                <small class="text-muted">الأسئلة الصعبة</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="/Lectures/Details/@Model.LectureId" class="btn btn-primary">
+                        <i class="bi bi-arrow-left me-2"></i>العودة للمحاضرة
+                    </a>
+                    <a href="/Courses/Index" class="btn btn-outline-primary">
+                        <i class="bi bi-book me-2"></i>المواد الدراسية
+                    </a>
+                </div>
+            `;
+            resultsContainer.style.display = 'block';
+        }
+
+        async function clearAnswers(quizId) {
+            if (quizSubmitted) return;
+
+            const response = await fetch('/Questions/ClearAnswers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ quizId })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                userAnswers = {};
+                updateProgress();
+                updateStats();
+
+                document.querySelectorAll('.option-item').forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.checked = false;
+                });
+
+                showToast(result.message, 'success');
+            } else {
+                showToast(result.message, 'danger');
+            }
+        }
+
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>`;
+            toastContainer.appendChild(toast);
+            new bootstrap.Toast(toast).show();
+        }
+
+        // Prevent form submission on Enter key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+    </script>
+}

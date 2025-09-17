@@ -1,0 +1,231 @@
+﻿@model IEnumerable<Nurse_IQ.Models.MedicineViewModel>
+@{
+    ViewData["Title"] = "الأدوية الطبية";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Medicines Header -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h2 fw-bold text-primary mb-2">الأدوية الطبية</h1>
+                <p class="text-muted mb-0">دليل شامل للأدوية والعلاجات الطبية</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-flex gap-2 justify-content-md-end">
+                    @if (User.IsInRole("Doctor"))
+                    {
+                        <a asp-action="Create" class="btn btn-outline-primary">
+                            <i class="bi bi-plus-circle me-2"></i>إضافة دواء
+                        </a>
+                    }
+                    <button id="clearAll" class="btn btn-secondary" onclick="resetFilters()">
+                        <i class="bi bi-x-circle me-2"></i>إعادة تعيين الفلاتر
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search and Filters Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-capsule text-primary display-4 mb-3"></i>
+                            <h4 class="fw-bold">ابحث في قاعدة الأدوية</h4>
+                            <p class="text-muted">ابحث عن الأدوية والعلاجات الطبية</p>
+                        </div>
+                        <div class="input-group input-group-lg mb-3">
+                            <input type="text" class="form-control" id="searchInput" placeholder="اكتب اسم الدواء أو المادة الفعالة..." value="@ViewBag.CurrentSearch">
+                            <button class="btn btn-primary" type="button" onclick="applyFilters()">
+                                <i class="bi bi-search me-2"></i>بحث
+                            </button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">أمثلة: باراسيتامول، أموكسيسيلين، أوميبرازول</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">فلاتر البحث</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="categorySelect" class="form-label">الفئة</label>
+                                <select class="form-select" id="categorySelect" name="category" onchange="applyFilters()">
+                                    <option value="all">جميع الفئات</option>
+                                    @foreach (var category in ViewBag.Categories)
+                                    {
+                                        <option value="@category">@category</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="formSelect" class="form-label">الشكل الدوائي</label>
+                                <select class="form-select" id="formSelect" name="form" onchange="applyFilters()">
+                                    <option value="all">جميع الأشكال</option>
+                                    @foreach (var form in ViewBag.Forms)
+                                    {
+                                        <option value="@form">@form</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">ابحث حسب الحرف</label>
+                            <div class="d-flex flex-wrap gap-1" id="letterFilter">
+                                @foreach (var letter in new[] { "أ", "ب", "ت", "ث", "ج", "ح", "خ", "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ", "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و", "ي" })
+                                {
+                                    <input type="radio" class="btn-check" name="letter" id="letter-@letter" value="@letter" @(ViewBag.CurrentLetter == letter ? "checked" : "") onchange="applyFilters()" autocomplete="off">
+                                    <label class="btn btn-sm btn-outline-primary" for="letter-@letter">@letter</label>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Medicines List -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="results-count text-center mb-3"></div>
+                <div class="row g-4 medicines-grid">
+                    @await Html.PartialAsync("_MedicinesPartial", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.3s ease-out;
+        }
+        .pagination-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .pagination-ellipsis {
+            padding: 0 10px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Debounce function to limit AJAX calls
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Apply filters and update results via AJAX
+        const applyFilters = debounce(() => {
+            const search = document.querySelector("#searchInput").value;
+            const category = document.querySelector("#categorySelect").value;
+            const form = document.querySelector("#formSelect").value;
+            const letter = document.querySelector("input[name='letter']:checked")?.value || "";
+            const sort = document.querySelector("#sortSelect").value;
+
+            // Update URL with query parameters
+            const params = new URLSearchParams();
+            if (search) params.set("term", search);
+            if (category && category !== "all") params.set("category", category);
+            if (form && form !== "all") params.set("form", form);
+            if (letter) params.set("letter", letter);
+            if (sort) params.set("sort", sort);
+            const newUrl = `${window.location.pathname}?${params.toString()}`;
+            window.history.pushState({}, "", newUrl);
+
+            // AJAX call to Search action
+            fetch(`/Medicines/Search?${params.toString()}`, {
+                method: "GET",
+                headers: { "Accept": "text/html" }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const grid = document.querySelector(".medicines-grid");
+                grid.style.opacity = 0;
+                setTimeout(() => {
+                    grid.innerHTML = html;
+                    grid.classList.add("fade-in");
+                    grid.style.opacity = 1;
+                    updateResultsCount();
+                }, 300);
+            })
+            .catch(error => console.error("Error fetching medicines:", error));
+
+            // Update results count
+            function updateResultsCount() {
+                const count = document.querySelectorAll(".medicines-grid .col-md-6").length;
+                const countElement = document.querySelector(".results-count");
+                countElement.textContent = `${count} نتيجة`;
+            }
+        }, 250);
+
+        // Reset filters
+        function resetFilters() {
+            document.querySelector("#searchInput").value = "";
+            document.querySelector("#categorySelect").value = "all";
+            document.querySelector("#formSelect").value = "all";
+            document.querySelectorAll("input[name='letter']").forEach(radio => radio.checked = false);
+            document.querySelector("#sortSelect").value = "title-asc";
+            applyFilters();
+        }
+
+        // Initialize event listeners and set selected options
+        document.addEventListener("DOMContentLoaded", () => {
+            // Set selected options based on ViewBag
+            const currentCategory = "@ViewBag.CurrentCategory";
+            const currentForm = "@ViewBag.CurrentForm";
+            const currentSort = "@ViewBag.CurrentSort";
+            if (currentCategory) {
+                document.querySelector(`#categorySelect option[value="${currentCategory}"]`)?.setAttribute("selected", "selected");
+            }
+            if (currentForm) {
+                document.querySelector(`#formSelect option[value="${currentForm}"]`)?.setAttribute("selected", "selected");
+            }
+            if (currentSort) {
+                document.querySelector(`#sortSelect option[value="${currentSort}"]`)?.setAttribute("selected", "selected");
+            }
+
+            // Debounced search input
+            document.querySelector("#searchInput").addEventListener("input", applyFilters);
+
+            // Trigger filters on page load to respect query parameters
+            applyFilters();
+        });
+    </script>
+}

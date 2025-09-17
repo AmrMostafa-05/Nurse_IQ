@@ -1,0 +1,91 @@
+﻿@model Nurse_IQ.Models.Medicine
+@{
+    ViewData["Title"] = "إضافة دواء جديد";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="h2 fw-bold text-primary mb-4">إضافة دواء جديد</h2>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="arabicName" class="form-label">اسم الدواء (عربي)</label>
+                        <input asp-for="arabicName" class="form-control" required />
+                        <span asp-validation-for="arabicName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="englishName" class="form-label">اسم الدواء (إنجليزي)</label>
+                        <input asp-for="englishName" class="form-control" required />
+                        <span asp-validation-for="englishName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="latinName" class="form-label">اسم الدواء (لاتيني)</label>
+                        <input asp-for="latinName" class="form-control" />
+                        <span asp-validation-for="latinName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="category" class="form-label">الفئة</label>
+                        <select asp-for="category" class="form-select" required>
+                            <option value="">اختر الفئة</option>
+                            <option value="cardiology">أدوية القلب</option>
+                            <option value="respiratory">أدوية الجهاز التنفسي</option>
+                            <option value="neurology">أدوية الجهاز العصبي</option>
+                            <option value="hematology">أدوية الدم</option>
+                            <option value="gastroenterology">أدوية الجهاز الهضمي</option>
+                            <option value="endocrinology">أدوية الغدد الصماء</option>
+                        </select>
+                        <span asp-validation-for="category" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="form" class="form-label">الشكل الدوائي</label>
+                        <select asp-for="form" class="form-select" required>
+                            <option value="">اختر الشكل</option>
+                            <option value="tablet">أقراص</option>
+                            <option value="capsule">كبسولات</option>
+                            <option value="syrup">شراب</option>
+                            <option value="injection">حقن</option>
+                            <option value="cream">كريم</option>
+                            <option value="drops">قطرات</option>
+                        </select>
+                        <span asp-validation-for="form" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="description" class="form-label">الوصف</label>
+                    <textarea asp-for="description" class="form-control" rows="3" required></textarea>
+                    <span asp-validation-for="description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="indications" class="form-label">الاستخدامات</label>
+                    <textarea asp-for="indications" class="form-control" rows="2" required></textarea>
+                    <span asp-validation-for="indications" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="sideEffects" class="form-label">الآثار الجانبية</label>
+                    <textarea asp-for="sideEffects" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="sideEffects" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="dosage" class="form-label">الجرعة</label>
+                    <input asp-for="dosage" class="form-control" placeholder="مثال: قرص واحد 3 مرات يومياً" />
+                    <span asp-validation-for="dosage" class="text-danger"></span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">إضافة الدواء</button>
+                    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

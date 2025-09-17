@@ -49,12 +49,6 @@ namespace Nurse_IQ.Data.Config
                   .HasColumnType("VARCHAR")
                .HasMaxLength(100).IsRequired();
 
-
-            builder.HasOne(u => u.User)
-                .WithMany(c => c.medicines)
-                .HasForeignKey(c => c.UserId);
-
-
            builder.HasData(SeedData.Medicines);
 
 

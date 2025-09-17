@@ -1,0 +1,135 @@
+﻿@model Nurse_IQ.Models.Forumtopic
+@{
+    ViewData["Title"] = "عرض الموضوع";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="h2 fw-bold text-primary mb-4">@Model.Title</h2>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <div class="row align-items-center mb-3">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center">
+                        <img src="/img/default-author.jpg" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                        <div>
+                            <h6 class="fw-bold mb-0">بواسطة @(Model.User != null ? Model.User.UserName : "مجهول")</h6>
+                            <small class="text-muted">منذ ساعة</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex justify-content-md-end gap-3">
+                        <span class="text-muted small"><i class="bi bi-eye me-1"></i>@Model.num_of_views مشاهدة</span>
+                        <span class="text-muted small"><i class="bi bi-chat me-1"></i>@Model.num_comments ردود</span>
+                        <span class="text-muted small"><i class="bi bi-heart me-1"></i>@Model.num_of_likes إعجاب</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <span class="badge bg-@(Model.category == "general" ? "primary" : Model.category == "study" ? "success" : Model.category == "practical" ? "warning" : "info")">@Model.category</span>
+            </div>
+            <p class="text-muted">@Model.Description</p>
+            <div class="d-flex gap-2 mb-4">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="btn btn-outline-primary btn-sm" onclick="likeTopic(@Model.Id)">
+                        <i class="bi bi-heart me-1"></i>إعجاب
+                    </button>
+                }
+                @if (User.Identity.IsAuthenticated && Model.User != null && User.Identity.Name == Model.User.UserName)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-sm">تعديل</a>
+                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-sm">حذف</a>
+                }
+            </div>
+            <!-- Comments Section -->
+            <h5 class="fw-bold mb-3">التعليقات (@Model.num_comments)</h5>
+            <div class="comments-list mb-4">
+                @if (Model.comments != null && Model.comments.Any())
+                {
+                    foreach (var comment in Model.comments)
+                    {
+                        <div class="card mb-2 border-0 shadow-sm">
+                            <div class="card-body">
+                                <p class="mb-0">@comment</p>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="text-muted">لا توجد تعليقات بعد.</p>
+                }
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <form id="commentForm">
+                            <div class="mb-3">
+                                <label class="form-label">أضف تعليقك</label>
+                                <textarea class="form-control" rows="3" id="commentInput" placeholder="اكتب تعليقك هنا"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="addComment(@Model.Id)">نشر التعليق</button>
+                        </form>
+                    </div>
+                </div>
+            }
+            <div class="mt-4">
+                <a asp-action="Index" class="btn btn-primary">العودة إلى القائمة</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        async function addComment(topicId) {
+            const comment = document.getElementById('commentInput').value;
+            if (!comment.trim()) {
+                showToast('يرجى إدخال تعليق', 'error');
+                return;
+            }
+            const response = await fetch(`/Forum/AddComment`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topicId, comment })
+            });
+            if (response.ok) {
+                showToast('تم إضافة التعليق بنجاح', 'success');
+                window.location.reload();
+            } else {
+                showToast('فشل إضافة التعليق', 'error');
+            }
+        }
+
+        async function likeTopic(topicId) {
+            const response = await fetch(`/Forum/LikeTopic`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topicId })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                showToast(`تم الإعجاب بالموضوع! (${data.likes} إعجاب)`, 'success');
+                window.location.reload();
+            } else {
+                showToast('فشل الإعجاب بالموضوع', 'error');
+            }
+        }
+
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>`;
+            toastContainer.appendChild(toast);
+            new bootstrap.Toast(toast).show();
+        }
+    </script>
+}

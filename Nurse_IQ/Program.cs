@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Nurse_IQ.Data;
@@ -42,7 +42,6 @@ namespace Nurse_IQ
             builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
             // Specialized repo & service
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-            builder.Services.AddScoped<ICourseService, CourseService>();
             // Unit of Work
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

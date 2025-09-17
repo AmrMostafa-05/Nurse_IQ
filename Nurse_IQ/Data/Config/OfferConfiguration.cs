@@ -30,7 +30,7 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("decimal(18,2)")
                    .IsRequired();
 
-            builder.Property(o => o.discountPercentage)
+            builder.Property(o => o.DiscountPercentage)
                    .IsRequired();
             // Computed Columns in SQL
             builder.Property(o => o.DiscountPrice)

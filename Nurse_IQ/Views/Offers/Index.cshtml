@@ -1,0 +1,220 @@
+﻿@model IEnumerable<Nurse_IQ.Models.Offer>
+@{
+    ViewData["Title"] = "العروض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Banner -->
+<section class="page-banner bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">العروض الخاصة</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Offer -->
+@if (ViewBag.FeaturedOffer != null)
+{
+    var offer = ViewBag.FeaturedOffer as Nurse_IQ.Models.Offer;
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="card-body text-white text-center p-5">
+                            <div class="mb-4">
+                                <i class="bi bi-gift display-1"></i>
+                            </div>
+                            <h2 class="display-5 fw-bold mb-3">@offer.Title</h2>
+                            <p class="lead mb-4">@offer.SubTitle</p>
+                            <div class="row text-center mb-4">
+                                <div class="col-md-4">
+                                    <div class="bg-white bg-opacity-20 rounded p-3">
+                                        <h4 class="fw-bold">السعر الأصلي</h4>
+                                        <p class="mb-0" style="color: black;">@offer.OriginalPrice.ToString("C")</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-white bg-opacity-20 rounded p-3">
+                                        <h4 class="fw-bold">الخصم</h4>
+                                        <p class="mb-0" style="color: black;">@offer.DiscountPercentage%</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-white bg-opacity-20 rounded p-3">
+                                        <h4 class="fw-bold">السعر النهائي</h4>
+                                        <p class="mb-0" style="color: black;">@offer.LastPrice.ToString("C")</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                                <a asp-action="Details" asp-route-id="@offer.Id" class="btn btn-light btn-lg">
+                                    <i class="bi bi-info-circle me-2"></i>تفاصيل العرض
+                                </a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <button class="btn btn-outline-light btn-lg" onclick="claimOffer(@offer.Id)">
+                                        <i class="bi bi-cart-plus me-2"></i>احصل على العرض
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a href="/Identity/Account/Login" class="btn btn-outline-light btn-lg">
+                                        <i class="bi bi-cart-plus me-2"></i>تسجيل الدخول للحصول على العرض
+                                    </a>
+                                }
+                            </div>
+                            <div class="mt-4">
+                                <small class="text-white-50">
+                                    <i class="bi bi-clock me-1"></i>ينتهي العرض في: <span id="countdown-@offer.Id">@offer.expiredAt.ToString("yyyy-MM-dd")</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- All Offers Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-6 fw-bold text-primary mb-3">جميع العروض المتاحة</h2>
+                <p class="lead text-muted">اكتشف مجموعة متنوعة من العروض الخاصة والخصومات</p>
+            </div>
+        </div>
+
+        <div class="row" id="offersList">
+            @foreach (var offer in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <img src="@offer.imageUrl" class="card-img-top" alt="@offer.Title" style="height:200px; object-fit:cover;" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title fw-bold">@offer.Title</h5>
+                            <p class="card-text text-muted">@offer.SubTitle</p>
+
+                            <div class="d-flex justify-content-between align-items-center my-3">
+                                <span class="badge bg-primary">@offer.DiscountPercentage% خصم</span>
+                                <span class="text-decoration-line-through text-muted">@offer.OriginalPrice.ToString("C")</span>
+                                <span class="fw-bold text-success">@offer.LastPrice.ToString("C")</span>
+                            </div>
+
+                            <p class="small text-muted mb-2">
+                                <i class="bi bi-clock me-1"></i>
+                                ينتهي في: <span id="countdown-@offer.Id">@offer.expiredAt.ToString("yyyy-MM-dd")</span>
+                            </p>
+
+                            <div class="mt-auto d-flex gap-2">
+                                <a asp-action="Details" asp-route-id="@offer.Id" class="btn btn-outline-primary btn-sm flex-fill">
+                                    <i class="bi bi-info-circle me-1"></i> تفاصيل
+                                </a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <button class="btn btn-success btn-sm flex-fill" onclick="claimOffer(@offer.Id)">
+                                        <i class="bi bi-cart-plus me-1"></i> احصل عليه
+                                    </button>
+                                }
+                                else
+                                {
+                                    <a href="/Identity/Account/Login" class="btn btn-outline-secondary btn-sm flex-fill">
+                                        <i class="bi bi-box-arrow-in-right me-1"></i> سجل الدخول
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+@section Scripts {
+    <script>
+        function updateCountdown(offerId, endDate) {
+            const now = new Date();
+            const diff = new Date(endDate) - now;
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById(`countdown-${offerId}`).textContent = `${days} يوم ${hours} ساعة ${minutes} دقيقة`;
+            } else {
+                document.getElementById(`countdown-${offerId}`).textContent = 'انتهى العرض';
+            }
+        }
+
+        async function filterOffers() {
+            const category = document.getElementById('categoryFilter').value;
+            const searchTerm = document.getElementById('searchInput').value;
+            const url = `/Offers/Index?category=${encodeURIComponent(category)}&search=${encodeURIComponent(searchTerm)}`;
+            const response = await fetch(url);
+            const data = await response.text();
+            document.getElementById('offersList').innerHTML = data;
+            showToast(`تم تصفية العروض حسب: ${category === 'all' ? 'جميع الأقسام' : category}${searchTerm ? ' والبحث: ' + searchTerm : ''}`, 'success');
+        }
+
+        async function claimOffer(offerId) {
+            showToast('جاري تطبيق العرض...', 'info');
+            setTimeout(() => {
+                showToast('تم تطبيق العرض بنجاح!', 'success');
+            }, 2000);
+        }
+
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type} border-0`;
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>`;
+            toastContainer.appendChild(toast);
+            new bootstrap.Toast(toast).show();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize countdown timers
+            @foreach (var offer in Model)
+            {
+                    <text>updateCountdown(@offer.Id, '@offer.expiredAt.ToString("o")');</text>
+            }
+            setInterval(() => {
+                @foreach (var offer in Model)
+                {
+                        <text>updateCountdown(@offer.Id, '@offer.expiredAt.ToString("o")');</text>
+                }
+            }, 60000);
+
+            // Add hover effects to offer cards
+            const offerCards = document.querySelectorAll('.card');
+            offerCards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
+                });
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+            });
+
+            // Search on Enter key
+            document.getElementById('searchInput').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    filterOffers();
+                }
+            });
+        });
+    </script>
+}
+}
