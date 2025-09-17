@@ -123,6 +123,7 @@
         .fade-out {
             animation: fadeOut 0.3s ease-out;
         }
+
         .pagination-wrapper {
             display: flex;
             justify-content: center;
@@ -157,7 +158,8 @@
             const category = document.querySelector("#categorySelect").value;
             const form = document.querySelector("#formSelect").value;
             const letter = document.querySelector("input[name='letter']:checked")?.value || "";
-            const sort = document.querySelector("#sortSelect").value;
+            const sortSelect = document.querySelector("#sortSelect");
+            const sort = sortSelect ? sortSelect.value : "";
 
             // Update URL with query parameters
             const params = new URLSearchParams();
@@ -201,7 +203,8 @@
             document.querySelector("#categorySelect").value = "all";
             document.querySelector("#formSelect").value = "all";
             document.querySelectorAll("input[name='letter']").forEach(radio => radio.checked = false);
-            document.querySelector("#sortSelect").value = "title-asc";
+            const sortSelect = document.querySelector("#sortSelect");
+            if (sortSelect) sortSelect.value = "title-asc";
             applyFilters();
         }
 
@@ -218,7 +221,10 @@
                 document.querySelector(`#formSelect option[value="${currentForm}"]`)?.setAttribute("selected", "selected");
             }
             if (currentSort) {
-                document.querySelector(`#sortSelect option[value="${currentSort}"]`)?.setAttribute("selected", "selected");
+                const sortSelect = document.querySelector("#sortSelect");
+                if (sortSelect) {
+                    document.querySelector(`#sortSelect option[value="${currentSort}"]`)?.setAttribute("selected", "selected");
+                }
             }
 
             // Debounced search input

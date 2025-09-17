@@ -263,5 +263,35 @@
         document.addEventListener('DOMContentLoaded', function() {
             displayVideos();
         });
+
+            //Video filter
+        document.querySelectorAll('#videos-tab-pane .filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const category = this.dataset.filter;
+                document.querySelectorAll('#videos-tab-pane .filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                fetch(`/Training/GetVideosByCategory?category=${category}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('videosContainer').innerHTML = html;
+                    });
+            });
+        });
+
+        // jop filter 
+        document.querySelectorAll('#jobs-tab-pane .filter-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const category = this.dataset.filter;
+                document.querySelectorAll('#jobs-tab-pane .filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                fetch(`/Training/GetTrainingsByCategory?category=${category}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById('jobListings').innerHTML = html;
+                    });
+            });
+        });
     </script>
 }

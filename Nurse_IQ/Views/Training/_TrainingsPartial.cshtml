@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Nurse_IQ.Models.Training>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning text-center w-100">لا توجد فرص تدريب/عمل متاحة.</div>
+}
+else
+{
+    @foreach (var job in Model)
+    {
+        <div class="col-lg-6 col-xl-4">
+            <div class="card h-100">
+                <img src="@job.imageUrl" class="card-img-top" alt="@job.Title" style="height:200px; object-fit:cover;">
+                <div class="card-body">
+                    <span class="badge @(job.Category == "job" ? "bg-success" : "bg-warning")">
+                        @(job.Category == "job" ? "وظيفة" : "تدريب عملي")
+                    </span>
+                    <h5 class="card-title mt-2">@job.Title</h5>
+                    <p class="text-muted"><i class="bi bi-building me-1"></i>@job.HospitalName</p>
+                    <p class="text-muted"><i class="bi bi-geo-alt me-1"></i>@job.Location</p>
+                    <p class="text-muted"><i class="bi bi-cash me-1"></i> الراتب: @job.salary جنيه</p>
+                    <p class="card-text small text-muted">@(job.Description.Length > 80 ? job.Description.Substring(0, 80) + "..." : job.Description)</p>
+                </div>
+                <div class="card-footer d-flex gap-2">
+                    <a asp-action="JobDetails" asp-route-id="@job.Id" class="btn btn-primary flex-fill">
+                        <i class="bi bi-eye me-1"></i> التفاصيل
+                    </a>
+                    <a asp-action="Apply" asp-route-id="@job.Id" class="btn btn-success">
+                        <i class="bi bi-send"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+}
