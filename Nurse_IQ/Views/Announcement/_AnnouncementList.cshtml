@@ -1,0 +1,91 @@
+﻿@model (List<Announcement> Announcements, int CurrentPage, int TotalPages)
+
+@foreach (var item in Model.Announcements)
+{
+    <div class="col-lg-4 col-md-6">
+        <div class="announcement-card">
+            <span class="announcement-badge badge-@item.category.ToString().ToLower()">
+                @item.category
+            </span>
+            <div class="announcement-date">
+                <i class="bi bi-calendar3 me-2"></i>
+                @item.Date.ToString("dd MMM yyyy")
+            </div>
+            <h3 class="announcement-title">@item.Title</h3>
+            <p class="announcement-excerpt">
+                @(item.Content.Length > 120 ? item.Content.Substring(0, 120) + "..." : item.Content)
+            </p>
+            <div class="announcement-meta">
+                <div class="announcement-author">
+                    <div class="author-avatar">
+                        @(item.CreatedBy?.UserName != null && item.CreatedBy.UserName.Length > 0 ? item.CreatedBy.UserName[0].ToString() : "A")
+                    </div>
+                    <span class="author-name">@item.CreatedBy?.UserName</span>
+                </div>
+                <button class="read-more-btn"
+                        data-id="@item.Id"
+                        onclick="loadAnnouncementDetails(@item.Id)">
+                    اقرأ المزيد
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Announcements pagination" id="pagination">
+        <ul class="pagination pagination-custom justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="javascript:void(0);" onclick="loadAnnouncements(@i)">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@* @model (List<Announcement> Announcements, int CurrentPage, int TotalPages)
+
+@foreach (var item in Model.Announcements)
+{
+    <div class="col-lg-4 col-md-6">
+        <div class="announcement-card">
+            <span class="announcement-badge badge-@item.category.ToString().ToLower()">
+                @item.category
+            </span>
+            <div class="announcement-date">
+                <i class="bi bi-calendar3 me-2"></i>
+                @item.Date.ToString("dd MMM yyyy")
+            </div>
+            <h3 class="announcement-title">@item.Title</h3>
+            <p class="announcement-excerpt">
+                @(item.Content.Length > 120 ? item.Content.Substring(0, 120) + "..." : item.Content)
+            </p>
+            <div class="announcement-meta">
+                <div class="announcement-author">
+                    <div class="author-avatar">
+                        @(item.CreatedBy?.UserName != null && item.CreatedBy.UserName.Length > 0 ? item.CreatedBy.UserName[0].ToString() : "A")
+                    </div>
+                    <span class="author-name">@item.CreatedBy?.UserName</span>
+                </div>
+                <a asp-action="Details" asp-route-id="@item.Id" class="read-more-btn">اقرأ المزيد</a>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Announcements pagination" id="pagination">
+        <ul class="pagination pagination-custom justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="javascript:void(0);" onclick="loadAnnouncements(@i)">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+} *@

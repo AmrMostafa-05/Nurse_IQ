@@ -1,0 +1,175 @@
+﻿@using Nurse_IQ.Enums.Announcement
+@{
+    ViewData["Title"] = "الإعلانات";
+    var categories = (ViewBag.Categories as IEnumerable<Category>)?.ToList();
+}
+<link rel="stylesheet" href="~/css/announcements.css" />
+
+ <!-- Hero -->
+<section class="page-banner bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-4 text-white">الإعلانات المهمة</h1>
+                <p class="lead mb-4 text-white-50">ابق على اطلاع بآخر الأخبار والإعلانات المهمة</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-megaphone display-1 text-white-50"></i>
+            </div>
+
+        </div>
+    </div>
+</section> 
+<!-- Filters + Search -->
+ <section class="filters-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 d-flex flex-wrap gap-2">
+                <button class="filter-btn active" data-category="">جميع الإعلانات</button>
+                @foreach (var cat in categories!)
+                {
+                    <button class="filter-btn" data-category="@cat">@cat</button>
+                }
+            </div>
+            <div class="col-lg-4">
+                <input type="text" id="searchBox" class="search-box" placeholder="ابحث في الإعلانات..." />
+            </div>
+        </div>
+    </div>
+</section>  
+<!-- Announcements -->
+<section class="py-5">
+    <div class="container">
+        <div id="announcementsContainer" class="row g-4"></div>
+        <div id="paginationContainer" class="row mt-5"></div>
+    </div>
+</section>
+    @section Scripts {
+<script>
+    let currentCategory = "";
+
+    // تحميل الإعلانات (بحث + تصفية + ترقيم صفحات)
+    async function loadAnnouncements(page = 1) {
+        const search = document.getElementById("searchBox").value;
+
+        const response = await fetch(`/Announcement/GetAnnouncements?search=${search}&category=${currentCategory}&page=${page}`);
+        const html = await response.text();
+
+        document.getElementById("announcementsContainer").innerHTML = html;
+
+        const pagination = document.getElementById("pagination");
+        if (pagination) {
+            document.getElementById("paginationContainer").innerHTML = pagination.outerHTML;
+        }
+    }
+
+    // البحث
+    document.getElementById("searchBox").addEventListener("input", () => loadAnnouncements());
+
+    // أزرار الفلترة
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            currentCategory = btn.getAttribute("data-category");
+            loadAnnouncements();
+        });
+    });
+
+    // تحميل التفاصيل في مودال
+    async function loadAnnouncementDetails(id) {
+        const response = await fetch(`/Announcement/Details/${id}`);
+        const html = await response.text();
+
+        const modalContainer = document.createElement("div");
+        modalContainer.innerHTML = html;
+        document.body.appendChild(modalContainer);
+
+        const modal = new bootstrap.Modal(document.getElementById("announcementModal"));
+        modal.show();
+
+        document.getElementById("announcementModal")
+            .addEventListener("hidden.bs.modal", () => modalContainer.remove());
+    }
+
+    // تشغيل أول تحميل
+    document.addEventListener("DOMContentLoaded", () => loadAnnouncements());
+</script>
+}
+
+
+
+
+@* 
+@{
+    ViewData["Title"] = "الإعلانات";
+}
+
+<link rel="stylesheet" href="~/css/announcements.css" />
+
+<section class="announcements-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-4 text-white">الإعلانات المهمة</h1>
+                <p class="lead mb-4 text-white-50">ابق على اطلاع بآخر الأخبار والإعلانات المهمة</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-megaphone display-1 text-white-50"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filters + Search -->
+<section class="filters-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 d-flex flex-wrap gap-2">
+                <select id="categoryFilter" class="form-select w-auto">
+                    <option value="">جميع الإعلانات</option>
+                    @foreach (var cat in Enum.GetValues(typeof(Nurse_IQ.Enums.Announcement.Category)))
+                    {
+                        <option value="@cat">@cat</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-4">
+                <input type="text" id="searchBox" class="search-box" placeholder="ابحث في الإعلانات..." />
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Announcements -->
+<section class="py-5">
+    <div class="container">
+        <div id="announcementsContainer" class="row g-4"></div>
+        <div id="paginationContainer" class="row mt-5"></div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        async function loadAnnouncements(page = 1) {
+            const search = document.getElementById("searchBox").value;
+            const category = document.getElementById("categoryFilter").value;
+
+            const response = await fetch(`/Announcement/GetAnnouncements?search=${search}&category=${category}&page=${page}`);
+            const html = await response.text();
+
+            document.getElementById("announcementsContainer").innerHTML = html;
+
+            // pagination
+            const pagination = document.getElementById("pagination");
+            if (pagination) {
+                document.getElementById("paginationContainer").innerHTML = pagination.outerHTML;
+            }
+        }
+
+        document.getElementById("searchBox").addEventListener("input", () => loadAnnouncements());
+        document.getElementById("categoryFilter").addEventListener("change", () => loadAnnouncements());
+
+        document.addEventListener("DOMContentLoaded", () => loadAnnouncements());
+    </script>
+} *@

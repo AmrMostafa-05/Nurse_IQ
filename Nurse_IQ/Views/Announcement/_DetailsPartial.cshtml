@@ -1,0 +1,51 @@
+﻿@model Announcement
+
+<div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="announcementModalLabel">@Model.Title</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span class="announcement-badge badge-@Model.category.ToString().ToLower()">
+                    @Model.category
+                </span>
+
+                <div class="announcement-date mb-3">
+                    <i class="bi bi-calendar3 me-2"></i>
+                    @Model.Date.ToString("dd MMM yyyy")
+                </div>
+
+                <div class="announcement-author mb-4 d-flex align-items-center">
+                    <div class="author-avatar">
+                        @(string.IsNullOrEmpty(Model.CreatedBy?.UserName) ? "A" : Model.CreatedBy.UserName.First().ToString())
+                    </div>
+                    <span class="author-name">@Model.CreatedBy?.UserName</span>
+                </div>
+
+                <div class="announcement-content">
+                    <p>@Html.Raw(Model.Content)</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@* @model Announcement
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="fw-bold text-primary mb-3">@Model.Title</h1>
+        <p class="text-muted">@Model.Date.ToString("dd MMM yyyy")</p>
+        <div class="mb-3">
+            <img src="@Model.AdminImageUrl" class="rounded shadow" alt="Admin" style="max-height:100px;" />
+        </div>
+        <p>@Model.Content</p>
+    </div>
+</section> *@

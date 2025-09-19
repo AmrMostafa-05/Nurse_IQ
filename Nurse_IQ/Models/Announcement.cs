@@ -1,4 +1,6 @@
-﻿namespace Nurse_IQ.Models
+﻿using Nurse_IQ.Enums.Announcement;
+
+namespace Nurse_IQ.Models
 {
     public class Announcement
     {
@@ -7,7 +9,7 @@
         public string Content { get; set; }
         public DateTime Date { get; set; }
 
-        public string category { get; set; }
+        public Category category { get; set; }
         
         public string AdminImageUrl { get; set; }
 

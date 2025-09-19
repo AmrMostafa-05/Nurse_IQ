@@ -1,0 +1,85 @@
+﻿@model Lecture
+
+<section class="lecture-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Course" asp-action="Index">المواد الدراسية</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Course" asp-action="CourseDetail" asp-route-id="@Model.CourseId">@Model.Course?.Name</a></li>
+                <li class="breadcrumb-item active">@Model.Title</li>
+            </ol>
+        </nav>
+
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">@Model.Title</h1>
+                <p class="lead mb-0">@Model.smallDescription</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="progress-circle">
+                    <div class="progress-text"><span id="progressPercent">0</span>%</div>
+                </div>
+                <p class="mb-0">التقدم في المادة</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Video and Description -->
+        <div class="col-lg-8">
+            <div class="video-container mb-4">
+                <div class="ratio ratio-16x9">
+                    <iframe src="@Model.videoUrl" title="@Model.Title" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="lecture-info mb-4">
+                <h5><i class="bi bi-info-circle me-2"></i>وصف المحاضرة</h5>
+                <p>@Model.bigDescription</p>
+            </div>
+
+            @if (Model.Materials?.Any() == true)
+            {
+                <div class="materials-section">
+                    <h5><i class="bi bi-file-earmark me-2"></i>المواد الإضافية</h5>
+                    @foreach (var material in Model.Materials)
+                    {
+                        <div class="material-item">
+                            <i class="bi bi-file-earmark-text me-2 text-primary"></i>
+                            <a href="@material.FileUrl" target="_blank">@material.FileName</a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="lecture-info mb-4">
+                <h6><i class="bi bi-clock me-2"></i>معلومات المحاضرة</h6>
+                <div class="info-item">
+                    <div class="info-icon"><i class="bi bi-clock"></i></div>
+                    <div><strong>المدة:</strong> @Model.duration</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon"><i class="bi bi-person"></i></div>
+                    <div><strong>المدرب:</strong> @Model.User?.Fname @Model.User?.Lname</div>
+                </div>
+            </div>
+
+            @if (Model.Quiz != null)
+            {
+                <div class="quiz-section">
+                    <h6><i class="bi bi-question-circle me-2"></i>اختبار المحاضرة</h6>
+                    <p>اختبر معرفتك بهذه المحاضرة</p>
+                    <a asp-controller="Quiz" asp-action="Index" asp-route-id="@Model.Quiz.Id" class="btn btn-quiz w-100">
+                        <i class="bi bi-play-circle me-2"></i>ابدأ الاختبار
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

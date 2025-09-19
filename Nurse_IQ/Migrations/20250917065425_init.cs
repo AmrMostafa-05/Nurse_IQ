@@ -92,7 +92,7 @@ namespace Nurse_IQ.Migrations
                     Title = table.Column<string>(type: "VARCHAR(150)", maxLength: 150, nullable: false),
                     Content = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime", nullable: false),
-                    category = table.Column<string>(type: "VARCHAR(150)", maxLength: 150, nullable: false),
+                    category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdminImageUrl = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false),
                     CreatedByAdminId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -331,7 +331,8 @@ namespace Nurse_IQ.Migrations
                     arabicName = table.Column<string>(type: "VARCHAR(55)", maxLength: 55, nullable: false),
                     englishName = table.Column<string>(type: "VARCHAR(55)", maxLength: 55, nullable: false),
                     latinName = table.Column<string>(type: "VARCHAR(55)", maxLength: 55, nullable: false),
-                    category = table.Column<string>(type: "VARCHAR(55)", maxLength: 55, nullable: false),
+                    definition = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false),
+                    category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     example = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     synonyms = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)

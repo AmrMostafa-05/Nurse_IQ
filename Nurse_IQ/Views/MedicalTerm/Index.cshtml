@@ -1,0 +1,1054 @@
+﻿@model List<Nurse_IQ.Enums.MedicalTerm.Category>
+@using Nurse_IQ.Enums.MedicalTerm
+<!-- Dictionary Header -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Title -->
+            <div class="col-md-8">
+                <h1 class="h2 fw-bold text-primary mb-2">القاموس الطبي</h1>
+                <p class="text-muted mb-0">قاموس شامل للمصطلحات الطبية والتمريضية</p>
+            </div>
+            <!-- Buttons -->
+            <div class="col-md-4 text-md-end">
+                <div class="d-flex gap-2 justify-content-md-end">
+                    <button class="btn btn-outline-primary" onclick="showAddTermModal()">
+                        <i class="bi bi-plus-circle me-2"></i> إضافة مصطلح
+                    </button>
+                    <button class="btn btn-primary" onclick="showSearchModal()">
+                        <i class="bi bi-search me-2"></i> بحث متقدم
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-book text-primary display-4 mb-3"></i>
+                            <h4 class="fw-bold">ابحث في القاموس الطبي</h4>
+                            <p class="text-muted">ابحث عن المصطلحات الطبية والتمريضية</p>
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="searchBox" placeholder="اكتب المصطلح الذي تبحث عنه..." onkeyup="searchTerms()">
+                            <button class="btn btn-primary" type="button" onclick="searchTerms()">
+                                <i class="bi bi-search me-2"></i>بحث
+                            </button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">أمثلة: قلب، رئة، ضغط الدم، سكري</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row text-center mb-4">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="fw-bold text-primary mb-3">فئات المصطلحات</h3>
+                <p class="text-muted">اختر الفئة التي تريد استكشافها</p>
+            </div>
+        </div>
+        <div class="row g-3">
+            @foreach (var cat in Model)
+            {
+                string iconClass = cat.ToString() switch
+                {
+                    "Cardiology" => "bi-heart-pulse text-danger",
+                    "Respiratory" => "bi-lungs text-info",
+                    "Neurology" => "bi-brain text-warning",
+                    "Hematology" => "bi-droplet text-success",
+                    _ => "bi-book text-primary"
+                };
+                string btnClass = cat.ToString() switch
+                {
+                    "Cardiology" => "btn-outline-danger",
+                    "Respiratory" => "btn-outline-info",
+                    "Neurology" => "btn-outline-warning",
+                    "Hematology" => "btn-outline-success",
+                    _ => "btn-outline-primary"
+                };
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <i class="bi @iconClass display-4 mb-3"></i>
+                            <h5 class="card-title">@cat</h5>
+                            <p class="card-text text-muted">مصطلحات @cat</p>
+                            <button class="btn @btnClass filter-btn" data-category="@cat" onclick="filterByCategory('@cat')">
+                                عرض المصطلحات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Terms List -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Terms Grid -->
+                <div class="row g-4" id="termsContainer"></div>
+
+                <!-- Pagination -->
+                <div class="text-center mt-4" id="paginationContainer">
+                    <button class="btn btn-outline-primary btn-lg" onclick="loadMoreTerms()" id="loadMoreBtn">
+                        <i class="bi bi-arrow-down me-2"></i>تحميل المزيد
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Quick Search -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">بحث سريع</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">ابحث حسب الحرف</label>
+                            <div class="d-flex flex-wrap gap-1 quick-search-btn-container">
+                                @foreach (var letter in "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".ToCharArray())
+                                {
+                                    <button class="btn btn-sm btn-outline-primary quick-search-btn" onclick="searchByLetter('@letter')">@letter</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Terms -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">آخر المصطلحات المضافة</h6>
+                    </div>
+                    <div class="card-body" id="recentTerms">
+                        <!-- Recent terms will be loaded dynamically if needed -->
+                    </div>
+                </div>
+
+                <!-- Dictionary Statistics -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">إحصائيات القاموس</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="p-3 bg-primary bg-opacity-10 rounded">
+                                    <div class="fw-bold text-primary" id="totalTerms">0</div>
+                                    <small class="text-muted">مصطلح</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="p-3 bg-success bg-opacity-10 rounded">
+                                    <div class="fw-bold text-success" id="totalCategories">0</div>
+                                    <small class="text-muted">فئة</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                    <div class="fw-bold text-warning" id="totalLanguages">0</div>
+                                    <small class="text-muted">لغة</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-info bg-opacity-10 rounded">
+                                    <div class="fw-bold text-info" id="newTerms">0</div>
+                                    <small class="text-muted">جديد</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let currentCategory = "";
+        let currentPage = 1;
+        let searchQuery = "";
+        let letterFilter = "";
+
+        async function loadTerms(page = 1) {
+            currentPage = page;
+            const url = `/MedicalTerm/GetTerms?search=${encodeURIComponent(searchQuery)}&category=${currentCategory}&page=${page}` +
+                        (letterFilter ? `&letter=${encodeURIComponent(letterFilter)}` : "");
+            const response = await fetch(url);
+            const html = await response.text();
+            document.getElementById("termsContainer").innerHTML = html;
+
+            const pagination = document.getElementById("pagination");
+            if (pagination) {
+                document.getElementById("paginationContainer").innerHTML = pagination.outerHTML;
+                document.getElementById("loadMoreBtn").style.display = "none";
+            } else {
+                document.getElementById("loadMoreBtn").style.display = "block";
+            }
+        }
+
+        function searchTerms() {
+            searchQuery = document.getElementById("searchBox").value;
+            letterFilter = "";
+            currentPage = 1;
+            loadTerms();
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            letterFilter = "";
+            currentPage = 1;
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            const btn = document.querySelector(`.filter-btn[data-category="${category}"]`);
+            if (btn) btn.classList.add("active");
+            loadTerms();
+        }
+
+        function searchByLetter(letter) {
+            letterFilter = letter;
+            searchQuery = "";
+            currentPage = 1;
+            loadTerms();
+        }
+
+        function loadMoreTerms() {
+            loadTerms(currentPage + 1);
+        }
+
+        async function loadDetails(id) {
+            const response = await fetch(`/MedicalTerm/Details?id=${id}`);
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "termDetailsModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+        }
+
+        async function showAddTermModal() {
+            const response = await fetch("/MedicalTerm/AddForm");
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "addTermModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+
+            const form = modal.querySelector("#addTermForm");
+            if (form) {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const token = document.querySelector("input[name='__RequestVerificationToken']");
+                    if (token) formData.append("__RequestVerificationToken", token.value);
+                    const response = await fetch("/MedicalTerm/Add", {
+                        method: "POST",
+                        body: formData
+                    });
+                    if (response.ok) {
+                        bsModal.hide();
+                        loadTerms(1);
+                        window.location.href = "/MedicalTerm/Index";
+                    } else {
+                        const errorText = await response.text();
+                        alert("خطأ أثناء إضافة المصطلح: " + errorText);
+                    }
+                });
+            }
+        }
+
+        async function showSearchModal() {
+            const response = await fetch("/MedicalTerm/AdvancedSearchForm");
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "advancedSearchModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+
+            const form = modal.querySelector("#advancedSearchForm");
+            if (form) {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    searchQuery = formData.get("searchTerm") || "";
+                    currentCategory = formData.get("category") || "";
+                    letterFilter = formData.get("letter") || "";
+                    currentPage = 1;
+                    loadTerms();
+                    bsModal.hide();
+                });
+            }
+        }
+
+        async function loadStats() {
+            const response = await fetch("/MedicalTerm/GetDictionaryStats");
+            if (response.ok) {
+                const stats = await response.json();
+                document.getElementById("totalTerms").textContent = stats.TotalTerms;
+                document.getElementById("totalCategories").textContent = stats.TotalCategories;
+                document.getElementById("totalLanguages").textContent = stats.TotalLanguages;
+                document.getElementById("newTerms").textContent = stats.NewTerms;
+            } else {
+                console.error("Failed to load stats");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadTerms();
+            loadStats();
+        });
+    </script>
+}
+@* @using Nurse_IQ.Enums.MedicalTerm
+
+
+<!-- Dictionary Header -->
+<section class="page-banner bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h2 fw-bold text-white mb-2">القاموس الطبي</h1>
+                <p class="text-white opacity-75 mb-0">قاموس شامل للمصطلحات الطبية والتمريضية</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-flex gap-2 justify-content-md-end">
+                    <button class="btn btn-outline-light" onclick="showAddTermModal()">
+                        <i class="bi bi-plus-circle me-2"></i>إضافة مصطلح
+                    </button>
+                    <button class="btn btn-light text-primary" onclick="showSearchModal()">
+                        <i class="bi bi-search me-2"></i>بحث متقدم
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-book text-primary display-4 mb-3"></i>
+                            <h4 class="fw-bold">ابحث في القاموس الطبي</h4>
+                            <p class="text-muted">ابحث عن المصطلحات الطبية والتمريضية</p>
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="searchBox" placeholder="اكتب المصطلح الذي تبحث عنه..." onkeyup="searchTerms()">
+                            <button class="btn btn-primary" type="button" onclick="searchTerms()">
+                                <i class="bi bi-search me-2"></i>بحث
+                            </button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">أمثلة: قلب، رئة، ضغط الدم، سكري</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row text-center mb-4">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="fw-bold text-primary mb-3">فئات المصطلحات</h3>
+                <p class="text-muted">اختر الفئة التي تريد استكشافها</p>
+            </div>
+        </div>
+        <div class="row g-3">
+            @foreach (var cat in Enum.GetValues(typeof(Category)))
+            {
+                string iconClass = cat.ToString() switch
+                {
+                    "Cardiology" => "bi-heart-pulse text-danger",
+                    "Respiratory" => "bi-lungs text-info",
+                    "Neurology" => "bi-brain text-warning",
+                    "Hematology" => "bi-droplet text-success",
+                    _ => "bi-book text-primary"
+                };
+                string btnClass = cat.ToString() switch
+                {
+                    "Cardiology" => "btn-outline-danger",
+                    "Respiratory" => "btn-outline-info",
+                    "Neurology" => "btn-outline-warning",
+                    "Hematology" => "btn-outline-success",
+                    _ => "btn-outline-primary"
+                };
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <i class="bi @iconClass display-4 mb-3"></i>
+                            <h5 class="card-title">@cat</h5>
+                            <p class="card-text text-muted">مصطلحات @cat</p>
+                            <button class="btn @btnClass filter-btn" data-category="@cat" onclick="filterByCategory('@cat')">
+                                عرض المصطلحات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Terms List -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Terms Grid -->
+                <div class="row g-4" id="termsContainer"></div>
+
+                <!-- Pagination -->
+                <div class="text-center mt-4" id="paginationContainer">
+                    <button class="btn btn-outline-primary btn-lg" onclick="loadMoreTerms()" id="loadMoreBtn">
+                        <i class="bi bi-arrow-down me-2"></i>تحميل المزيد
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Quick Search -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">بحث سريع</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">ابحث حسب الحرف</label>
+                            <div class="d-flex flex-wrap gap-1 quick-search-btn-container">
+                                @foreach (var letter in "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".ToCharArray())
+                                {
+                                    <button class="btn btn-sm btn-outline-primary quick-search-btn" onclick="searchByLetter('@letter')">@letter</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Terms -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">آخر المصطلحات المضافة</h6>
+                    </div>
+                    <div class="card-body" id="recentTerms">
+                        <!-- Recent terms will be loaded dynamically if needed -->
+                    </div>
+                </div>
+
+                <!-- Dictionary Statistics -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">إحصائيات القاموس</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="p-3 bg-primary bg-opacity-10 rounded">
+                                    <div class="fw-bold text-primary" id="totalTerms">0</div>
+                                    <small class="text-muted">مصطلح</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="p-3 bg-success bg-opacity-10 rounded">
+                                    <div class="fw-bold text-success" id="totalCategories">0</div>
+                                    <small class="text-muted">فئة</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                    <div class="fw-bold text-warning" id="totalLanguages">0</div>
+                                    <small class="text-muted">لغة</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-info bg-opacity-10 rounded">
+                                    <div class="fw-bold text-info" id="newTerms">0</div>
+                                    <small class="text-muted">جديد</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let currentCategory = "";
+        let currentPage = 1;
+        let searchQuery = "";
+        let letterFilter = "";
+
+        async function loadTerms(page = 1) {
+            currentPage = page;
+            const url = `/MedicalTerm/GetTerms?search=${encodeURIComponent(searchQuery)}&category=${currentCategory}&page=${page}` +
+                        (letterFilter ? `&letter=${encodeURIComponent(letterFilter)}` : "");
+            const response = await fetch(url);
+            const html = await response.text();
+            document.getElementById("termsContainer").innerHTML = html;
+
+            const pagination = document.getElementById("pagination");
+            if (pagination) {
+                document.getElementById("paginationContainer").innerHTML = pagination.outerHTML;
+                document.getElementById("loadMoreBtn").style.display = "none";
+            } else {
+                document.getElementById("loadMoreBtn").style.display = "block";
+            }
+        }
+
+        function searchTerms() {
+            searchQuery = document.getElementById("searchBox").value;
+            letterFilter = "";
+            currentPage = 1;
+            loadTerms();
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            letterFilter = "";
+            currentPage = 1;
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            const btn = document.querySelector(`.filter-btn[data-category="${category}"]`);
+            if (btn) btn.classList.add("active");
+            loadTerms();
+        }
+
+        function searchByLetter(letter) {
+            letterFilter = letter;
+            searchQuery = "";
+            currentPage = 1;
+            loadTerms();
+        }
+
+        function loadMoreTerms() {
+            loadTerms(currentPage + 1);
+        }
+
+        async function loadDetails(id) {
+            const response = await fetch(`/MedicalTerm/Details?id=${id}`);
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "termDetailsModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+        }
+
+        async function showAddTermModal() {
+            const response = await fetch("/MedicalTerm/AddForm");
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "addTermModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+
+            const form = modal.querySelector("#addTermForm");
+            if (form) {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const token = document.querySelector("input[name='__RequestVerificationToken']");
+                    if (token) formData.append("__RequestVerificationToken", token.value);
+                    const response = await fetch("/MedicalTerm/Add", {
+                        method: "POST",
+                        body: formData
+                    });
+                    if (response.ok) {
+                        bsModal.hide();
+                        loadTerms(1);
+                        window.location.href = "/MedicalTerm/Index";
+                    } else {
+                        const errorText = await response.text();
+                        alert("خطأ أثناء إضافة المصطلح: " + errorText);
+                    }
+                });
+            }
+        }
+
+        async function showSearchModal() {
+            const response = await fetch("/MedicalTerm/AdvancedSearchForm");
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "advancedSearchModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+
+            const form = modal.querySelector("#advancedSearchForm");
+            if (form) {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    searchQuery = formData.get("searchTerm") || "";
+                    currentCategory = formData.get("category") || "";
+                    letterFilter = formData.get("letter") || "";
+                    currentPage = 1;
+                    loadTerms();
+                    bsModal.hide();
+                });
+            }
+        }
+
+        async function loadStats() {
+            const response = await fetch("/MedicalTerm/GetDictionaryStats");
+            if (response.ok) {
+                const stats = await response.json();
+                document.getElementById("totalTerms").textContent = stats.TotalTerms;
+                document.getElementById("totalCategories").textContent = stats.TotalCategories;
+                document.getElementById("totalLanguages").textContent = stats.TotalLanguages;
+                document.getElementById("newTerms").textContent = stats.NewTerms;
+            } else {
+                console.error("Failed to load stats");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadTerms();
+            loadStats();
+        });
+    </script>
+} *@
+@* }
+@using Nurse_IQ.Enums.MedicalTerm
+
+<!-- Dictionary Header -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h2 fw-bold text-primary mb-2">القاموس الطبي</h1>
+                <p class="text-muted mb-0">قاموس شامل للمصطلحات الطبية والتمريضية</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="d-flex gap-2 justify-content-md-end">
+                    <button class="btn btn-outline-primary" onclick="showAddTermModal()">
+                        <i class="bi bi-plus-circle me-2"></i>إضافة مصطلح
+                    </button>
+                    <button class="btn btn-primary" onclick="showSearchModal()">
+                        <i class="bi bi-search me-2"></i>بحث متقدم
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-book text-primary display-4 mb-3"></i>
+                            <h4 class="fw-bold">ابحث في القاموس الطبي</h4>
+                            <p class="text-muted">ابحث عن المصطلحات الطبية والتمريضية</p>
+                        </div>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" id="searchBox" placeholder="اكتب المصطلح الذي تبحث عنه..." onkeyup="searchTerms()">
+                            <button class="btn btn-primary" type="button" onclick="searchTerms()">
+                                <i class="bi bi-search me-2"></i>بحث
+                            </button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">أمثلة: قلب، رئة، ضغط الدم، سكري</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row text-center mb-4">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="fw-bold text-primary mb-3">فئات المصطلحات</h3>
+                <p class="text-muted">اختر الفئة التي تريد استكشافها</p>
+            </div>
+        </div>
+        <div class="row g-3">
+            @foreach (var cat in Enum.GetValues(typeof(Category)))
+            {
+                string iconClass = cat.ToString() switch
+                {
+                    "Cardiology" => "bi-heart-pulse text-danger",
+                    "Respiratory" => "bi-lungs text-info",
+                    "Neurology" => "bi-brain text-warning",
+                    "Hematology" => "bi-droplet text-success",
+                    _ => "bi-book text-primary"
+                };
+                string btnClass = cat.ToString() switch
+                {
+                    "Cardiology" => "btn-outline-danger",
+                    "Respiratory" => "btn-outline-info",
+                    "Neurology" => "btn-outline-warning",
+                    "Hematology" => "btn-outline-success",
+                    _ => "btn-outline-primary"
+                };
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 shadow-sm h-100 text-center">
+                        <div class="card-body p-4">
+                            <i class="bi @iconClass display-4 mb-3"></i>
+                            <h5 class="card-title">@cat</h5>
+                            <p class="card-text text-muted">مصطلحات @cat</p>
+                            <button class="btn @btnClass filter-btn" data-category="@cat" onclick="filterByCategory('@cat')">
+                                عرض المصطلحات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Terms List -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Terms Grid -->
+                <div class="row g-4" id="termsContainer"></div>
+
+                <!-- Pagination -->
+                <div class="text-center mt-4" id="paginationContainer">
+                    <button class="btn btn-outline-primary btn-lg" onclick="loadMoreTerms()" id="loadMoreBtn">
+                        <i class="bi bi-arrow-down me-2"></i>تحميل المزيد
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Quick Search -->
+                <!-- Quick Search -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">بحث سريع</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">ابحث حسب الحرف</label>
+                            <div class="d-flex flex-wrap gap-1 quick-search-btn-container">
+                                @foreach (var letter in "أبتثجحخدذرزسشصضطظعغفقكلمنهوي".ToCharArray())
+                                {
+                                    <button class="btn btn-sm btn-outline-primary quick-search-btn" onclick="searchByLetter('@letter')">@letter</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Terms -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">آخر المصطلحات المضافة</h6>
+                    </div>
+                    <div class="card-body" id="recentTerms">
+                        <!-- Recent terms will be loaded dynamically if needed -->
+                    </div>
+                </div>
+
+                <!-- Dictionary Statistics -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0">
+                        <h6 class="mb-0 fw-bold">إحصائيات القاموس</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <div class="p-3 bg-primary bg-opacity-10 rounded">
+                                    <div class="fw-bold text-primary" id="totalTerms">500</div>
+                                    <small class="text-muted">مصطلح</small>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <div class="p-3 bg-success bg-opacity-10 rounded">
+                                    <div class="fw-bold text-success" id="totalCategories">15</div>
+                                    <small class="text-muted">فئة</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                    <div class="fw-bold text-warning" id="totalLanguages">3</div>
+                                    <small class="text-muted">لغة</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 bg-info bg-opacity-10 rounded">
+                                    <div class="fw-bold text-info" id="newTerms">25</div>
+                                    <small class="text-muted">جديد</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let currentCategory = "";
+        let currentPage = 1;
+        let searchQuery = "";
+        let letterFilter = "";
+
+        async function loadTerms(page = 1) {
+            currentPage = page;
+            const response = await fetch(`/MedicalTerm/GetTerms?search=${searchQuery}&category=${currentCategory}&page=${page}`);
+            const html = await response.text();
+            document.getElementById("termsContainer").innerHTML = html;
+
+            const pagination = document.getElementById("pagination");
+            if (pagination) {
+                document.getElementById("paginationContainer").innerHTML = pagination.outerHTML;
+                document.getElementById("loadMoreBtn").style.display = "none";
+            } else {
+                document.getElementById("loadMoreBtn").style.display = "block";
+            }
+        }
+
+        function searchTerms() {
+            searchQuery = document.getElementById("searchBox").value;
+            currentPage = 1;
+            loadTerms();
+        }
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            currentPage = 1;
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            const btn = document.querySelector(`.filter-btn[data-category="${category}"]`);
+            if (btn) btn.classList.add("active");
+            loadTerms();
+        }
+
+        function searchByLetter(letter) {
+            searchQuery = letter;
+            currentPage = 1;
+            loadTerms();
+        }
+
+        function loadMoreTerms() {
+            loadTerms(currentPage + 1);
+        }
+
+        async function loadDetails(id) {
+            const response = await fetch(`/MedicalTerm/Details?id=${id}`);
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "termDetailsModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+        }
+
+        async function showAddTermModal() {
+            const response = await fetch("/MedicalTerm/AddForm");
+            const html = await response.text();
+            const modal = document.createElement("div");
+            modal.className = "modal fade";
+            modal.id = "addTermModal";
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">${html}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+            modal.addEventListener("hidden.bs.modal", () => modal.remove());
+
+            // Attach form submission handler
+            const form = modal.querySelector("#addTermForm");
+            if (form) {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const response = await fetch("/MedicalTerm/Add", {
+                        method: "POST",
+                        body: formData
+                    });
+                    if (response.ok) {
+                        bsModal.hide();
+                        loadTerms(1); // Refresh the terms list
+                        window.location.href = "/MedicalTerm/Index"; // Redirect to index
+                    } else {
+                        const errorText = await response.text();
+                        alert("خطأ أثناء إضافة المصطلح: " + errorText);
+                    }
+                });
+            }
+        }
+
+        function showSearchModal() {
+            // Implement advanced search modal
+            alert("بحث متقدم: يتطلب تنفيذ واجهة المستخدم ونقطة نهاية في الخلفية");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadTerms();
+            // Optionally load recent terms dynamically via an API call
+        });
+    </script>
+}
+ *@
+
+
+
+@* @using Nurse_IQ.Enums.MedicalTerm
+
+<!-- Page Banner -->
+<section class="page-banner bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">القاموس الطبي</h1>
+                <p class="lead">ابحث وتعلم أهم المصطلحات الطبية مع الشرح والمرادفات</p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <i class="bi bi-book-half display-1 text-white opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5">
+    <!-- Search -->
+    <input type="text" id="searchBox" class="form-control mb-4" placeholder="ابحث في القاموس...">
+
+    <!-- Filter Buttons -->
+    <div class="mb-4 text-center">
+        <button class="btn btn-outline-primary filter-btn active" data-category="">جميع المصطلحات</button>
+        @foreach (var cat in Enum.GetValues(typeof(Category)))
+        {
+            <button class="btn btn-outline-primary filter-btn" data-category="@cat">@cat</button>
+        }
+    </div>
+
+    <!-- Results -->
+    <div id="termsContainer" class="row gy-4"></div>
+    <div id="paginationContainer" class="mt-4"></div>
+</div>
+
+@section Scripts {
+    <script>
+        let currentCategory = "";
+
+        async function loadTerms(page = 1) {
+            const search = document.getElementById("searchBox").value;
+
+            const response = await fetch(`/Dictionary/GetTerms?search=${search}&category=${currentCategory}&page=${page}`);
+            const html = await response.text();
+
+            document.getElementById("termsContainer").innerHTML = html;
+
+            const pagination = document.getElementById("pagination");
+            if (pagination) {
+                document.getElementById("paginationContainer").innerHTML = pagination.outerHTML;
+            }
+        }
+
+        document.getElementById("searchBox").addEventListener("input", () => loadTerms());
+
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentCategory = btn.getAttribute("data-category");
+                loadTerms();
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => loadTerms());
+    </script>
+} *@

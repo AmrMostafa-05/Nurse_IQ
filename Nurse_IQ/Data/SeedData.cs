@@ -134,7 +134,7 @@ namespace Nurse_IQ.Data
                 Title = "Welcome",
                 Content = "Welcome to NursingIQ!",
                 Date = new DateTime(2025, 9, 13),
-                category = "General",
+                //category = "General",
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             },
@@ -144,7 +144,7 @@ namespace Nurse_IQ.Data
                 Title = "New Courses",
                 Content = "We have launched new nursing courses",
                 Date = new DateTime(2025, 5, 10),
-                category = "Update",
+                //category = "Update",
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             }
@@ -266,7 +266,7 @@ namespace Nurse_IQ.Data
                 arabicName = "قلب",
                 englishName = "Heart",
                 latinName = "Cor",
-                category = "Anatomy",
+                //category = "Anatomy",
                 example = "The heart pumps blood",
                 synonyms = new List<string> { "Cardiac", "Cardio" },
                 UserId = 2
@@ -277,7 +277,7 @@ namespace Nurse_IQ.Data
                 arabicName = "رئة",
                 englishName = "Lung",
                 latinName = "Pulmo",
-                category = "Anatomy",
+                //category = "Anatomy",
                 example = "The lung helps breathing",
                 synonyms = new List<string> { "Pulmonary" },
                 UserId = 2

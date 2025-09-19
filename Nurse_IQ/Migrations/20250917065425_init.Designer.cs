@@ -12,7 +12,7 @@ using Nurse_IQ.Data;
 namespace Nurse_IQ.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250913054634_init")]
+    [Migration("20250917065425_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -189,8 +189,7 @@ namespace Nurse_IQ.Migrations
 
                     b.Property<string>("category")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -567,7 +566,11 @@ namespace Nurse_IQ.Migrations
 
                     b.Property<string>("category")
                         .IsRequired()
-                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("definition")
+                        .IsRequired()
+                        .HasMaxLength(255)
                         .HasColumnType("VARCHAR");
 
                     b.Property<string>("englishName")

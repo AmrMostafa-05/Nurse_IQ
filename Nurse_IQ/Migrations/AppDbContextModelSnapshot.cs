@@ -186,8 +186,7 @@ namespace Nurse_IQ.Migrations
 
                     b.Property<string>("category")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -564,7 +563,11 @@ namespace Nurse_IQ.Migrations
 
                     b.Property<string>("category")
                         .IsRequired()
-                        .HasMaxLength(55)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("definition")
+                        .IsRequired()
+                        .HasMaxLength(255)
                         .HasColumnType("VARCHAR");
 
                     b.Property<string>("englishName")

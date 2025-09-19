@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nurse_IQ.Models;
 
@@ -23,10 +23,10 @@ namespace Nurse_IQ.Data.Config
                  .HasColumnType("datetime")
                  .IsRequired();
 
-            builder.Property(a => a.category)
-                   .HasColumnType("VARCHAR")
-                   .HasMaxLength(150).IsRequired();
-
+            builder.Property(x => x.category)
+                  .HasConversion<string>()
+                  .IsRequired();
+      
             builder.Property(a => a.AdminImageUrl)
                    .HasColumnType("VARCHAR")
                    .HasMaxLength(255).IsRequired();

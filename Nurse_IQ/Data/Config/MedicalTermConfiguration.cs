@@ -14,6 +14,10 @@ namespace Nurse_IQ.Data.Config
                .HasColumnType("VARCHAR")
                .HasMaxLength(55).IsRequired();
 
+            builder.Property(mt => mt.definition)
+               .HasColumnType("VARCHAR")
+               .HasMaxLength(255).IsRequired();
+
 
             builder.Property(mt => mt.englishName)
                .HasColumnType("VARCHAR")
@@ -24,9 +28,10 @@ namespace Nurse_IQ.Data.Config
                .HasColumnType("VARCHAR")
                .HasMaxLength(55).IsRequired();
 
-            builder.Property(mt => mt.category)
-                  .HasColumnType("VARCHAR")
-               .HasMaxLength(55).IsRequired();
+
+            builder.Property(x => x.category)
+            .HasConversion<string>()
+            .IsRequired();
 
             builder.Property(mt => mt.example)
                    .HasColumnType("nvarchar(max)");

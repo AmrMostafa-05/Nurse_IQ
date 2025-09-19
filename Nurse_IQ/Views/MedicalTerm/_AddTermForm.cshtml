@@ -1,0 +1,153 @@
+﻿@model Nurse_IQ.Models.MedicalTerm
+@using Nurse_IQ.Enums.MedicalTerm
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold">إضافة مصطلح طبي جديد</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="addTermForm" asp-antiforgery="true">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label for="englishName" class="form-label fw-bold text-primary">الاسم بالإنجليزية</label>
+                    <input type="text" class="form-control" id="englishName" name="EnglishName" required placeholder="أدخل الاسم بالإنجليزية">
+                </div>
+                <div class="mb-3">
+                    <label for="arabicName" class="form-label fw-bold text-primary">الاسم بالعربية</label>
+                    <input type="text" class="form-control" id="arabicName" name="ArabicName" required placeholder="أدخل الاسم بالعربية">
+                </div>
+                <div class="mb-3">
+                    <label for="latinName" class="form-label fw-bold text-primary">الاسم اللاتيني</label>
+                    <input type="text" class="form-control" id="latinName" name="LatinName" required placeholder="أدخل الاسم اللاتيني">
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label fw-bold text-primary">التصنيف</label>
+                    <select class="form-select" id="category" name="Category" required>
+                        <option value="" disabled selected>اختر التصنيف</option>
+                        @foreach (var cat in Enum.GetValues(typeof(Category)))
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="definition" class="form-label fw-bold text-primary">التعريف</label>
+                    <textarea class="form-control" id="definition" name="Definition" required rows="4" placeholder="أدخل تعريف المصطلح"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="example" class="form-label fw-bold text-primary">مثال</label>
+                    <textarea class="form-control" id="example" name="Example" rows="3" placeholder="أدخل مثال للمصطلح (اختياري)"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="synonyms" class="form-label fw-bold text-primary">مرادفات (اختياري)</label>
+                    <div id="synonymsContainer">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" name="Synonyms" placeholder="أدخل مرادف">
+                            <button type="button" class="btn btn-outline-danger" onclick="removeSynonym(this)">إزالة</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSynonymField()">إضافة مرادف آخر</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            <button type="submit" class="btn btn-primary">إضافة المصطلح</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function addSynonymField() {
+        const container = document.getElementById("synonymsContainer");
+        const newField = document.createElement("div");
+        newField.className = "input-group mb-2";
+        newField.innerHTML = `
+            <input type="text" class="form-control" name="Synonyms" placeholder="أدخل مرادف">
+            <button type="button" class="btn btn-outline-danger" onclick="removeSynonym(this)">إزالة</button>
+        `;
+        container.appendChild(newField);
+    }
+
+    function removeSynonym(button) {
+        if (document.querySelectorAll("#synonymsContainer .input-group").length > 1) {
+            button.parentElement.remove();
+        }
+    }
+</script>
+
+
+@* @model MedicalTerm
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold">إضافة مصطلح طبي جديد</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="addTermForm">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label for="englishName" class="form-label fw-bold text-primary">الاسم بالإنجليزية</label>
+                    <input type="text" class="form-control" id="englishName" name="EnglishName" required placeholder="أدخل الاسم بالإنجليزية">
+                </div>
+                <div class="mb-3">
+                    <label for="arabicName" class="form-label fw-bold text-primary">الاسم بالعربية</label>
+                    <input type="text" class="form-control" id="arabicName" name="ArabicName" required placeholder="أدخل الاسم بالعربية">
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label fw-bold text-primary">التصنيف</label>
+                    <select class="form-select" id="category" name="Category" required>
+                        <option value="" disabled selected>اختر التصنيف</option>
+                        @foreach (var cat in Enum.GetValues(typeof(Category)))
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="definition" class="form-label fw-bold text-primary">التعريف</label>
+                    <textarea class="form-control" id="definition" name="Definition" required rows="4" placeholder="أدخل تعريف المصطلح"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="example" class="form-label fw-bold text-primary">مثال</label>
+                    <textarea class="form-control" id="example" name="Example" rows="3" placeholder="أدخل مثال للمصطلح (اختياري)"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="synonyms" class="form-label fw-bold text-primary">مرادفات (اختياري)</label>
+                    <div id="synonymsContainer">
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control" name="Synonyms" placeholder="أدخل مرادف">
+                            <button type="button" class="btn btn-outline-danger" onclick="removeSynonym(this)">إزالة</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="addSynonymField()">إضافة مرادف آخر</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            <button type="submit" class="btn btn-primary">إضافة المصطلح</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function addSynonymField() {
+        const container = document.getElementById("synonymsContainer");
+        const newField = document.createElement("div");
+        newField.className = "input-group mb-2";
+        newField.innerHTML = `
+            <input type="text" class="form-control" name="Synonyms" placeholder="أدخل مرادف">
+            <button type="button" class="btn btn-outline-danger" onclick="removeSynonym(this)">إزالة</button>
+        `;
+        container.appendChild(newField);
+    }
+
+    function removeSynonym(button) {
+        if (document.querySelectorAll("#synonymsContainer .input-group").length > 1) {
+            button.parentElement.remove();
+        }
+    }
+</script> *@

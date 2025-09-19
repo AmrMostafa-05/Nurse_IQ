@@ -1,0 +1,376 @@
+﻿    <!-- Page Banner -->
+<section class="page-banner bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">متجر التمريض 🩺</h1>
+                <p class="lead mb-4" style" color : white;">كل ما تحتاجه في رحلتك التمريضية من أدوات وكتب ومواد تعليمية</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="#products" class="btn btn-light btn-lg">
+                        <i class="bi bi-shop me-2"></i>تسوق الآن
+                    </a>
+                    <a href="#categories" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-grid me-2"></i>استكشف الفئات
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="banner-illustration">
+                    <i class="bi bi-shop display-1 text-white opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Offers Banner -->
+<section class="py-3 bg-warning">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-megaphone-fill text-white fs-4 me-3"></i>
+                    <span class="text-white fw-bold">خصم 20% على جميع أدوات التمريض - عرض محدود!</span>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="#products" class="btn btn-light btn-sm">تسوق الآن</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section id="categories" class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-5 fw-bold text-primary mb-3">فئات المنتجات</h2>
+                <p class="lead text-muted">اختر من بين مجموعة متنوعة من المنتجات المخصصة لطلاب التمريض</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="category-card text-center p-4" onclick="filterProducts('tools')">
+                    <div class="category-icon bg-primary-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                        <i class="bi bi-tools text-primary fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">أدوات التمريض</h5>
+                    <p class="text-muted small">سماعات طبية، أجهزة قياس ضغط، أدوات معملية</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="category-card text-center p-4" onclick="filterProducts('books')">
+                    <div class="category-icon bg-success-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                        <i class="bi bi-book text-success fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">الكتب والمراجع</h5>
+                    <p class="text-muted small">كتب أساسيات التمريض، مراجعات امتحانات، مذكرات</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="category-card text-center p-4" onclick="filterProducts('uniforms')">
+                    <div class="category-icon bg-warning-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                        <i class="bi bi-person-badge text-warning fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">الزي الرسمي</h5>
+                    <p class="text-muted small">سكربات بألوان مختلفة، أحذية طبية مريحة</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="category-card text-center p-4" onclick="filterProducts('tech')">
+                    <div class="category-icon bg-info-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3">
+                        <i class="bi bi-laptop text-info fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">التكنولوجيا</h5>
+                    <p class="text-muted small">تطبيقات تعليمية، اشتراكات منصات، أدوات ذكية</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <h2 class="display-6 fw-bold text-primary">المنتجات المميزة</h2>
+            </div>
+            <div class="col-lg-4">
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="sortSelect">
+                        <option value="popular">الأكثر شعبية</option>
+                        <option value="newest">الأحدث</option>
+                        <option value="price-low">السعر: من الأقل للأعلى</option>
+                        <option value="price-high">السعر: من الأعلى للأقل</option>
+                    </select>
+                    <button class="btn btn-outline-primary" onclick="toggleFilters()">
+                        <i class="bi bi-funnel"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Stethoscope -->
+            <div class="col-lg-3 col-md-6" data-category="tools">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <div class="product-image position-relative">
+                        <img src="img/i1.jpg" class="card-img-top" alt="سماعة طبية">
+                        <div class="product-badges position-absolute top-0 start-0 p-2">
+                            <span class="badge bg-danger">خصم 15%</span>
+                        </div>
+                        <div class="product-actions position-absolute top-0 end-0 p-2">
+                            <button class="btn btn-light btn-sm rounded-circle" onclick="addToWishlist(1)">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold mb-2">سماعة طبية احترافية</h6>
+                        <p class="text-muted small mb-2">سماعة طبية عالية الجودة للممارسة السريرية</p>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="text-warning me-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <span class="text-muted small">(4.2)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-decoration-line-through text-muted small">500 جنيه</span>
+                                <span class="fw-bold text-primary ms-2">425 جنيه</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart(1)">
+                                <i class="bi bi-cart-plus me-1"></i>أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nursing Book -->
+            <div class="col-lg-3 col-md-6" data-category="books">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <div class="product-image position-relative">
+                        <img src="img/i2.jpg" class="card-img-top" alt="كتاب تمريض">
+                        <div class="product-badges position-absolute top-0 start-0 p-2">
+                            <span class="badge bg-success">الأكثر مبيعاً</span>
+                        </div>
+                        <div class="product-actions position-absolute top-0 end-0 p-2">
+                            <button class="btn btn-light btn-sm rounded-circle" onclick="addToWishlist(2)">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold mb-2">أساسيات التمريض</h6>
+                        <p class="text-muted small mb-2">دليل شامل لأساسيات التمريض والممارسة السريرية</p>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="text-warning me-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <span class="text-muted small">(4.8)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold text-primary">300 جنيه</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart(2)">
+                                <i class="bi bi-cart-plus me-1"></i>أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nursing Scrubs -->
+            <div class="col-lg-3 col-md-6" data-category="uniforms">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <div class="product-image position-relative">
+                        <img src="img/i3.jpg" class="card-img-top" alt="سكرب تمريض">
+                        <div class="product-badges position-absolute top-0 start-0 p-2">
+                            <span class="badge bg-info">جديد</span>
+                        </div>
+                        <div class="product-actions position-absolute top-0 end-0 p-2">
+                            <button class="btn btn-light btn-sm rounded-circle" onclick="addToWishlist(3)">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold mb-2">سكرب تمريض احترافي</h6>
+                        <p class="text-muted small mb-2">زي تمريض مريح وعملي للممارسة اليومية</p>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="text-warning me-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star"></i>
+                            </div>
+                            <span class="text-muted small">(4.1)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold text-primary">250 جنيه</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart(3)">
+                                <i class="bi bi-cart-plus me-1"></i>أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blood Pressure Monitor -->
+            <div class="col-lg-3 col-md-6" data-category="tools">
+                <div class="product-card card h-100 border-0 shadow-sm">
+                    <div class="product-image position-relative">
+                        <img src="img/i4.jpg" class="card-img-top" alt="جهاز قياس ضغط">
+                        <div class="product-badges position-absolute top-0 start-0 p-2">
+                            <span class="badge bg-warning">محدود</span>
+                        </div>
+                        <div class="product-actions position-absolute top-0 end-0 p-2">
+                            <button class="btn btn-light btn-sm rounded-circle" onclick="addToWishlist(4)">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-3">
+                        <h6 class="fw-bold mb-2">جهاز قياس ضغط الدم</h6>
+                        <p class="text-muted small mb-2">جهاز ديجيتال دقيق لقياس ضغط الدم</p>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="text-warning me-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <span class="text-muted small">(4.9)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-decoration-line-through text-muted small">800 جنيه</span>
+                                <span class="fw-bold text-primary ms-2">680 جنيه</span>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="addToCart(4)">
+                                <i class="bi bi-cart-plus me-1"></i>أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shopping Cart Sidebar -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="shoppingCart">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">سلة المشتريات</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div id="cartItems">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total mt-3 p-3 bg-light rounded">
+            <h6 class="fw-bold">المجموع: <span id="cartTotal">0 جنيه</span></h6>
+            <button class="btn btn-primary w-100 mt-2" onclick="checkout()">
+                <i class="bi bi-credit-card me-2"></i>إتمام الشراء
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Chatbot Button -->
+<button class="chatbot-btn" onclick="openChatbot()" title="الدردشة مع المساعد">
+    <i class="bi bi-chat-dots"></i>
+</button>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/language.js"></script>
+<script src="js/app.js"></script>
+<script>
+    let cart = [];
+    let wishlist = [];
+
+    function filterProducts(category) {
+        const products = document.querySelectorAll('[data-category]');
+        products.forEach(product => {
+            if (category === 'all' || product.dataset.category === category) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+
+    function addToCart(productId) {
+        cart.push(productId);
+        updateCartDisplay();
+        showToast('تم إضافة المنتج إلى السلة', 'success');
+    }
+
+    function addToWishlist(productId) {
+        wishlist.push(productId);
+        showToast('تم إضافة المنتج إلى المفضلة', 'success');
+    }
+
+    function updateCartDisplay() {
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+
+        // Update cart items display
+        cartItems.innerHTML = cart.map(item => `
+            <div class="cart-item d-flex align-items-center mb-3 p-2 border rounded">
+                <img src="img/i${item}.jpg" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                <div class="flex-grow-1">
+                    <h6 class="mb-0">منتج ${item}</h6>
+                    <small class="text-muted">100 جنيه</small>
+                </div>
+                <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart(${item})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        `).join('');
+
+        // Update total
+        cartTotal.textContent = (cart.length * 100) + ' جنيه';
+    }
+
+    function removeFromCart(productId) {
+        const index = cart.indexOf(productId);
+        if (index > -1) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+            showToast('تم حذف المنتج من السلة', 'info');
+        }
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            showToast('السلة فارغة', 'warning');
+            return;
+        }
+        showToast('سيتم توجيهك لصفحة الدفع', 'success');
+        // Redirect to checkout page
+    }
+
+    function toggleFilters() {
+        // Toggle filter sidebar
+        showToast('سيتم إضافة فلاتر متقدمة', 'info');
+    }
+</script>

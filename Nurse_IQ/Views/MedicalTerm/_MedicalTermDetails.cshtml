@@ -1,0 +1,72 @@
+﻿@model Nurse_IQ.Models.MedicalTerm
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold">@Model.englishName (@Model.arabicName)</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="mb-3">
+        <strong class="text-primary">التصنيف:</strong> @Model.category
+    </div>
+    <div class="mb-3">
+        <strong class="text-primary">التعريف:</strong> @Model.definition
+    </div>
+    <div class="mb-3">
+        <strong class="text-primary">مثال:</strong> @Model.example
+    </div>
+    @if (Model.synonyms != null && Model.synonyms.Any())
+    {
+        <div class="mb-3">
+            <strong class="text-primary">مرادفات:</strong> @string.Join(", ", Model.synonyms)
+        </div>
+    }
+    <div class="mb-3">
+        <strong class="text-primary">الاسم اللاتيني:</strong> @Model.latinName
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+</div>
+
+
+@* @model MedicalTerm
+
+<div class="modal-header">
+    <h5 class="modal-title fw-bold">@Model.englishName (@Model.arabicName)</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="mb-3">
+        <strong class="text-primary">التصنيف:</strong> @Model.category
+    </div>
+    <div class="mb-3">
+        <strong class="text-primary">التعريف:</strong> @Model.definition
+    </div>
+    <div class="mb-3">
+        <strong class="text-primary">مثال:</strong> @Model.example
+    </div>
+    @if (Model.synonyms != null && Model.synonyms.Any())
+    {
+        <div class="mb-3">
+            <strong class="text-primary">مرادفات:</strong> @string.Join(", ", Model.synonyms)
+        </div>
+    }
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+</div>
+@* @model MedicalTerm *@
+
+@* <div class="modal-header">
+    <h5 class="modal-title">@Model.englishName (@Model.arabicName)</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+    <p><strong>التصنيف:</strong> @Model.category</p>
+    <p><strong>التعريف:</strong> @Model.definition</p>
+    <p><strong>مثال:</strong> @Model.example</p>
+    @if (Model.synonyms.Any())
+    {
+        <p><strong>مرادفات:</strong> @string.Join(", ", Model.synonyms)</p>
+    }
+</div>  *@

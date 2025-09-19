@@ -1,0 +1,94 @@
+﻿@model (List<MedicalTerm> Terms, int CurrentPage, int TotalPages)
+
+@foreach (var term in Model.Terms)
+{
+    <div class="col-lg-6 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <span class="badge bg-primary mb-2">@term.category</span>
+                <h5 class="card-title fw-bold">@term.englishName (@term.arabicName)</h5>
+                <p class="card-text text-muted">@term.definition.Substring(0, Math.Min(100, term.definition.Length))...</p>
+                <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary" onclick="loadDetails(@term.Id)">
+                    <i class="bi bi-info-circle me-2"></i>التفاصيل
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.TotalPages > Model.CurrentPage)
+{
+    <nav aria-label="Pagination" id="pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="javascript:void(0);" onclick="loadTerms(@i)">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+@* @model (List<MedicalTerm> Terms, int CurrentPage, int TotalPages)
+
+@foreach (var term in Model.Terms)
+{
+    <div class="col-lg-6 col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <span class="badge bg-primary mb-2">@term.category</span>
+                <h5 class="card-title fw-bold">@term.englishName (@term.arabicName)</h5>
+                <p class="card-text text-muted">@term.definition.Substring(0, Math.Min(100, term.definition.Length))...</p>
+                <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary" onclick="loadDetails(@term.Id)">
+                    <i class="bi bi-info-circle me-2"></i>التفاصيل
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.TotalPages > Model.CurrentPage)
+{
+    <nav aria-label="Pagination" id="pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="javascript:void(0);" onclick="loadTerms(@i)">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+ *@
+
+@* @model (List<MedicalTerm> Terms, int CurrentPage, int TotalPages)
+
+@foreach (var term in Model.Terms)
+{
+    <div class="col-lg-4 col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <span class="badge bg-primary mb-2">@term.category</span>
+                <h5 class="card-title">@term.englishName (@term.arabicName)</h5>
+                <p class="card-text">@term.definition.Substring(0, Math.Min(100, term.definition.Length))...</p>
+                <a href="javascript:void(0);" class="btn btn-sm btn-outline-primary"
+                   onclick="loadDetails(@term.Id)">التفاصيل</a>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Pagination" id="pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="javascript:void(0);" onclick="loadTerms(@i)">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+} *@

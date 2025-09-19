@@ -29,3 +29,277 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+ Uniform sizing for quick search buttons 
+.quick-search-btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;  Slightly increased for better spacing 
+}
+
+.quick-search-btn {
+    width: 40px;  Fixed width for uniformity 
+    height: 40px;  Fixed height for uniformity 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 16px;  Adjust font size for readability 
+    line-height: 1;  Center text vertically 
+    text-align: center;
+}
+.page-banner {
+    background-color: #f8f9fa;  matches screenshot 
+}
+
+
+     Optional: Add hover effect for buttons 
+    .quick-search-btn:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+:root {
+    --bs-gray-200: #e9ecef;  Bootstrap gray for backgrounds 
+    --bs-gray-700: #495057;  Bootstrap dark gray for text 
+}
+
+ Gradient for header, using neutral tones 
+.bg-gradient-neutral {
+    background: linear-gradient(135deg, var(--bs-gray-200) 0%, var(--bs-gray-700) 100%);
+}
+
+ Quick search buttons (unchanged from your request) 
+.quick-search-btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.quick-search-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    text-align: center;
+}
+
+     Hover effect for buttons, using Bootstrap default 
+    .quick-search-btn:hover {
+        background-color: var(--bs-gray-200);
+        color: var(--bs-gray-700);
+        border-color: var(--bs-gray-700);
+    }
+ Custom Teal Theme (matching your screenshot) 
+:root {
+    --bs-teal: #1c7d7e;  Teal primary 
+    --bs-teal-hover: #166465;
+}
+
+ Filled Teal Button 
+.btn-teal {
+    background-color: var(--bs-teal);
+    border: 1px solid var(--bs-teal);
+    color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-teal:hover {
+        background-color: var(--bs-teal-hover);
+        border-color: var(--bs-teal-hover);
+        color: #fff;
+    }
+
+ Outline Teal Button 
+.btn-outline-teal {
+    border: 1px solid var(--bs-teal);
+    color: var(--bs-teal);
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+    .btn-outline-teal:hover {
+        background-color: var(--bs-teal);
+        color: #fff;
+    }
+
+:root {
+    --primary-color: #007bff;
+    --primary-dark: #0056b3;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius-lg: 0.5rem;
+}
+
+/* Card Styles (for Search, Categories, Terms List, Sidebar) */
+.card {
+    border: none; /* border-0 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-sm */
+    border-radius: 0.5rem; /* Bootstrap rounded */
+}
+
+.card-header {
+    background-color: #ffffff; /* bg-white */
+    border-bottom: none; /* border-0 */
+}
+
+.card-body {
+    padding: 1.5rem; /* p-4 for Categories, Sidebar; Search uses p-4 */
+}
+
+/* Quick Search Buttons (for Sidebar) */
+.quick-search-btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.quick-search-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
+    text-align: center;
+}
+
+    .quick-search-btn:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+/* Modal Styles (for Add Term and Search modals) */
+.modal-content {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+}
+
+/* Ensure font consistency with original HTML */
+body {
+    font-family: 'Cairo', sans-serif;
+}
+
+
+
+:root {
+    --primary-color: #1c7d7e; /* Teal base color */
+    --primary-dark: #166465; /* Darker teal for gradient */
+    --secondary-color: #28a745; /* Green for Hematology */
+    --info-color: #17a2b8; /* Cyan for Respiratory */
+    --warning-color: #ffc107; /* Yellow for Neurology */
+    --danger-color: #dc3545; /* Red for Cardiology */
+    --background-teal: #e3f4f4; /* Light teal background */
+}
+
+/* Header Section */
+.page-banner {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+    .page-banner h1, .page-banner p {
+        color: #fff;
+    }
+
+/* Search Section */
+.search-section {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+    .search-section .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-section .card-body {
+        padding: 2rem;
+    }
+
+    .search-section .bi-book {
+        font-size: 3rem;
+        color: var(--primary-color);
+    }
+
+/* Category Buttons */
+.category-card {
+    text-align: center;
+    padding: 1rem;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
+}
+
+    .category-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .category-card .bi {
+        font-size: 2rem;
+    }
+
+    .category-card .btn {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+.btn-cardiology {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
+.btn-respiratory {
+    background-color: var(--info-color);
+    color: #fff;
+}
+
+.btn-neurology {
+    background-color: var(--warning-color);
+    color: #fff;
+}
+
+.btn-hematology {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+
+/* Button Styles */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border: none;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, darken(var(--primary-dark), 10%) 0%, darken(var(--primary-color), 10%) 100%);
+        color: #fff;
+    }
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+    }

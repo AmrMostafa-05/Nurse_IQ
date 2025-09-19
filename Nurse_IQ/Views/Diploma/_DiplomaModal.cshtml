@@ -1,0 +1,52 @@
+﻿@model Diploma
+
+<div class="modal fade" id="diplomaModal" tabindex="-1" aria-labelledby="diplomaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">@Model.Description</p>
+
+                <h5 class="fw-bold mb-3">المميزات الرئيسية</h5>
+                @foreach (var feature in Model.features)
+                {
+                    <div class="diploma-feature">
+                        <div class="diploma-feature-icon">
+                            <i class="bi @feature.Icon text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold">@feature.Title</h6>
+                            <p class="text-muted mb-0">@feature.Description</p>
+                        </div>
+                    </div>
+                }
+
+                <h5 class="fw-bold mt-4 mb-3">متطلبات التقديم</h5>
+                @foreach (var req in Model.requirement)
+                {
+                    <div class="requirement-item">
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                        <span>@req</span>
+                    </div>
+                }
+
+                <h5 class="fw-bold mt-4 mb-3">خطوات التسجيل</h5>
+                <div class="diploma-timeline">
+                    @for (int i = 0; i < Model.register_steps.Count; i++)
+                    {
+                        <div class="timeline-item">
+                            <h6 class="fw-bold">الخطوة @(i + 1)</h6>
+                            <p class="text-muted mb-0">@Model.register_steps[i]</p>
+                        </div>
+                    }
+                </div>
+
+                <h5 class="fw-bold mt-4 mb-3">المدة</h5>
+                <p>@Model.Duration</p>
+            </div>
+        </div>
+    </div>
+</div>

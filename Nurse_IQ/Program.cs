@@ -43,6 +43,17 @@ namespace Nurse_IQ
             // Specialized repo & service
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
             builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<ILectureRepository, LectureRepository>();
+            builder.Services.AddScoped<ILectureService, LectureService>();
+            builder.Services.AddScoped<IDiplomaRepository, DiplomaRepository>();
+            builder.Services.AddScoped<IDiplomaService, DiplomaService>();
+
+            builder.Services.AddScoped<IAnnouncementRepository, AnnouncementRepository>();
+            builder.Services.AddScoped<IAnnouncementService, AnnouncementService>();
+            
+            builder.Services.AddScoped<IMedicalTermRepository, MedicalTermRepository>();
+            builder.Services.AddScoped<IMedicalTermService, MedicalTermService>();
+
             // Unit of Work
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

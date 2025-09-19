@@ -1,12 +1,14 @@
-﻿using Nurse_IQ.Repoitory;
+﻿using NuGet.Protocol.Core.Types;
+using Nurse_IQ.Repoitory;
 using Nurse_IQ.UnityOfWork;
 
 namespace Nurse_IQ.Service
 {
+    // Assuming this is your base Service<T> class
     public class Service<T> : IService<T> where T : class
     {
-        private readonly IRepository<T> _repository;
-        private readonly IUnitOfWork _unitOfWork;
+        protected readonly IRepository<T> _repository;
+        protected readonly IUnitOfWork _unitOfWork;
 
         public Service(IRepository<T> repository, IUnitOfWork unitOfWork)
         {
@@ -14,26 +16,32 @@ namespace Nurse_IQ.Service
             _unitOfWork = unitOfWork;
         }
 
-        public List <T> GetAll() => _repository.GetAll();
-
-        public T GetById(int id) => _repository.GetById(id);
-
-        public void Add(T entity)
+        public  async Task<List<T>> GetAllAsync()
         {
-            _repository.Add(entity);
-            _unitOfWork.Save();
+            return await _repository.GetAllAsync();
         }
 
-        public void Update(T entity)
+        public  async Task<T> GetByIdAsync(int id)
         {
-            _repository.Update(entity);
-            _unitOfWork.Save();
+            return await _repository.GetByIdAsync(id);
         }
 
-        public void Delete(int id)
+        public  async Task AddAsync(T entity)
         {
-            _repository.Delete(id);
-            _unitOfWork.Save();
+            await _repository.AddAsync(entity);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            await _repository.UpdateAsync(entity);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _repository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
         }
     }
 
