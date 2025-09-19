@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nurse_IQ.Models;
 
 namespace Nurse_IQ.Data.Config
 {
     public class MedicineConfiguration: IEntityTypeConfiguration<Medicine>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Medicine> builder)
+        public void Configure(EntityTypeBuilder<Medicine> builder)
         {
             builder.HasKey(mt => mt.Id);
 
@@ -48,13 +49,7 @@ namespace Nurse_IQ.Data.Config
                   .HasColumnType("VARCHAR")
                .HasMaxLength(100).IsRequired();
 
-
-            builder.HasOne(u => u.User)
-                .WithMany(c => c.medicines)
-                .HasForeignKey(c => c.UserId);
-
-
-           // builder.HasData(SeedData.Medicines);
+           builder.HasData(SeedData.Medicines);
 
 
         }

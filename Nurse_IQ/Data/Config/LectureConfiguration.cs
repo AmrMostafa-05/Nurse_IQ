@@ -41,7 +41,7 @@ namespace Nurse_IQ.Data.Config
                        .OnDelete(DeleteBehavior.Restrict);
 
 
-            //builder.HasData(SeedData.Lectures);
+            builder.HasData(SeedData.Lectures);
 
         }
     }

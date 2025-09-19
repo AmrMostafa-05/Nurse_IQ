@@ -1,7 +1,6 @@
 ﻿namespace Nurse_IQ.Models
 {
-    public class 
-        DiplomaFeature
+    public class DiplomaFeature
     {
         public int Id { get; set; }
         public string Title { get; set; }

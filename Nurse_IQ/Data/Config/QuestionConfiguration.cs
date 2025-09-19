@@ -39,7 +39,7 @@ namespace Nurse_IQ.Data.Config
                    .HasForeignKey(q => q.QuizId);
 
 
-           // builder.HasData(SeedData.Questions);
+           builder.HasData(SeedData.Questions);
 
         }
     }

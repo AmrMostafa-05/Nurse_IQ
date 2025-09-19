@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Nurse_IQ.Models.training_video>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning text-center w-100">لا توجد فيديوهات متاحة.</div>
+}
+else
+{
+    @foreach (var video in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <div class="card video-card h-100">
+                <div class="video-thumbnail position-relative">
+                    <img src="@video.thumbnailUrl" alt="@video.Title" class="w-100" />
+                    <div class="play-btn" onclick="openVideoModal(@video.Id)">
+                        <i class="bi bi-play-fill"></i>
+                    </div>
+                    <span class="video-duration">@video.duration</span>
+                    <span class="video-category">@video.category</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@video.Title</h5>
+                    <p class="text-muted small">
+                        @(video.Description.Length > 80 ? video.Description.Substring(0, 80) + "..." : video.Description)
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="video-stats">
+                            <span><i class="bi bi-eye"></i> @video.numberOfViews</span>
+                            <span><i class="bi bi-calendar"></i> @video.publishedDate.ToString()</span>
+                        </div>
+                        <a asp-action="VideoDetails" asp-route-id="@video.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-play-circle me-1"></i> شاهد الآن
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

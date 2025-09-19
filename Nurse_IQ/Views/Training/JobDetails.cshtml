@@ -1,0 +1,62 @@
+﻿@model Nurse_IQ.Models.Training
+@{
+    ViewData["Title"] = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Page Banner -->
+<section class="page-banner">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">المحتوى العملي</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">الرئيسية</a></li>
+                        <li class="breadcrumb-item active">المحتوى العملي</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="@Model.imageUrl" class="img-fluid rounded" alt="@Model.Title">
+        </div>
+        <div class="col-md-8">
+            <h6 class="text-muted">@Model.HospitalName - @Model.Location</h6>
+            <p class="mb-3">@Model.Description</p>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <strong>الراتب:</strong> @Model.salary جنيه
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Experience))
+                {
+                    <div class="col-6">
+                        <strong>الخبرة:</strong> @Model.Experience
+                    </div>
+                }
+            </div>
+            <div class="mb-3">
+                <strong>المتطلبات:</strong>
+                <ul class="mt-2">
+                    @foreach (var req in Model.requirement)
+                    {
+                        <li>@req</li>
+                    }
+                </ul>
+            </div>
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                آخر موعد للتقديم: @Model.deadline.ToString("yyyy-MM-dd")
+            </div>
+            <a class="btn btn-success" asp-action="Apply" asp-route-id="@Model.Id">
+                <i class="bi bi-send"></i> تقديم الآن
+            </a>
+        </div>
+    </div>
+</div>
+</section>

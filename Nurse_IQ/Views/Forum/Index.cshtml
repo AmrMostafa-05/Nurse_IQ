@@ -1,0 +1,327 @@
+﻿@model IEnumerable<Nurse_IQ.Models.Forumtopic>
+
+@{
+    ViewData["Title"] = "منتدى طلاب التمريض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <link href="~/css/forum.css" rel="stylesheet" />
+}
+
+<!-- Page Banner -->
+<section class="page-banner bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">منتدى طلاب التمريض 🤝</h1>
+                <p class="lead mb-4" style="color: antiquewhite;">مساحتك لمشاركة المعرفة، طرح الأسئلة، وبناء مجتمع داعم</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <button class="btn btn-light btn-lg" onclick="showNewTopicModal()">
+                        <i class="bi bi-plus-circle me-2"></i>ابدأ مناقشة جديدة
+                    </button>
+                    <a href="#categories" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-grid me-2"></i>استكشف الأقسام
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="banner-illustration">
+                    <i class="bi bi-people-fill display-1 text-white opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filters Section -->
+<section class="py-4 bg-white">
+    <div class="container">
+        <div class="filter-section">
+            <h5 class="fw-bold">تصفية المواضيع:</h5>
+            <div class="filter-tags">
+                <div class="filter-tag active" data-filter="all">الكل</div>
+                <div class="filter-tag" data-filter="general">النقاشات العامة</div>
+                <div class="filter-tag" data-filter="study">المحتوى الدراسي</div>
+                <div class="filter-tag" data-filter="practical">المحتوى العملي</div>
+                <div class="filter-tag" data-filter="support">الدعم النفسي</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Forum Categories -->
+<section id="categories" class="py-5">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="display-5 fw-bold text-primary mb-3">أقسام المنتدى</h2>
+                <p class="lead text-muted">اختر القسم المناسب لموضوعك وناقش مع زملائك</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="forum-category-card" onclick="showCategoryTopics('general')">
+                    <div class="category-header bg-primary-light p-4 rounded-top">
+                        <i class="bi bi-chat-dots text-primary fs-1"></i>
+                        <h5 class="fw-bold mt-3">النقاشات العامة</h5>
+                    </div>
+                    <div class="category-body p-4 bg-white rounded-bottom">
+                        <p class="text-muted small mb-3">أخبار الكلية، نصائح عامة، مناقشات متنوعة</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary">@Model.Count(ft => ft.category == "general") موضوع</span>
+                            <span class="text-muted small">آخر نشاط: @GetLastActivityTime("general")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="forum-category-card" onclick="showCategoryTopics('study')">
+                    <div class="category-header bg-success-light p-4 rounded-top">
+                        <i class="bi bi-book text-success fs-1"></i>
+                        <h5 class="fw-bold mt-3">المحتوى الدراسي</h5>
+                    </div>
+                    <div class="category-body p-4 bg-white rounded-bottom">
+                        <p class="text-muted small mb-3">شرح مواد، مذكرات، أسئلة امتحانات</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-success">@Model.Count(ft => ft.category == "study") موضوع</span>
+                            <span class="text-muted small">آخر نشاط: @GetLastActivityTime("study")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="forum-category-card" onclick="showCategoryTopics('practical')">
+                    <div class="category-header bg-warning-light p-4 rounded-top">
+                        <i class="bi bi-heart-pulse text-warning fs-1"></i>
+                        <h5 class="fw-bold mt-3">المحتوى العملي</h5>
+                    </div>
+                    <div class="category-body p-4 bg-white rounded-bottom">
+                        <p class="text-muted small mb-3">تجارب التدريب العملي، مهارات التمريض</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-warning">@Model.Count(ft => ft.category == "practical") موضوع</span>
+                            <span class="text-muted small">آخر نشاط: @GetLastActivityTime("practical")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="forum-category-card" onclick="showCategoryTopics('support')">
+                    <div class="category-header bg-info-light p-4 rounded-top">
+                        <i class="bi bi-heart text-info fs-1"></i>
+                        <h5 class="fw-bold mt-3">الدعم النفسي</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Topics -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <h2 class="display-6 fw-bold text-primary">آخر المواضيع</h2>
+            </div>
+            <div class="col-lg-4">
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="sortTopics">
+                        <option value="latest">الأحدث</option>
+                        <option value="popular">الأكثر شعبية</option>
+                        <option value="replies">الأكثر ردود</option>
+                    </select>
+                    <button class="btn btn-outline-primary" onclick="showSearchModal()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Topic List -->
+                <div class="topics-list">
+                    @if (!Model.Any())
+                    {
+                        <div class="col-12 text-center py-5">
+                            <i class="bi bi-search display-1 text-muted"></i>
+                            <h4 class="mt-3 text-muted">لا توجد مواضيع</h4>
+                            <p class="text-muted">جرب تغيير معايير البحث</p>
+                        </div>
+                    }
+
+                    @foreach (var topic in Model)
+                    {
+                        <div class="topic-item card mb-3 border-0 shadow-sm" data-category="@topic.category">
+                            <div class="card-body p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <img src="/img/default-user.jpg" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                            <div>
+                                                <h6 class="fw-bold mb-0">@topic.Title</h6>
+                                                <small class="text-muted">بواسطة @(topic.User?.UserName ?? "مستخدم") - @GetRelativeTime(topic)</small>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mb-2">@topic.Description</p>
+                                        <div class="d-flex gap-3">
+                                            <span class="badge bg-@(topic.category == "general" ? "primary" : topic.category == "study" ? "success" : topic.category == "practical" ? "warning" : "info")">@topic.category</span>
+                                            <span class="text-muted small"><i class="bi bi-eye me-1"></i>@topic.num_of_views مشاهدة</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end">
+                                        <div class="topic-stats">
+                                            <div class="d-flex justify-content-md-end gap-3 mb-2">
+                                                <span class="text-muted small"><i class="bi bi-chat me-1"></i>@topic.num_comments ردود</span>
+                                                <span class="text-muted small"><i class="bi bi-heart me-1"></i>@topic.num_of_likes إعجاب</span>
+                                            </div>
+                                            <a asp-action="Details" asp-route-id="@topic.Id" class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-arrow-left me-1">عرض الموضوع</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="forum-sidebar">
+                    <!-- Top Contributors -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0"><i class="bi bi-trophy me-2"></i>أفضل المساهمين</h6>
+                        </div>
+                        <div class="card-body">
+                            @foreach (var contributor in GetTopContributors())
+                            {
+                                <div class="contributor-item d-flex align-items-center mb-3">
+                                    <img src="/img/default-user.jpg" class="rounded-circle me-3" style="width: 35px; height: 35px; object-fit: cover;">
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0 small">@contributor.UserName</h6>
+                                        <small class="text-muted">@contributor.TopicCount مشاركة</small>
+                                    </div>
+                                    <span class="badge bg-warning">@contributor.Rank</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Daily Quote -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="bi bi-quote text-primary fs-1 mb-3"></i>
+                            <p class="mb-3">"التمريض ليس مجرد مهنة، بل دعوة للخدمة والإنسانية"</p>
+                            <small class="text-muted">- فلورنس نايتنجيل</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- New Topic Modal -->
+<div class="modal fade" id="newTopicModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">مناقشة جديدة</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">القسم</label>
+                        <select class="form-select">
+                            <option value="general">النقاشات العامة</option>
+                            <option value="study">المحتوى الدراسي</option>
+                            <option value="practical">المحتوى العملي</option>
+                            <option value="support">الدعم النفسي</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">عنوان الموضوع</label>
+                        <input type="text" class="form-control" placeholder="اكتب عنوان الموضوع هنا">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">المحتوى</label>
+                        <textarea class="form-control" rows="6" placeholder="اكتب محتوى الموضوع هنا"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="createNewTopic()">نشر الموضوع</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search Modal -->
+<div class="modal fade" id="searchModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">بحث في المنتدى</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="اكتب كلمة البحث...">
+                    <button class="btn btn-primary" type="button" onclick="performSearch()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/forum.js"></script>
+}
+
+@functions {
+    public string GetLastActivityTime(string category)
+    {
+        var lastTopic = Model.Where(ft => ft.category == category)
+                            .OrderByDescending(ft => ft.Id)
+                            .FirstOrDefault();
+
+        if (lastTopic == null)
+            return "لا يوجد نشاط";
+
+        return "منذ ساعة";
+    }
+
+    public string GetRelativeTime(Forumtopic topic)
+    {
+        return "منذ ساعة";
+    }
+
+    public List<ContributorInfo> GetTopContributors()
+    {
+        return new List<ContributorInfo>
+        {
+            new ContributorInfo { UserName = "أحمد محمد", TopicCount = 25, Rank = "🥇" },
+            new ContributorInfo { UserName = "سارة أحمد", TopicCount = 18, Rank = "🥈" },
+            new ContributorInfo { UserName = "محمد علي", TopicCount = 12, Rank = "🥉" }
+        };
+    }
+
+    public class ContributorInfo
+    {
+        public string UserName { get; set; }
+        public int TopicCount { get; set; }
+        public string Rank { get; set; }
+    }
+}

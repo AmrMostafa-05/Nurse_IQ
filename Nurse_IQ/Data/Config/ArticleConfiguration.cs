@@ -25,11 +25,11 @@ namespace Nurse_IQ.Data.Config
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(200).IsRequired();
 
-            builder.Property(x => x.autorImage)
+            builder.Property(x => x.authorImage)
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(200).IsRequired();
 
-            builder.Property(x => x.publisheDate)
+            builder.Property(x => x.publishDate)
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(50).IsRequired(); 
 
@@ -43,7 +43,7 @@ namespace Nurse_IQ.Data.Config
            .HasForeignKey(l => l.UserId);
 
 
-           // builder.HasData(SeedData.Articles);
+           builder.HasData(SeedData.Articles);
 
         }
     }

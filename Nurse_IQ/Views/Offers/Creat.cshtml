@@ -1,0 +1,82 @@
+﻿@model Nurse_IQ.Models.Offer
+@{
+    ViewData["Title"] = "إضافة عرض جديد";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="h2 fw-bold text-primary mb-4">إضافة عرض جديد</h2>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">عنوان العرض</label>
+                    <input asp-for="Title" class="form-control" required placeholder="اكتب عنوان العرض هنا" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubTitle" class="form-label">العنوان الفرعي</label>
+                    <input asp-for="SubTitle" class="form-control" required placeholder="اكتب العنوان الفرعي هنا" />
+                    <span asp-validation-for="SubTitle" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="category" class="form-label">القسم</label>
+                    <select asp-for="category" class="form-select" required>
+                        <option value="">اختر القسم</option>
+                        <option value="special">عرض مميز</option>
+                        <option value="new-student">الطلاب الجدد</option>
+                        <option value="advanced">المهارات المتقدمة</option>
+                        <option value="family">العائلة</option>
+                        <option value="weekend">نهاية الأسبوع</option>
+                        <option value="emergency">الطوارئ</option>
+                    </select>
+                    <span asp-validation-for="category" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">الوصف</label>
+                    <textarea asp-for="Description" class="form-control" rows="6" required placeholder="اكتب وصف العرض هنا"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="OriginalPrice" class="form-label">السعر الأصلي</label>
+                    <input asp-for="OriginalPrice" class="form-control" type="number" step="0.01" required placeholder="أدخل السعر الأصلي" />
+                    <span asp-validation-for="OriginalPrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscountPercentage" class="form-label">نسبة الخصم (%)</label>
+                    <input asp-for="DiscountPercentage" class="form-control" type="number" required placeholder="أدخل نسبة الخصم" />
+                    <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="expiredAt" class="form-label">تاريخ الانتهاء</label>
+                    <input asp-for="expiredAt" class="form-control" type="date" required />
+                    <span asp-validation-for="expiredAt" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="imageUrl" class="form-label">رابط الصورة</label>
+                    <input asp-for="imageUrl" class="form-control" placeholder="أدخل رابط الصورة أو اتركه فارغًا للصورة الافتراضية" />
+                    <span asp-validation-for="imageUrl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">المميزات</label>
+                    <textarea name="featuresInput" class="form-control" rows="4" placeholder="أدخل المميزات مفصولة بفواصل">@(Model?.features != null ? string.Join(", ", Model.features) : "")</textarea>
+                    <small class="text-muted">أدخل المميزات مفصولة بفواصل (مثال: ميزة 1, ميزة 2, ميزة 3)</small>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">نشر العرض</button>
+                    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector('textarea[name="featuresInput"]').addEventListener('input', function () {
+            this.value = this.value.replace(/\n/g, ',');
+        });
+    </script>
+}

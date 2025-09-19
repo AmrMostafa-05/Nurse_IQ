@@ -14,7 +14,7 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("VARCHAR")
                    .HasMaxLength(100).IsRequired();
 
-            builder.Property(q => q.HospitalName)
+            builder.Property(t => t.HospitalName)
              .HasColumnType("VARCHAR")
              .HasMaxLength(100).IsRequired();
 
@@ -33,7 +33,7 @@ namespace Nurse_IQ.Data.Config
             builder.Property(t => t.Experience)
                    .HasMaxLength(200);
 
-            builder.Property(l => l.Description)
+            builder.Property(t => t.Description)
                    .HasColumnType("nvarchar(max)").IsRequired();
 
             builder.Property(t => t.imageUrl)
@@ -47,18 +47,18 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("date")
                    .IsRequired();
 
-            builder.Property(c => c.requirement)
+            builder.Property(t => t.requirement)
                  .HasConversion(ValueConverters.StringListConverter)
                  .Metadata.SetValueComparer(ValueConverters.StringListComparer);
 
 
 
             builder.HasOne(t => t.CreatedBy)
-                .WithMany(qz => qz.Trainings)
-                .HasForeignKey(q => q.CreatedByAdminId);
+                .WithMany(u => u.Trainings)
+                .HasForeignKey(t => t.CreatedByAdminId);
             
             
-            //builder.HasData(SeedData.Trainings);
+            builder.HasData(SeedData.Trainings);
 
         }
     }

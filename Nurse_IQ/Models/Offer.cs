@@ -2,41 +2,32 @@
 {
     public class Offer
     {
-        /// <summary>
-        /// handle the config
-        /// </summary>
         public int Id { get; set; }
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string category { get; set; }
-        public string Description{ get; set; }
-        public decimal OriginalPrice { get; set; }
-        public decimal DiscountPrice { get; set; }//savings
-        public decimal LastPrice { get; set; }// note //the admin would put only 2 values OriginalPrice and discountPercentage
-                                             //and the other two would be computed colums but still you can make fileterations on them  
-        public int discountPercentage { get; set; }//20%
+        public string Description { get; set; }
+
+        public decimal OriginalPrice { get; set; } // السعر الأصلي
+
+        public int DiscountPercentage { get; set; } // نسبة الخصم 
+
+        // قيمة الخصم (المبلغ اللي اتخصم)
+        public decimal DiscountPrice => (OriginalPrice * DiscountPercentage) / 100;
+
+        // السعر بعد الخصم
+        public decimal LastPrice => OriginalPrice - DiscountPrice;
 
         public string imageUrl { get; set; }
         public DateTime expiredAt { get; set; }
         public List<string> features { get; set; }
 
-        public bool isValid ()
+        public bool IsValid()
         {
-            if(DateTime.Now > expiredAt) 
-                return false;
-            return true;
+            return DateTime.Now <= expiredAt;
         }
 
         public int CreatedByAdminId { get; set; }
         public applicationUser CreatedBy { get; set; }
-
-
-
-
-
-
-
-
-
     }
 }

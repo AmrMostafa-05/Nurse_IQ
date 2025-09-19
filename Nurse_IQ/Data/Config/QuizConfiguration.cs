@@ -27,7 +27,7 @@ namespace Nurse_IQ.Data.Config
                    .OnDelete(DeleteBehavior.Restrict)
                    .IsRequired();
 
-            builder.HasIndex(x => x.LectureId);//to inforce the 1 to 1 relation
+            builder.HasIndex(x => x.LectureId);//to enforce the 1 to 1 relation
 
 
             builder.HasOne(u => u.User)
@@ -36,7 +36,7 @@ namespace Nurse_IQ.Data.Config
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-           //builder.HasData(SeedData.Quizzes);
+           builder.HasData(SeedData.Quizzes);
 
         }
     }

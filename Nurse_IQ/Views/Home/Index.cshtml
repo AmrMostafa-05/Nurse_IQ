@@ -1,8 +1,198 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model dynamic
+@{
+    ViewData["Title"] = "NursingIQ - منصة مساعدة طلاب التمريض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-primary mb-4" data-lang-key="heroTitle">
+                    منصة مساعدة لطلاب التمريض
+                </h1>
+                <p class="lead text-muted mb-5" data-lang-key="heroSubtitle">
+                    اكتشف المواد الدراسية، انضم للتدريب العملي، وطور مهاراتك في مجال التمريض
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="@Url.Action("Index", "Courses")" class="btn btn-primary btn-lg">
+                        <i class="bi bi-book me-2"></i><span data-lang-key="exploreMaterials">استكشف المواد</span>
+                    </a>
+                    <a href="@Url.Action("Index", "Training")" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-calendar-check me-2"></i><span data-lang-key="joinTraining">انضم للتدريب</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-illustration">
+                    <div class="floating-card card-1">
+                        <i class="bi bi-heart-pulse text-primary"></i>
+                        <span>رعاية صحية</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="bi bi-book text-success"></i>
+                        <span>تعليم</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="bi bi-people text-warning"></i>
+                        <span>مجتمع</span>
+                    </div>
+                    <div class="main-illustration">
+                        <i class="bi bi-heart-pulse-fill text-primary display-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-6 fw-bold text-primary mb-3" data-lang-key="whyChooseUs">لماذا تختار NursingIQ؟</h2>
+                <p class="lead text-muted" data-lang-key="featuresSubtitle">منصة شاملة تجمع بين التعليم النظري والتدريب العملي</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-4">
+                        <i class="bi bi-book text-primary display-4"></i>
+                    </div>
+                    <h4 class="mb-3" data-lang-key="comprehensiveMaterials">مواد شاملة</h4>
+                    <p class="text-muted" data-lang-key="comprehensiveMaterialsDesc">مواد دراسية شاملة تغطي جميع جوانب التمريض</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-4">
+                        <i class="bi bi-calendar-check text-success display-4"></i>
+                    </div>
+                    <h4 class="mb-3" data-lang-key="practicalTraining">تدريب عملي</h4>
+                    <p class="text-muted" data-lang-key="practicalTrainingDesc">تدريب عملي في مستشفيات ومعاهد معتمدة</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-4">
+                        <i class="bi bi-people text-warning display-4"></i>
+                    </div>
+                    <h4 class="mb-3">دعم متخصص</h4>
+                    <p class="text-muted">دعم من خبراء في مجال التمريض</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Access Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="display-6 fw-bold text-primary mb-3">وصول سريع</h2>
+                <p class="lead text-muted">احصل على ما تحتاجه بسرعة وسهولة</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <a href="@Url.Action("Index", "Courses")" class="quick-access-card">
+                    <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card-body p-4">
+                            <i class="bi bi-book text-primary display-5 mb-3"></i>
+                            <h5 class="card-title">المواد</h5>
+                            <p class="card-text text-muted">استكشف المواد الدراسية</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <a href="@Url.Action("Index", "Training")" class="quick-access-card">
+                    <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card-body p-4">
+                            <i class="bi bi-calendar-check text-success display-5 mb-3"></i>
+                            <h5 class="card-title">التدريب</h5>
+                            <p class="card-text text-muted">فرص التدريب العملي</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <a href="@Url.Action("Index", "Skills")" class="quick-access-card">
+                    <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card-body p-4">
+                            <i class="bi bi-lightning text-danger display-5 mb-3"></i>
+                            <h5 class="card-title">المهارات</h5>
+                            <p class="card-text text-muted">تطوير المهارات العملية</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <a href="@Url.Action("Index", "Quizzes")" class="quick-access-card">
+                    <div class="card h-100 border-0 shadow-sm text-center">
+                        <div class="card-body p-4">
+                            <i class="bi bi-question-circle text-secondary display-5 mb-3"></i>
+                            <h5 class="card-title">الاختبارات</h5>
+                            <p class="card-text text-muted">اختبر معرفتك</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <i class="bi bi-book display-4 mb-3" style="color: darkcyan"></i>
+                    <h3 class="fw-bold">0+</h3>
+                    <p class="mb-0" style="color: darkcyan">مادة دراسية</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <i class="bi bi-people display-4 mb-3" style="color: darkcyan"></i>
+                    <h3 class="fw-bold">0+</h3>
+                    <p class="mb-0" style="color: darkcyan">طالب</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <i class="bi bi-hospital display-4 mb-3" style="color: darkcyan"></i>
+                    <h3 class="fw-bold">0+</h3>
+                    <p class="mb-0" style="color: darkcyan">مستشفى شريك</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <i class="bi bi-award display-4 mb-3" style="color: darkcyan"></i>
+                    <h3 class="fw-bold">0%</h3>
+                    <p class="mb-0" style="color: darkcyan">معدل الرضا</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- CTA Section -->
+<section class="py-5 bg-gradient-primary text-white">
+    <div class="container text-center">
+        <h2 class="display-6 fw-bold mb-4">هل أنت مستعد للبدء؟</h2>
+        <p class="lead mb-4" style="color: aliceblue;">انضم إلينا اليوم وابدأ رحلة التعلم في مجال التمريض</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="@Url.Action("Register", "Account")" class="btn btn-light btn-lg">
+                <i class="bi bi-person-plus me-2"></i>سجل الآن
+            </a>
+            <a href="@Url.Action("Index", "Courses")" class="btn btn-outline-light btn-lg">
+                <i class="bi bi-book me-2"></i>استكشف المواد
+            </a>
+        </div>
+    </div>
+</section>

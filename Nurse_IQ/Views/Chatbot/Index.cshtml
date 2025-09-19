@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "المساعد الذكي لطلاب التمريض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="chatbot-container mt-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+
+                <!-- Header -->
+                <div class="chat-header bg-primary text-white p-3 rounded-top">
+                    <h4 class="mb-0">🤖 مساعد التمريض الذكي</h4>
+                    <small>اسألني عن المذاكرة، التدريب، الامتحانات أو مهارات التمريض</small>
+                </div>
+
+                <!-- Chat Window -->
+                <div class="chat-window border border-top-0 p-3 bg-light" id="chatWindow"
+                     style="height: 400px; overflow-y: auto;">
+                    <!-- الرسائل تظهر هنا -->
+                </div>
+
+                <!-- Quick Questions -->
+                <div class="quick-questions p-3 bg-white border border-top">
+                    <h6 class="fw-bold mb-2">⚡ أسئلة سريعة</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('كيف اذاكر مادة التشريح؟')">التشريح</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('ازاي اذاكر الفسيولوجي؟')">الفسيولوجي</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('طرق حفظ الأدوية')">الأدوية</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('نصائح للتدريب العملي')">التدريب العملي</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('كيف أتحضر للامتحانات؟')">الامتحانات</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('إزاي أنظم وقتي؟')">تنظيم الوقت</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="quickAsk('فرص عمل خريجي تمريض')">الوظائف</button>
+                    </div>
+                </div>
+
+                <!-- Input -->
+                <div class="chat-input border border-top-0 p-3 rounded-bottom bg-white">
+                    <div class="input-group">
+                        <input type="text" id="userInput" class="form-control"
+                               placeholder="اكتب سؤالك هنا..."
+                               onkeypress="if(event.key==='Enter'){sendMessage();}">
+                        <button class="btn btn-primary" onclick="sendMessage()">إرسال</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <link href="~/css/chatbot.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script src="~/js/chatbot.js"></script>
+    <script>
+        function quickAsk(question) {
+            document.getElementById("userInput").value = question;
+            sendMessage();
+        }
+    </script>
+}

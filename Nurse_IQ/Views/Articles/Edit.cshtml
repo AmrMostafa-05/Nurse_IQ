@@ -1,0 +1,60 @@
+﻿@model Nurse_IQ.Models.Article
+@{
+    ViewData["Title"] = "تعديل المقال";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="h2 fw-bold text-primary mb-4">تعديل المقال</h2>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="publishDate" />
+                <input type="hidden" asp-for="Num_of_views" />
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">عنوان المقال</label>
+                    <input asp-for="Title" class="form-control" required />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">الوصف</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" required></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="category" class="form-label">التصنيف</label>
+                    <select asp-for="category" class="form-select" required>
+                        <option value="">اختر التصنيف</option>
+                        <option value="nursing-basics">أساسيات التمريض</option>
+                        <option value="emergency">الطوارئ والإسعافات</option>
+                        <option value="pediatrics">تمريض الأطفال</option>
+                        <option value="mental-health">الصحة النفسية</option>
+                        <option value="research">البحث العلمي</option>
+                    </select>
+                    <span asp-validation-for="category" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="imageUrl" class="form-label">رابط الصورة</label>
+                    <input asp-for="imageUrl" class="form-control" placeholder="أدخل رابط الصورة (اختياري)" />
+                    <span asp-validation-for="imageUrl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="authorImage" class="form-label">رابط صورة المؤلف</label>
+                    <input asp-for="authorImage" class="form-control" placeholder="أدخل رابط صورة المؤلف (اختياري)" />
+                    <span asp-validation-for="authorImage" class="text-danger"></span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

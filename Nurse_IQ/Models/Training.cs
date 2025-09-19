@@ -10,7 +10,7 @@
         public string Category { get; set; }
 
         public Decimal salary { get; set; }
-        public String? Experience { get; set; }
+        public string? Experience { get; set; }
         public List<string> requirement { get; set; }
         public string Description { get; set; }
         public string imageUrl { get; set; }

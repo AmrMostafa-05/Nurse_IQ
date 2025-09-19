@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Nurse_IQ.Models.Forumtopic>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning text-center w-100" role="alert">
+        لا توجد مواضيع متاحة حالياً.
+    </div>
+}
+else
+{
+    foreach (var topic in Model)
+    {
+        <div class="topic-item card mb-3 border-0 shadow-sm" data-category="@topic.category">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <!-- left side -->
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="/img/default-user.jpg"
+                                 class="rounded-circle me-3"
+                                 style="width: 40px; height: 40px; object-fit: cover;" />
+                            <div>
+                                <h6 class="fw-bold mb-0">@topic.Title</h6>
+                                <small class="text-muted">
+                                    بواسطة @(topic.User?.UserName ?? "مستخدم مجهول")
+                                </small>
+                            </div>
+                        </div>
+
+                        <p class="text-muted mb-2">@topic.Description</p>
+
+                        <div class="d-flex gap-3">
+                            <span class="badge bg-@(
+                                  topic.category == "general" ? "primary" :
+                                  topic.category == "study" ? "success" :
+                                  topic.category == "practical" ? "warning" : "info"
+                                                        )">
+                        @topic.category
+                    </span>
+                    <span class="text-muted small">
+                        <i class="bi bi-eye me-1"></i>@topic.num_of_views مشاهدة
+                    </span>
+                </div>
+            </div>
+
+                    <!-- right side -->
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <div class="topic-stats">
+                            <div class="d-flex justify-content-md-end gap-3 mb-2">
+                                <span class="text-muted small">
+                                    <i class="bi bi-chat me-1"></i>@topic.num_comments ردود
+                                </span>
+                                <span class="text-muted small">
+                                    <i class="bi bi-heart me-1"></i>@topic.num_of_likes إعجاب
+                                </span>
+                            </div>
+                            <a asp-action="Details"
+                               asp-route-id="@topic.Id"
+                               class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-arrow-left me-1"></i> عرض الموضوع
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

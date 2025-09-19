@@ -55,7 +55,7 @@ namespace Nurse_IQ.Data.Config
 
             var hasher = new PasswordHasher<applicationUser>();
 
-            //builder.HasData(SeedData.Users);
+            builder.HasData(SeedData.Users);
 
 
 

@@ -44,6 +44,4 @@ namespace Nurse_IQ.Repoitory
                 }
             }
     }
-    
-
 }

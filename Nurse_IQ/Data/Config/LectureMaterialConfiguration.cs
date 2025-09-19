@@ -18,13 +18,13 @@ namespace Nurse_IQ.Data.Config
                    .HasColumnType("VARCHAR")
                    .HasMaxLength(255).IsRequired();
 
-            builder.HasOne(m => m.lecture)
+            builder.HasOne(m => m.Lecture)
                    .WithMany(l => l.Materials)
                    .HasForeignKey(m => m.LectureId);
 
 
 
-            //builder.HasData(SeedData.LectureMaterials);
+            builder.HasData(SeedData.LectureMaterials);
         }
     }
 }

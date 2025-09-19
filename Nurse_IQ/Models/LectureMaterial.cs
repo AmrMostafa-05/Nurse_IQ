@@ -6,6 +6,6 @@
         public string FileName { get; set; }
         public string FileUrl { get; set; }
         public int LectureId { get; set; }
-        public Lecture lecture { get; set; }
+        public Lecture Lecture { get; set; }
     }
 }

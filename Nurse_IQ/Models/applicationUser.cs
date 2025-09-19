@@ -9,14 +9,14 @@ namespace Nurse_IQ.Models
         // id email and password and phone exists in the base class 
         public string Fname { get; set; }
         public string Lname { get; set; }
-        public string FullName { get; private set; }//configurated as computed 
+        public string FullName { get; set; }//configurated as computed 
         public gender gender { get; set; }
         public role role { get; set; }
         public YearLevel ?Year_Level { get; set; } //can be null in case of 
         public string Educational_institution { get; set; }// when we get the data we make enum for it and put its values 
         public Type_of_Edu_inst Type_of_Educational_institution { get; set; }//colege or intstue
         public DateTime BirthDate { get; set; }
-        public List<String>? interests_Fields { get; set; }
+        public List<string>? interests_Fields { get; set; }
 
 
         public List<Course> Courses { get; set; }  // Student study course //Doctor teaches courses => we use eager loading so we 

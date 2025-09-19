@@ -10,27 +10,27 @@ namespace Nurse_IQ.Data.Config
         {
             builder.HasKey(tv => tv.Id);
 
-            builder.Property(l => l.Title)
+            builder.Property(tv => tv.Title)
                .HasColumnType("VARCHAR")
                .HasMaxLength(200).IsRequired();
 
             builder.Property(tv => tv.Description)
                    .HasColumnType("nvarchar(max)");
 
-            builder.Property(l => l.category)
+            builder.Property(tv => tv.category)
                .HasColumnType("VARCHAR")
                .HasMaxLength(200).IsRequired();
 
-            builder.Property(l => l.publishedDate)
+            builder.Property(tv => tv.publishedDate)
                .HasColumnType("VARCHAR")
                .HasMaxLength(100).IsRequired();
 
-            builder.Property(l => l.duration)
+            builder.Property(tv => tv.duration)
              .HasColumnType("VARCHAR")
              .HasMaxLength(100).IsRequired();
 
 
-            builder.Property(l => l.thumbnailUrl)
+            builder.Property(tv => tv.thumbnailUrl)
                .HasColumnType("VARCHAR")
                .HasMaxLength(255).IsRequired();
 
@@ -52,7 +52,7 @@ namespace Nurse_IQ.Data.Config
 
 
 
-           // builder.HasData(SeedData.TrainingVideos);
+           builder.HasData(SeedData.TrainingVideos);
 
         }
 

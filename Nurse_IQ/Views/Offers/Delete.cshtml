@@ -1,0 +1,45 @@
+﻿@model Nurse_IQ.Models.Offer
+@{
+    ViewData["Title"] = "حذف العرض";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="h2 fw-bold text-primary mb-4">حذف العرض</h2>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <h5 class="text-danger">هل أنت متأكد من حذف هذا العرض؟</h5>
+            <div class="mb-3">
+                <strong>عنوان العرض:</strong> @Model.Title
+            </div>
+            <div class="mb-3">
+                <strong>العنوان الفرعي:</strong> @Model.SubTitle
+            </div>
+            <div class="mb-3">
+                <strong>القسم:</strong> @Model.category
+            </div>
+            <div class="mb-3">
+                <strong>السعر الأصلي:</strong> @Model.OriginalPrice.ToString("C")
+            </div>
+            <div class="mb-3">
+                <strong>نسبة الخصم:</strong> @Model.DiscountPercentage%
+            </div>
+            <div class="mb-3">
+                <strong>السعر النهائي:</strong> @Model.LastPrice.ToString("C")
+            </div>
+            <div class="mb-3">
+                <strong>تاريخ الانتهاء:</strong> @Model.expiredAt.ToString("yyyy-MM-dd")
+            </div>
+            <div class="mb-3">
+                <strong>المؤلف:</strong> @Model.CreatedBy.UserName
+            </div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">حذف</button>
+                    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
