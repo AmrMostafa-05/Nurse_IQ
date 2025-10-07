@@ -1725,4 +1725,16 @@ footer .social-links a:hover {
 
 .dark-mode .dropdown-item:hover {
     background: rgba(46, 125, 138, 0.2);
-} 
+}
+.btn-login.text-danger {
+    background-color: #fff; /* White background for logout button by default */
+    color: #dc3545; /* Red text by default */
+    border: 1px solid #dc3545; /* Optional: Add border for contrast */
+}
+
+    .btn-login.text-danger:hover {
+        background-color: #dc3545; /* Red background on hover */
+        color: #fff !important; /* White text on hover */
+        transform: scale(1.05); /* Scale effect */
+        box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3); /* Red-tinted shadow */
+    }

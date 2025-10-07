@@ -13,11 +13,11 @@
         public int DiscountPercentage { get; set; } // نسبة الخصم 
 
         // قيمة الخصم (المبلغ اللي اتخصم)
-        public decimal DiscountPrice => (OriginalPrice * DiscountPercentage) / 100;
+        public decimal DiscountPrice { get; private set; }
 
         // السعر بعد الخصم
-        public decimal LastPrice => OriginalPrice - DiscountPrice;
-
+        public decimal LastPrice { get; private set; } /*=> OriginalPrice - DiscountPrice;
+*/
         public string imageUrl { get; set; }
         public DateTime expiredAt { get; set; }
         public List<string> features { get; set; }

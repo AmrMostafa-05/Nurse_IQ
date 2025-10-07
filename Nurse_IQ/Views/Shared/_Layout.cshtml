@@ -55,10 +55,10 @@
                                 التعلم
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="courses.html" data-lang-key="studyContent">المحتوى الدراسي</a></li>
+                                <li><a class="dropdown-item" asp-controller="Course" asp-action="Index" data-lang-key="studyContent">المحتوى الدراسي</a></li>
                                 <li><a class="dropdown-item" asp-controller="Training" asp-action="Index" data-lang-key="practicalContent">المحتوى العملي</a></li>
                                 <li><a class="dropdown-item" asp-controller="Articles" asp-action="Index" data-lang-key="Articles">المقالات</a></li>
-                                <li><a class="dropdown-item" href="diplomas.html">الدبلومات المهنية</a></li>
+                                <li><a class="dropdown-item" asp-controller="Diploma" asp-action="Index" data-lang-key="Diplomas" >الدبلومات المهنية</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -69,14 +69,14 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="Forum" asp-action="Index" data-lang-key="forum">المنتدى</a></li>
                                 <li>
-                                    <a class="dropdown-item" href="announcements.html"
+                                    <a class="dropdown-item" asp-controller="Announcement" asp-action="Index"
                                        data-lang-key="announcements">الإعلانات</a>
                                 </li>
                                 <li><a class="dropdown-item" asp-controller="Offers" asp-action="Index" data-lang-key="offers">العروض</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="store.html" data-lang-key="store">المتجر</a>
+                            <a class="nav-link" asp-controller="Store" asp-action="Index" data-lang-key="store">المتجر</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -85,7 +85,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="dictionary.html" data-lang-key="dictionary">
+                                    <a class="dropdown-item" asp-controller="MedicalTerm" asp-action="Index" data-lang-key="dictionary">
                                         القاموس
                                         الطبي
                                     </a>
@@ -102,7 +102,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="support.html" data-lang-key="technicalSupport">
+                                    <a class="dropdown-item" asp-controller="Support" asp-action="Index" data-lang-key="technicalSupport">
                                         الدعم
                                         الفني
                                     </a>
@@ -119,6 +119,10 @@
                         <div class="auth-buttons">
                             <a asp-controller="Account" asp-action="Login" class="btn btn-login" data-lang-key="login">تسجيل الدخول</a>
                             <a asp-controller="Account" asp-action="Register" class="btn btn-register" data-lang-key="register">حساب جديد</a>
+                            @if (User.Identity.IsAuthenticated == true)
+                            {
+                                <a asp-controller="Account" asp-action="SignOut" class="btn btn-login text-danger" data-lang-key="SignOut">تسجيل الخروج</a>
+                            }
                         </div>
 
                         <!-- User Menu -->

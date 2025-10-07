@@ -1,0 +1,420 @@
+﻿@model LoginUserViewModel
+@{
+    ViewData["Title"] = "تسجيل الدخول";
+}
+<!-- Breadcrumb Container -->
+<div id="breadcrumb-container" class="container mt-4"></div>
+
+<!-- Login Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-heart-pulse-fill text-primary display-4 mb-3"></i>
+                            <h2 class="fw-bold text-primary">تسجيل الدخول</h2>
+                            <p class="text-muted">مرحباً بك في NursingIQ</p>
+                        </div>
+
+                        <form asp-action="Login" id="loginForm">
+                            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+                                    <input asp-for="Email" class="form-control" id="loginEmail" placeholder="أدخل بريدك الإلكتروني" required>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">كلمة المرور</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-lock"></i>
+                                    </span>
+                                    <input asp-for="Password" class="form-control" id="loginPassword" placeholder="أدخل كلمة المرور" required>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('loginPassword')">
+                                        <i class="bi bi-eye" id="loginPasswordIcon"></i>
+                                    </button>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="RememberMe" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        @Html.DisplayNameFor(model => model.RememberMe)
+                                    </label>
+                                </div>
+                                <a href="#" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">نسيت كلمة المرور؟</a>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>تسجيل الدخول
+                                </button>
+                            </div>
+
+                            <div class="text-center mb-3">
+                                <span class="text-muted">أو</span>
+                            </div>
+
+                            <div class="d-grid gap-2 mb-4">
+                                <button type="button" class="btn btn-outline-dark" onclick="loginWithGoogle()">
+                                    <i class="bi bi-google me-2"></i>تسجيل الدخول بحساب Google
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loginWithFacebook()">
+                                    <i class="bi bi-facebook me-2"></i>تسجيل الدخول بحساب Facebook
+                                </button>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="text-muted mb-0">
+                                    ليس لديك حساب؟
+                                    <a asp-action="Register" class="text-decoration-none fw-bold">إنشاء حساب جديد</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+          @*   <div class="col-lg-6 d-none d-lg-block">
+                <div class="ps-5">
+                    <div class="text-center">
+                        <i class="bi bi-heart-pulse text-primary" style="font-size: 8rem; opacity: 0.1;"></i>
+                    </div>
+                    <h3 class="fw-bold text-primary mb-4">مرحباً بك في NursingIQ</h3>
+                    <p class="lead text-muted mb-4">
+                        منصة تعليمية شاملة لطلاب التمريض والممرضين المحترفين
+                    </p>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>دورات معتمدة</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>شهادات معترف بها</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>تدريب عملي</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>دعم فني 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 bg-light">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-star-fill text-warning me-2"></i>
+                                <div>
+                                    <small class="text-muted">تقييم المستخدمين</small>
+                                    <div class="fw-bold">4.8/5</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Forgot Password Modal -->
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">إعادة تعيين كلمة المرور</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ForgotPassword" id="forgotPasswordForm">
+                    <div class="mb-3">
+                        <label for="forgotPasswordEmail" class="form-label">البريد الإلكتروني</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input type="email" class="form-control" id="forgotPasswordEmail" name="email" placeholder="أدخل بريدك الإلكتروني" required>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">إرسال رابط إعادة التعيين</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function togglePassword(inputId) {
+            var input = document.getElementById(inputId);
+            var icon = document.getElementById(inputId + 'Icon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            }
+        }
+
+        function loginWithGoogle() {
+            // Implement Google login logic
+            alert("Google login functionality to be implemented");
+        }
+
+        function loginWithFacebook() {
+            // Implement Facebook login logic
+            alert("Facebook login functionality to be implemented");
+        }
+    </script>
+}
+@* 
+@* 
+@model LoginUserViewModel
+
+@{
+    ViewData["Title"] = "تسجيل الدخول";
+}
+
+<!-- Breadcrumb Container -->
+<div id="breadcrumb-container" class="container mt-4"></div>
+
+<!-- Login Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-heart-pulse-fill text-primary display-4 mb-3"></i>
+                            <h2 class="fw-bold text-primary">تسجيل الدخول</h2>
+                            <p class="text-muted">مرحباً بك في NursingIQ</p>
+                        </div>
+
+                        <form asp-action="Login" id="loginForm">
+                            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">البريد الإلكتروني</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-envelope"></i>
+                                    </span>
+                                    <input asp-for="Email" class="form-control" id="loginEmail" placeholder="أدخل بريدك الإلكتروني" required>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label">كلمة المرور</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-lock"></i>
+                                    </span>
+                                    <input asp-for="Password" class="form-control" id="loginPassword" placeholder="أدخل كلمة المرور" required>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('loginPassword')">
+                                        <i class="bi bi-eye" id="loginPasswordIcon"></i>
+                                    </button>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="RememberMe" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        @Html.DisplayNameFor(model => model.RememberMe)
+                                    </label>
+                                </div>
+                                <a href="#" class="text-decoration-none" onclick="showForgotPassword()">نسيت كلمة المرور؟</a>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>تسجيل الدخول
+                                </button>
+                            </div>
+
+                            <div class="text-center mb-3">
+                                <span class="text-muted">أو</span>
+                            </div>
+
+                            <div class="d-grid gap-2 mb-4">
+                                <button type="button" class="btn btn-outline-dark" onclick="loginWithGoogle()">
+                                    <i class="bi bi-google me-2"></i>تسجيل الدخول بحساب Google
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" onclick="loginWithFacebook()">
+                                    <i class="bi bi-facebook me-2"></i>تسجيل الدخول بحساب Facebook
+                                </button>
+                            </div>
+
+                            <div class="text-center">
+                                <p class="text-muted mb-0">
+                                    ليس لديك حساب؟
+                                    <a asp-action="Register" class="text-decoration-none fw-bold">إنشاء حساب جديد</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> 
+
+           <div class="col-lg-6 d-none d-lg-block">
+                <div class="ps-5">
+                    <div class="text-center">
+                        <i class="bi bi-heart-pulse text-primary" style="font-size: 8rem; opacity: 0.1;"></i>
+                    </div>
+                    <h3 class="fw-bold text-primary mb-4">مرحباً بك في NursingIQ</h3>
+                    <p class="lead text-muted mb-4">
+                        منصة تعليمية شاملة لطلاب التمريض والممرضين المحترفين
+                    </p>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>دورات معتمدة</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>شهادات معترف بها</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>تدريب عملي</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                <span>دعم فني 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 bg-light">
+                        <div class="card-body p-3">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-star-fill text-warning me-2"></i>
+                                <div>
+                                    <small class="text-muted">تقييم المستخدمين</small>
+                                    <div class="fw-bold">4.8/5</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function togglePassword(inputId) {
+            var input = document.getElementById(inputId);
+            var icon = document.getElementById(inputId + 'Icon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            }
+        }
+
+        function showForgotPassword() {
+            // Implement forgot password logic or redirect
+            window.location.href = '@Url.Action("ForgotPassword")';
+        }
+
+        function loginWithGoogle() {
+            // Implement Google login logic
+            alert("Google login functionality to be implemented");
+        }
+
+        function loginWithFacebook() {
+            // Implement Facebook login logic
+            alert("Facebook login functionality to be implemented");
+        }
+    </script>
+}
+
+ @model Nurse_IQ.ViewModel.LoginUserViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} *@

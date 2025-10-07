@@ -2,6 +2,7 @@
 using Nurse_IQ.Data;
 using Nurse_IQ.Enums.ContactForm;
 using Nurse_IQ.Enums.Course;
+using Nurse_IQ.Enums.MedicalTerm;
 using Nurse_IQ.Enums.Question;
 using Nurse_IQ.Enums.User;
 using Nurse_IQ.Models;
@@ -500,7 +501,7 @@ namespace Nurse_IQ.Data
                 Title = "مرحباً بكم في منصة NursingIQ",
                 Content = "نرحب بكم في منصة التمريض الرائدة في مصر. نقدم لكم أفضل المحتوى التعليمي والتدريبي في مجال التمريض",
                 Date = new DateTime(2025, 1, 15),
-                category = "عام",
+                category = Enums.Announcement.Category.Urgent,
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             },
@@ -510,7 +511,7 @@ namespace Nurse_IQ.Data
                 Title = "إطلاق دورات جديدة في التمريض",
                 Content = "يسرنا أن نعلن عن إطلاق مجموعة جديدة من الدورات التدريبية المتخصصة في التمريض",
                 Date = new DateTime(2025, 1, 12),
-                category = "تحديث",
+                category = Enums.Announcement.Category.Info,
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             },
@@ -520,7 +521,7 @@ namespace Nurse_IQ.Data
                 Title = "ورشة عمل حول التمريض في العناية المركزة",
                 Content = "ورشة عمل مجانية حول أفضل الممارسات في التمريض في وحدات العناية المركزة - 25 يناير 2025",
                 Date = new DateTime(2025, 1, 10),
-                category = "فعاليات",
+                category = Enums.Announcement.Category.Important,
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             },
@@ -530,7 +531,7 @@ namespace Nurse_IQ.Data
                 Title = "مسابقة أفضل مقال تمريضي",
                 Content = "مسابقة شهرية لأفضل مقال في التمريض مع جوائز قيمة للفائزين",
                 Date = new DateTime(2025, 1, 8),
-                category = "مسابقات",
+                category = Enums.Announcement.Category.Practical,
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             },
@@ -540,7 +541,7 @@ namespace Nurse_IQ.Data
                 Title = "تحديث نظام الاختبارات",
                 Content = "تم تحديث نظام الاختبارات ليشمل المزيد من الأسئلة التفاعلية والتقييم الذكي",
                 Date = new DateTime(2025, 1, 5),
-                category = "تحديث",
+                category = Enums.Announcement.Category.Important,
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             },
@@ -550,7 +551,7 @@ namespace Nurse_IQ.Data
                 Title = "دورة تدريبية في الإسعافات الأولية",
                 Content = "دورة تدريبية شاملة في الإسعافات الأولية مع شهادة معتمدة - التسجيل مفتوح الآن",
                 Date = new DateTime(2025, 1, 3),
-                category = "دورات",
+                category = Enums.Announcement.Category.Academic,
                 AdminImageUrl = "img/admin.png",
                 CreatedByAdminId = 1
             }
@@ -862,7 +863,8 @@ namespace Nurse_IQ.Data
                 arabicName = "قلب",
                 englishName = "Heart",
                 latinName = "Cor",
-                category = "التشريح",
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
+                category =  Enums.MedicalTerm.Category.Cardiology,
                 example = "القلب يضخ الدم إلى جميع أنحاء الجسم",
                 synonyms = new List<string> { "قلبي", "قلبي وعائي" },
                 UserId = 2
@@ -873,7 +875,8 @@ namespace Nurse_IQ.Data
                 arabicName = "رئة",
                 englishName = "Lung",
                 latinName = "Pulmo",
-                category = "التشريح",
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
+                category = Enums.MedicalTerm.Category.Respiratory,
                 example = "الرئة تساعد في التنفس وتبادل الغازات",
                 synonyms = new List<string> { "رئوي", "تنفسي" },
                 UserId = 2
@@ -884,7 +887,8 @@ namespace Nurse_IQ.Data
                 arabicName = "كبد",
                 englishName = "Liver",
                 latinName = "Hepar",
-                category = "التشريح",
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
+                category = Enums.MedicalTerm.Category.Gastroenterology,
                 example = "الكبد يقوم بتصفية الدم وإنتاج الصفراء",
                 synonyms = new List<string> { "كبدي", "هيباتيك" },
                 UserId = 2
@@ -895,7 +899,8 @@ namespace Nurse_IQ.Data
                 arabicName = "كلية",
                 englishName = "Kidney",
                 latinName = "Ren",
-                category = "التشريح",
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
+                category = Enums.MedicalTerm.Category.Neurology,
                 example = "الكلى تقوم بتصفية الدم وإنتاج البول",
                 synonyms = new List<string> { "كلوي", "رينال" },
                 UserId = 3
@@ -907,7 +912,8 @@ namespace Nurse_IQ.Data
                 arabicName = "حمى",
                 englishName = "Fever",
                 latinName = "Febris",
-                category = "الأعراض",
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
+                category = Enums.MedicalTerm.Category.Endocrinology,
                 example = "الحمى هي ارتفاع في درجة حرارة الجسم",
                 synonyms = new List<string> { "ارتفاع الحرارة", "سخونة" },
                 UserId = 2
@@ -918,7 +924,8 @@ namespace Nurse_IQ.Data
                 arabicName = "صداع",
                 englishName = "Headache",
                 latinName = "Cephalgia",
-                category = "الأعراض",
+                category = Enums.MedicalTerm.Category.Respiratory,
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
                 example = "الصداع هو ألم في الرأس أو الرقبة",
                 synonyms = new List<string> { "ألم الرأس", "وجع الرأس" },
                 UserId = 3
@@ -929,7 +936,8 @@ namespace Nurse_IQ.Data
                 arabicName = "غثيان",
                 englishName = "Nausea",
                 latinName = "Nausea",
-                category = "الأعراض",
+                category = Enums.MedicalTerm.Category.Cardiology,
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
                 example = "الغثيان هو الشعور بالرغبة في التقيؤ",
                 synonyms = new List<string> { "رغبة في التقيؤ", "دوخة" },
                 UserId = 2
@@ -941,7 +949,8 @@ namespace Nurse_IQ.Data
                 arabicName = "جراحة",
                 englishName = "Surgery",
                 latinName = "Chirurgia",
-                category = "الإجراءات",
+                category = Enums.MedicalTerm.Category.Respiratory,
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
                 example = "الجراحة هي إجراء طبي يتطلب قطع الأنسجة",
                 synonyms = new List<string> { "عملية جراحية", "تدخل جراحي" },
                 UserId = 3
@@ -952,7 +961,8 @@ namespace Nurse_IQ.Data
                 arabicName = "تنفس صناعي",
                 englishName = "Artificial Respiration",
                 latinName = "Respiratio Artificialis",
-                category = "الإجراءات",
+                category = Enums.MedicalTerm.Category.Respiratory,
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
                 example = "التنفس الصناعي هو مساعدة المريض على التنفس",
                 synonyms = new List<string> { "تهوية صناعية", "دعم تنفسي" },
                 UserId = 4
@@ -964,7 +974,8 @@ namespace Nurse_IQ.Data
                 arabicName = "مضاد حيوي",
                 englishName = "Antibiotic",
                 latinName = "Antibioticum",
-                category = "الأدوية",
+                category = Enums.MedicalTerm.Category.Gastroenterology,
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
                 example = "المضاد الحيوي يقتل البكتيريا أو يمنع نموها",
                 synonyms = new List<string> { "مضاد بكتيري", "مضاد جرثومي" },
                 UserId = 2
@@ -975,7 +986,8 @@ namespace Nurse_IQ.Data
                 arabicName = "مسكن ألم",
                 englishName = "Analgesic",
                 latinName = "Analgeticum",
-                category = "الأدوية",
+                definition="التنفس الصناعي هو مساعدة المريض على التنفس",
+                category = Enums.MedicalTerm.Category.Cardiology,
                 example = "مسكن الألم يخفف من الشعور بالألم",
                 synonyms = new List<string> { "مخدر", "مهدئ" },
                 UserId = 3
@@ -1394,33 +1406,32 @@ namespace Nurse_IQ.Data
             }
         };
 
-            public static readonly UserRegisteredTraining[] UserRegisteredTrainings = new[]
-            {
-            // Student registrations
-            new UserRegisteredTraining { UserId = 2, TrainingId = 1 }, // أحمد محمد - ICU Training
-            new UserRegisteredTraining { UserId = 2, TrainingId = 2 }, // أحمد محمد - Pediatrics Training
-            new UserRegisteredTraining { UserId = 3, TrainingId = 3 }, // فاطمة أحمد - Emergency Training
-            new UserRegisteredTraining { UserId = 3, TrainingId = 4 }, // فاطمة أحمد - Surgery Training
-            new UserRegisteredTraining { UserId = 4, TrainingId = 5 }, // محمد علي - Oncology Training
-            new UserRegisteredTraining { UserId = 4, TrainingId = 6 }, // محمد علي - Cardiology Training
-            new UserRegisteredTraining { UserId = 5, TrainingId = 7 }, // نور الدين - Neonatal Training
-            new UserRegisteredTraining { UserId = 5, TrainingId = 8 }, // نور الدين - Mental Health Training
-            
-            // Doctor registrations
-            new UserRegisteredTraining { UserId = 6, TrainingId = 1 }, // د. سارة محمود - ICU Training
-            new UserRegisteredTraining { UserId = 7, TrainingId = 2 }, // د. خالد حسن - Pediatrics Training
-            new UserRegisteredTraining { UserId = 8, TrainingId = 3 }, // د. مريم عبدالله - Emergency Training
-            new UserRegisteredTraining { UserId = 9, TrainingId = 4 }, // د. يوسف إبراهيم - Surgery Training
-            new UserRegisteredTraining { UserId = 10, TrainingId = 5 }, // د. رانيا محمد - Oncology Training
-            new UserRegisteredTraining { UserId = 6, TrainingId = 6 }, // د. سارة محمود - Cardiology Training
-            
-            // Graduate registrations
-            new UserRegisteredTraining { UserId = 11, TrainingId = 7 }, // علي أحمد - Neonatal Training
-            new UserRegisteredTraining { UserId = 11, TrainingId = 8 }, // علي أحمد - Mental Health Training
-        };
+        public static readonly UserRegisteredTraining[] UserRegisteredTrainings = new[]
+        {
+                // Student registrations
+                new UserRegisteredTraining { UserId = 5, TrainingId = 1 }, // سارة أحمد - ICU Training
+                new UserRegisteredTraining { UserId = 5, TrainingId = 2 }, // سارة أحمد - Pediatrics Training
+                new UserRegisteredTraining { UserId = 6, TrainingId = 3 }, // علي محمود - Emergency Training
+                new UserRegisteredTraining { UserId = 6, TrainingId = 4 }, // علي محمود - Surgery Training
+                new UserRegisteredTraining { UserId = 7, TrainingId = 5 }, // مريم عبدالله - Oncology Training
+                new UserRegisteredTraining { UserId = 7, TrainingId = 6 }, // مريم عبدالله - Cardiology Training
+                new UserRegisteredTraining { UserId = 8, TrainingId = 7 }, // يوسف إبراهيم - Neonatal Training
+                new UserRegisteredTraining { UserId = 8, TrainingId = 8 }, // يوسف إبراهيم - Mental Health Training
 
-            // ================= Training Videos =================
-            public static readonly training_video[] TrainingVideos = new[]
+                // Doctor registrations
+                new UserRegisteredTraining { UserId = 2, TrainingId = 1 }, // أحمد علي - ICU Training
+                new UserRegisteredTraining { UserId = 2, TrainingId = 6 }, // أحمد علي - Cardiology Training
+                new UserRegisteredTraining { UserId = 3, TrainingId = 2 }, // فاطمة محمد - Pediatrics Training
+                new UserRegisteredTraining { UserId = 4, TrainingId = 3 }, // محمد حسن - Emergency Training
+                new UserRegisteredTraining { UserId = 9, TrainingId = 4 }, // نور السيد - Surgery Training
+                new UserRegisteredTraining { UserId = 10, TrainingId = 5 }, // خالد محمد - Oncology Training
+
+                // Graduate registrations
+                new UserRegisteredTraining { UserId = 10, TrainingId = 7 }, // خالد محمد - Neonatal Training
+                new UserRegisteredTraining { UserId = 10, TrainingId = 8 }, // خالد محمد - Mental Health Training
+        };
+        // ================= Training Videos =================
+        public static readonly training_video[] TrainingVideos = new[]
             {
             // Practical Skills Videos
             new training_video

@@ -31,10 +31,10 @@ namespace Nurse_IQ
             });
 
             builder.Services.AddIdentity<applicationUser, IdentityRole<int>>(options => {
-                options.Password.RequiredLength = 4;
-                options.Password.RequireDigit = false;
-                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
                 options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
             }).AddEntityFrameworkStores<AppDbContext>();
 
             // Generic repositories & services
@@ -60,19 +60,19 @@ namespace Nurse_IQ
 
             var app = builder.Build();
 
-            // Initialize database with seed data
-            using (var scope = app.Services.CreateScope())
-            {
-                try
-                {
-                    await DbInitializer.InitializeAsync(scope.ServiceProvider);
-                }
-                catch (Exception ex)
-                {
-                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while initializing the database.");
-                }
-            }
+            //Initialize database with seed data
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    try
+            //    {
+            //        await DbInitializer.InitializeAsync(scope.ServiceProvider);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex, "An error occurred while initializing the database.");
+            //    }
+            //}
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

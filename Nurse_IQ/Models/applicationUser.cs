@@ -9,7 +9,7 @@ namespace Nurse_IQ.Models
         // id email and password and phone exists in the base class 
         public string Fname { get; set; }
         public string Lname { get; set; }
-        public string FullName { get; set; }//configurated as computed 
+        public string FullName { get; private set; }//configurated as computed 
         public gender gender { get; set; }
         public role role { get; set; }
         public YearLevel ?Year_Level { get; set; } //can be null in case of 

@@ -32,6 +32,7 @@ namespace Nurse_IQ.Data.Config
 
             builder.Property(o => o.DiscountPercentage)
                    .IsRequired();
+
             builder.Property(o => o.DiscountPrice)
                    .HasColumnType("decimal(18, 2)")
                    .HasComputedColumnSql("[OriginalPrice] * [discountPercentage] / 100", stored: true);
